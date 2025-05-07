@@ -4,7 +4,18 @@ import argparse
 import json
 import os
 
+import requests
 from bs4 import BeautifulSoup
+
+
+DEFAULT_HEADERS = {
+	"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+	# "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+	# "Accept-Language": "en-US,en;q=0.9",
+	# "Connection": "keep-alive",
+	# "Cache-Control": "no-cache",
+	# "Pragma": "no-cache",
+}
 
 
 def is_int(s):
@@ -83,7 +94,7 @@ def main():
 	args = parser.parse_args()
 
 	if args.url:
-		response = requests.get(args.url)
+		response = requests.get(args.url, headers=DEFAULT_HEADERS)
 		html = response.text
 	elif args.input:
 		if os.path.isfile(args.input):
