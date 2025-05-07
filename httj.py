@@ -67,8 +67,6 @@ def get_table_data(table, args):
 
 	headers = get_row_cols(thead.find('tr'), args.cols)
 	tr_tags = tbody.find_all("tr")
-	if args.rows:
-		tr_tags = filter_array(tr_tags, args.rows)
 	data = [get_row_cols(tr, args.cols) for tr in tr_tags]
 
 	n_cols = len(data[0])
@@ -83,6 +81,15 @@ def get_table_data(table, args):
 			elif all_values_are_float:
 				for row in data:
 					row[n] = float(row[n])
+
+	if args.sort:
+		data = sorted(data, key=lambda x:x[args.sort])
+
+	if args.reverse:
+		data = reversed(data)
+
+	if args.rows:
+		data = filter_array(data, args.rows)
 
 	jo = {}
 	jo["headers"] = headers
@@ -116,9 +123,12 @@ def main():
 	parser.add_argument("-p", "--print", action="store_true", help="Print output in table format")
 	parser.add_argument("-f", "--fmt", default="simple", help="Set table formatting")
 
-	parser.add_argument("-r", "--rows", default=None, help="Filter Rows")
-	parser.add_argument("-c", "--cols", default=None, help="Filter Columns")
-	parser.add_argument("-t", "--tables", default=None, help="Filter Tables")
+	parser.add_argument("-r", "--rows", default=None, help="Filter rows")
+	parser.add_argument("-c", "--cols", default=None, help="Filter columns")
+	parser.add_argument("-t", "--tables", default=None, help="Filter tables")
+
+	parser.add_argument("-s", "--sort", type=int, default=None, help="Sort table rows by nth column.")
+	parser.add_argument("--reverse", action="store_true", help="Reverse table rows.")
 	args = parser.parse_args()
 
 	if args.url:
