@@ -65,35 +65,41 @@ def get_table_data(table, args):
 	thead = table.find("thead")
 	tbody = table.find("tbody")
 
-	headers = get_row_cols(thead.find('tr'), args.cols)
-	tr_tags = tbody.find_all("tr")
-	data = [get_row_cols(tr, args.cols) for tr in tr_tags]
+	if thead and tbody:
+		headers = get_row_cols(thead.find('tr'), args.cols)
+		tr_tags = tbody.find_all("tr")
+	else:
+		tr_tags = table.find_all("tr")
+		headers = get_row_cols(tr_tags[0], args.cols)
+		tr_tags = tr_tags[1:]
 
-	n_cols = len(data[0])
-	rows_are_uniform = all(len(row) == n_cols for row in data)
+	rows = [get_row_cols(tr, args.cols) for tr in tr_tags]
+
+	n_cols = len(rows[0])
+	rows_are_uniform = all(len(row) == n_cols for row in rows)
 	if rows_are_uniform:
 		for n in range(n_cols):
-			all_values_are_int = all(is_int(row[n]) for row in data)
-			all_values_are_float = all(is_float(row[n]) for row in data)
+			all_values_are_int = all(is_int(row[n]) for row in rows)
+			all_values_are_float = all(is_float(row[n]) for row in rows)
 			if all_values_are_int:
-				for row in data:
+				for row in rows:
 					row[n] = int(row[n])
 			elif all_values_are_float:
-				for row in data:
+				for row in rows:
 					row[n] = float(row[n])
 
 	if args.sort:
-		data = sorted(data, key=lambda x:x[args.sort])
+		rows = sorted(rows, key=lambda x:x[args.sort])
 
 	if args.reverse:
-		data = reversed(data)
+		rows = reversed(rows)
 
 	if args.rows:
-		data = filter_array(data, args.rows)
+		rows = filter_array(rows, args.rows)
 
 	jo = {}
 	jo["headers"] = headers
-	jo["data"] = data
+	jo["data"] = rows
 	return jo
 
 
@@ -109,7 +115,7 @@ def get_tables_from_html(html: str, args):
 			table = get_table_data(table_tag, args)
 			tables.append(table)
 		except Exception as e:
-			pass
+			print(e)
 	return tables
 
 
