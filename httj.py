@@ -78,7 +78,14 @@ def get_tables_from_html(html: str, args):
 	table_tags = soup.find_all("table")
 	if args.tables:
 		table_tags = table_tags[:args.tables]
-	tables = [get_table_data(table, args) for table in table_tags]
+
+	tables = []
+	for table_tag in table_tags:
+		try:
+			table = get_table_data(table_tag, args)
+			tables.append(table)
+		except Exception as e:
+			pass
 	return tables
 
 
