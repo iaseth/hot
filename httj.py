@@ -22,32 +22,36 @@ def is_float(s):
 		return False
 
 
-def get_row_cols(tr):
+def get_row_cols(tr, n_cols=0):
 	cells = tr.find_all("th")
 	if not cells:
 		cells = tr.find_all("td")
 	data = [cell.text.strip() for cell in cells]
+	if n_cols:
+		data = data[:n_cols]
 	return data
 
 
-def get_table_data(table):
+def get_table_data(table, args):
 	thead = table.find("thead")
 	tbody = table.find("tbody")
 
-	headers = get_row_cols(thead.find('tr'))
-	data = [get_row_cols(tr) for tr in tbody.find_all("tr")]
+	headers = get_row_cols(thead.find('tr'), args.cols)
+	tr_tags = tbody.find_all("tr")
+	if args.rows:
+		tr_tags = tr_tags[:args.rows]
+	data = [get_row_cols(tr, args.cols) for tr in tr_tags]
 
 	n_cols = len(data[0])
 	rows_are_uniform = all(len(row) == n_cols for row in data)
 	if rows_are_uniform:
 		for n in range(n_cols):
 			all_values_are_int = all(is_int(row[n]) for row in data)
+			all_values_are_float = all(is_float(row[n]) for row in data)
 			if all_values_are_int:
 				for row in data:
 					row[n] = int(row[n])
-
-			all_values_are_float = all(is_float(row[n]) for row in data)
-			if all_values_are_float:
+			elif all_values_are_float:
 				for row in data:
 					row[n] = float(row[n])
 
@@ -57,9 +61,12 @@ def get_table_data(table):
 	return jo
 
 
-def get_tables_from_html(html: str):
+def get_tables_from_html(html: str, args):
 	soup = BeautifulSoup(html, "lxml")
-	tables = [get_table_data(table) for table in soup.find_all("table")]
+	table_tags = soup.find_all("table")
+	if args.tables:
+		table_tags = table_tags[:args.tables]
+	tables = [get_table_data(table, args) for table in table_tags]
 	return tables
 
 
@@ -69,7 +76,10 @@ def main():
 	parser.add_argument("-i", "--input", default=None, help="Optional input file")
 	parser.add_argument("-o", "--output", default=None, help="Optional output file")
 	parser.add_argument("-m", "--minified", action="store_true", help="Output JSON in minified format")
-	parser.add_argument("-n", "--number", type=int, default=None, help="Optional number parameter (e.g., limit number of tables)")
+
+	parser.add_argument("-r", "--rows", type=int, default=None, help="Number of Rows")
+	parser.add_argument("-c", "--cols", type=int, default=None, help="Number of Columns")
+	parser.add_argument("-t", "--tables", type=int, default=None, help="Number of Tables")
 	args = parser.parse_args()
 
 	if args.url:
@@ -86,7 +96,7 @@ def main():
 		print(f"No URL of Input file provided!")
 		return
 
-	tables = get_tables_from_html(html)
+	tables = get_tables_from_html(html, args)
 
 	jo = {}
 	jo["tables"] = tables
