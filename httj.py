@@ -6,6 +6,7 @@ import os
 
 import requests
 from bs4 import BeautifulSoup
+from tabulate import tabulate
 
 
 DEFAULT_HEADERS = {
@@ -86,7 +87,10 @@ def main():
 	parser.add_argument("url", nargs='?', help="URL of the webpage to extract tables from")
 	parser.add_argument("-i", "--input", default=None, help="Optional input file")
 	parser.add_argument("-o", "--output", default=None, help="Optional output file")
+
 	parser.add_argument("-m", "--minified", action="store_true", help="Output JSON in minified format")
+	parser.add_argument("-p", "--print", action="store_true", help="Print output in table format")
+	parser.add_argument("-f", "--fmt", default="simple", help="Set table formatting")
 
 	parser.add_argument("-r", "--rows", type=int, default=None, help="Number of Rows")
 	parser.add_argument("-c", "--cols", type=int, default=None, help="Number of Columns")
@@ -108,6 +112,15 @@ def main():
 		return
 
 	tables = get_tables_from_html(html, args)
+	if args.print:
+		for table in tables:
+			table_text = tabulate(
+				table["data"],
+				headers=table["headers"],
+				tablefmt=args.fmt
+			)
+			print(table_text)
+		return
 
 	jo = {}
 	jo["tables"] = tables
