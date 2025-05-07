@@ -34,13 +34,30 @@ def is_float(s):
 		return False
 
 
-def get_row_cols(tr, n_cols=0):
+def filter_array(arr, s):
+	if s is None:
+		return arr
+	elif is_int(s):
+		index = int(s)
+		return arr[:index]
+
+	try:
+		# Parse slice string
+		parts = s.split(':')
+		if len(parts) > 3:
+			raise ValueError("Invalid slice format")
+		slice_args = [int(p) if p else None for p in parts]
+		return arr[slice(*slice_args)]
+	except Exception as e:
+		raise ValueError(f"Invalid filter string: {s}") from e
+
+
+def get_row_cols(tr, cols_filter):
 	cells = tr.find_all("th")
 	if not cells:
 		cells = tr.find_all("td")
 	data = [cell.text.strip() for cell in cells]
-	if n_cols:
-		data = data[:n_cols]
+	data = filter_array(data, cols_filter)
 	return data
 
 
@@ -51,7 +68,7 @@ def get_table_data(table, args):
 	headers = get_row_cols(thead.find('tr'), args.cols)
 	tr_tags = tbody.find_all("tr")
 	if args.rows:
-		tr_tags = tr_tags[:args.rows]
+		tr_tags = filter_array(tr_tags, args.rows)
 	data = [get_row_cols(tr, args.cols) for tr in tr_tags]
 
 	n_cols = len(data[0])
@@ -77,7 +94,7 @@ def get_tables_from_html(html: str, args):
 	soup = BeautifulSoup(html, "lxml")
 	table_tags = soup.find_all("table")
 	if args.tables:
-		table_tags = table_tags[:args.tables]
+		table_tags = filter_array(table_tags, args.tables)
 
 	tables = []
 	for table_tag in table_tags:
@@ -99,9 +116,9 @@ def main():
 	parser.add_argument("-p", "--print", action="store_true", help="Print output in table format")
 	parser.add_argument("-f", "--fmt", default="simple", help="Set table formatting")
 
-	parser.add_argument("-r", "--rows", type=int, default=None, help="Number of Rows")
-	parser.add_argument("-c", "--cols", type=int, default=None, help="Number of Columns")
-	parser.add_argument("-t", "--tables", type=int, default=None, help="Number of Tables")
+	parser.add_argument("-r", "--rows", default=None, help="Filter Rows")
+	parser.add_argument("-c", "--cols", default=None, help="Filter Columns")
+	parser.add_argument("-t", "--tables", default=None, help="Filter Tables")
 	args = parser.parse_args()
 
 	if args.url:
