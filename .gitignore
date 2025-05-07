@@ -1,0 +1,78 @@
+# Local Netlify folder
+.netlify
+
+secret/
+cache/
+
+temp_epub/
+*.epub
+
+*.html
+*.json
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+*.log
+
+# Virtual environment
+env/
+venv/
+ENV/
+.venv/
+.env/
+*.env
+
+# PyInstaller
+*.spec
+
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Flask
+instance/
+*.db
+*.sqlite3
+
+# === Node/Svelte ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Vite / SvelteKit build output
+build/
+dist/
+.svelte-kit/
+.vite/
+
+# === OS Files ===
+.DS_Store
+Thumbs.db
+
+# === Editor files ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+
+# === Misc ===
+*.tgz
+*.lock-wscript
+
