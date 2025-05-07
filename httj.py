@@ -97,10 +97,7 @@ def get_table_data(table, args):
 	if args.rows:
 		rows = filter_array(rows, args.rows)
 
-	jo = {}
-	jo["headers"] = headers
-	jo["data"] = rows
-	return jo
+	return headers, rows
 
 
 def get_tables_from_html(html: str, args):
@@ -112,8 +109,16 @@ def get_tables_from_html(html: str, args):
 	tables = []
 	for table_tag in table_tags:
 		try:
-			table = get_table_data(table_tag, args)
-			tables.append(table)
+			headers, rows = get_table_data(table_tag, args)
+			if args.min and len(rows) < args.min:
+				continue
+			elif args.max and len(rows) > args.max:
+				continue
+			else:
+				table = {}
+				table["headers"] = headers
+				table["data"] = rows
+				tables.append(table)
 		except Exception as e:
 			print(e)
 	return tables
@@ -135,6 +140,8 @@ def main():
 
 	parser.add_argument("-s", "--sort", type=int, default=None, help="Sort table rows by nth column.")
 	parser.add_argument("--reverse", action="store_true", help="Reverse table rows.")
+	parser.add_argument("--min", type=int, default=None, help="Minimum table rows expected.")
+	parser.add_argument("--max", type=int, default=None, help="Maximum table rows expected.")
 	args = parser.parse_args()
 
 	if args.url:
