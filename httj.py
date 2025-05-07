@@ -152,10 +152,10 @@ def main():
 
 	jo = {}
 	jo["tables"] = tables
-	if args.minified:
-		json_text = json.dumps(tables, sort_keys=True)
-	else:
-		json_text = json.dumps(tables, sort_keys=True, indent="\t")
+	json_text = json.dumps(
+		jo, sort_keys = True, 
+		indent=None if args.minified else "\t"
+	)
 
 	if args.output:
 		with open(args.output, "w") as f:
