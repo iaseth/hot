@@ -119,6 +119,10 @@ def main():
 		return
 
 	tables = get_tables_from_html(html, args)
+	if len(tables) == 0:
+		print("No tables found!")
+		return
+
 	if args.print:
 		for table in tables:
 			table_text = tabulate(
