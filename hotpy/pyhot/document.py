@@ -62,7 +62,7 @@ class HotDocument:
 		if self.args.widest:
 			self.tables = self.widest_tables()
 
-		if self.args.combine:
+		if self.args.union:
 			col_counts = set(t.col_count for t in self.tables)
 			combined_tables = []
 			for col_count in col_counts:

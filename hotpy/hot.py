@@ -11,6 +11,9 @@ def main():
 	parser.add_argument("--cache", action="store_true", help="Cache any fetch requests")
 	parser.add_argument("--fetch", action="store_true", help="Fetch the page again, don't use cache")
 
+	parser.add_argument("-v", "--paste", action="store_true", help="Take input from clipboard")
+	parser.add_argument("-c", "--copy", action="store_true", help="Copy output to clipboard")
+
 	parser.add_argument("-o", "--output", default=None, help="Optional output file")
 	parser.add_argument("--csv", default=False, action="store_true", help="Output as CSV")
 	parser.add_argument("--json", default=False, action="store_true", help="Output as JSON")
@@ -31,8 +34,8 @@ def main():
 
 	parser.add_argument("--longest", action="store_true", help="Select the table with most rows")
 	parser.add_argument("--widest", action="store_true", help="Select the table with most cols")
-	parser.add_argument("-c", "--combine", action="store_true", help="Combine tables with same number of cols")
 	parser.add_argument("-j", "--join", action="store_true", help="Join tables with same number of rows")
+	parser.add_argument("-u", "--union", action="store_true", help="Combine tables with same number of cols")
 
 	parser.add_argument("--r1", default=None, help="Filter rows before processing")
 	parser.add_argument("--c1", default=None, help="Filter columns before processing")
