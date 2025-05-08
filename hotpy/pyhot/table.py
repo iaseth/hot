@@ -92,13 +92,16 @@ class HotTable:
 			self.headers = ["UUID", *self.headers]
 			self.rows = [[str(uuid.uuid4()), *row] for row in self.rows]
 
-	def print_table(self):
+	def get_tabulate(self):
 		table_text = tabulate(
 			self.rows,
 			headers=self.headers,
 			tablefmt=self.args.fmt
 		)
-		print(table_text)
+		return table_text
+
+	def print_tabulate(self):
+		print(self.get_tabulate())
 
 	def join(self, other):
 		result = HotTable(self.document)

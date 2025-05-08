@@ -88,23 +88,24 @@ class HotDocument:
 		for table in self.tables:
 			print(table)
 
-	def print_tables(self):
-		for table in self.tables:
-			table.print_table()
-			print()
+	def get_output_text(self):
+		if self.args.json:
+			return self.json_text
+		else:
+			return "\n".join([t.get_tabulate() for t in self.tables])
 
 	def produce_output(self):
 		if self.args.summary:
 			self.print_summary()
-		elif self.args.json:
-			if self.args.output:
-				with open(self.args.output, "w") as f:
-					f.write(self.json_text)
-				print(f"Saved: '{self.args.output}' ({len(self.tables)} tables)")
-			else:
-				print(self.json_text)
+			return
+
+		output_text = self.get_output_text()
+		if self.args.output:
+			with open(self.args.output, "w") as f:
+				f.write(output_text)
+			print(f"Saved: '{self.args.output}' ({len(self.tables)} tables)")
 		else:
-			self.print_tables()
+			print(output_text)
 
 	@property
 	def empty(self):
