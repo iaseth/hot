@@ -1,3 +1,5 @@
+import csv
+import io
 import uuid
 
 from tabulate import tabulate
@@ -108,6 +110,15 @@ class HotTable:
 		result.headers = [*self.headers, *other.headers]
 		result.rows = [[*r1, *r2] for r1, r2 in zip(self.rows, other.rows)]
 		return result
+
+
+	def to_csv(self):
+		output = io.StringIO()
+		writer = csv.writer(output)
+		writer.writerow(self.headers)
+		writer.writerows(self.rows)
+		return output.getvalue()
+
 
 	def __add__(self, other):
 		result = HotTable(self.document)

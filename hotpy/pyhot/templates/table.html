@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Hot</title>
+
+	<link rel="stylesheet" type="text/css" href="./svm.css">
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="overflow-x-hidden bg-zinc-900 text-zinc-200">
+
+<section>
+	{% for table in document.tables %}
+	<table class="w-full mx-auto text-right">
+		<thead>
+			<tr class="bg-blue-500 text-white text-sm">
+				{% for header in table.headers %}
+				<th class="px-6 py-3 first:text-left">{{ header }}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+
+		<tbody>
+			{% for row in table.rows %}
+			<tr class="odd:bg-zinc-950">
+				{% for value in row %}
+				<td class="px-6 py-4 first:text-left">{{ value }}</td>
+				{% endfor %}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% endfor %}
+</section>
+
+</body>
+</html>

@@ -4,10 +4,11 @@ import os
 from bs4 import BeautifulSoup
 import pyperclip
 
+from .factory import create_table_from_table_tag
 from .fetch import get_page_html
 from .filter_list import filter_list
+from .output import document_to_html5, document_to_html, document_to_xml
 from .table import HotTable
-from .factory import create_table_from_table_tag
 
 
 
@@ -92,6 +93,14 @@ class HotDocument:
 	def get_output_text(self):
 		if self.args.json:
 			return self.json_text
+		elif self.args.csv:
+			return "\n".join([t.to_csv() for t in self.tables])
+		elif self.args.html5:
+			return document_to_html5(self)
+		elif self.args.html:
+			return document_to_html(self)
+		elif self.args.xml:
+			return document_to_xml(self)
 		else:
 			return "\n".join([t.get_tabulate() for t in self.tables])
 
@@ -143,6 +152,17 @@ class HotDocument:
 			return 2
 		elif self.args.s4:
 			return 4
+		else:
+			return "\t"
+
+	@property
+	def space(self):
+		if self.args.minified:
+			return ""
+		elif self.args.s2:
+			return " " * 2
+		elif self.args.s4:
+			return " " * 4
 		else:
 			return "\t"
 

@@ -9,7 +9,6 @@ hot
 temp_epub/
 *.epub
 
-*.html
 *.json
 
 # === Python ===
