@@ -2,32 +2,9 @@
 
 import argparse
 import json
-import os
 
-from bs4 import BeautifulSoup
+from pyhot.document import HotDocument
 
-from pyhot.fetch import get_page_html
-from pyhot.filter_list import filter_list
-from pyhot.factory import create_table_from_table_tag
-
-
-
-def get_hot_tables_from_html(html: str, args):
-	soup = BeautifulSoup(html, "lxml")
-	table_tags = soup.find_all("table")
-	table_tags = filter_list(table_tags, args.t1)
-
-	tables = []
-	for table_tag in table_tags:
-		try:
-			table = create_table_from_table_tag(table_tag, args)
-			if table.is_acceptable(args):
-				tables.append(table)
-		except Exception as e:
-			print(e)
-
-	tables = filter_list(tables, args.t2)
-	return tables
 
 
 def main():
@@ -74,20 +51,10 @@ def main():
 	parser.add_argument("--maxc", type=int, default=None, help="Maximum table cols expected")
 	args = parser.parse_args()
 
-	if args.url:
-		html = get_page_html(args.url, fetch=args.fetch)
-	elif args.input:
-		if os.path.isfile(args.input):
-			with open(args.input) as f:
-				html = f.read()
-		else:
-			print(f"File not found: '{args.input}'")
-			return
-	else:
-		print(f"No URL of Input file provided!")
-		return
+	hot = HotDocument(args)
+	hot.add_hot_tables_from_args()
+	tables = hot.tables
 
-	tables = get_hot_tables_from_html(html, args)
 	if len(tables) == 0:
 		print("No tables found!")
 		return
