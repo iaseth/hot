@@ -93,8 +93,6 @@ class HotDocument:
 	def get_output_text(self):
 		if self.args.json:
 			return self.json_text
-		elif self.args.csv:
-			return "\n".join([t.to_csv() for t in self.tables])
 		elif self.args.html5:
 			return document_to_html5(self)
 		elif self.args.html:
@@ -102,7 +100,7 @@ class HotDocument:
 		elif self.args.xml:
 			return document_to_xml(self)
 		else:
-			return "\n".join([t.get_tabulate() for t in self.tables])
+			return "\n".join([t.get_output_text() for t in self.tables])
 
 	def produce_output(self):
 		if self.args.summary:

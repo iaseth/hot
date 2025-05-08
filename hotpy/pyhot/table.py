@@ -119,6 +119,17 @@ class HotTable:
 		writer.writerows(self.rows)
 		return output.getvalue()
 
+	def to_markdown(self):
+		return tabulate(self.rows, headers=self.headers, tablefmt="github")
+
+	def get_output_text(self):
+		if self.args.csv:
+			return self.to_csv()
+		elif self.args.markdown:
+			return self.to_markdown()
+		else:
+			return self.get_tabulate()
+
 
 	def __add__(self, other):
 		result = HotTable(self.document)
