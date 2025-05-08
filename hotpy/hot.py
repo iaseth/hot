@@ -27,7 +27,7 @@ def main():
 
 	parser.add_argument("--longest", action="store_true", help="Select the table with most rows")
 	parser.add_argument("--widest", action="store_true", help="Select the table with most cols")
-	parser.add_argument("--combine", action="store_true", help="Combine tables with same number of cols")
+	parser.add_argument("-c", "--combine", action="store_true", help="Combine tables with same number of cols")
 
 	parser.add_argument("--r1", default=None, help="Filter rows before processing")
 	parser.add_argument("--c1", default=None, help="Filter columns before processing")
@@ -38,7 +38,7 @@ def main():
 
 	parser.add_argument("-a", "--ascending", type=int, default=None, help="Sort table rows by nth column (ascending order)")
 	parser.add_argument("-d", "--descending", type=int, default=None, help="Sort table rows by nth column (descending order)")
-	parser.add_argument("-r", "--reverse", action="store_true", help="Reverse table rows")
+	parser.add_argument("-r", "--reverse", action="store_true", help="Reverse table rows order")
 
 	parser.add_argument("--id", default=False, action="store_true", help="Add id to table rows")
 	parser.add_argument("--index", default=False, action="store_true", help="Add index to table rows")
@@ -46,8 +46,11 @@ def main():
 
 	parser.add_argument("--min", type=int, default=None, help="Minimum table rows expected")
 	parser.add_argument("--max", type=int, default=None, help="Maximum table rows expected")
+	parser.add_argument("--exact", type=int, default=None, help="Exact number of table rows expected")
 	parser.add_argument("--minc", type=int, default=None, help="Minimum table cols expected")
 	parser.add_argument("--maxc", type=int, default=None, help="Maximum table cols expected")
+	parser.add_argument("--exactc", type=int, default=None, help="Exact number of table cols expected")
+
 	args = parser.parse_args()
 
 	hotdoc = HotDocument(args)

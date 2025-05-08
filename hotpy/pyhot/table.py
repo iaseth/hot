@@ -37,14 +37,12 @@ class HotTable:
 
 	def is_acceptable(self):
 		args = self.args
-		if args.min and self.row_count < args.min:
-			return False
-		elif args.max and self.row_count > args.max:
-			return False
-		elif args.minc and self.col_count < args.minc:
-			return False
-		elif args.maxc and self.col_count > args.maxc:
-			return False
+		if args.min and self.row_count < args.min: return False
+		if args.max and self.row_count > args.max: return False
+		if args.exact and self.row_count != args.exact: return False
+		if args.minc and self.col_count < args.minc: return False
+		if args.maxc and self.col_count > args.maxc: return False
+		if args.exactc and self.col_count != args.exactc: return False
 		return True
 
 	def post_processing(self):
