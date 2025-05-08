@@ -29,6 +29,7 @@ def main():
 	parser.add_argument("--obj", action="store_true", help="Output rows as objects in JSON")
 
 	parser.add_argument("-p", "--print", action="store_true", help="Print output in table format")
+	parser.add_argument("-s", "--summary", action="store_true", help="Print output in summary format")
 	parser.add_argument("-f", "--fmt", default="simple", help="Set table formatting")
 
 	parser.add_argument("--longest", action="store_true", help="Select the table with most rows")

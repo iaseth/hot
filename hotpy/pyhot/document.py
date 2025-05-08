@@ -85,17 +85,21 @@ class HotDocument:
 		for table in self.tables:
 			table.post_processing()
 
+	def print_summary(self):
+		for table in self.tables:
+			print(table)
+
 	def print_tables(self):
 		for table in self.tables:
 			table.print_table()
 			print()
 
 	def produce_output(self):
-		if self.args.print:
+		if self.args.summary:
+			self.print_summary()
+		elif self.args.print:
 			self.print_tables()
-			return
-
-		if self.args.output:
+		elif self.args.output:
 			with open(self.args.output, "w") as f:
 				f.write(self.json_text)
 			print(f"Saved: '{self.args.output}' ({len(self.tables)} tables)")
