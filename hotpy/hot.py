@@ -23,7 +23,6 @@ def get_hot_tables_from_html(html: str, args):
 		try:
 			table = create_table_from_table_tag(table_tag, args)
 			if table.is_acceptable(args):
-				table.post_processing(args)
 				tables.append(table)
 		except Exception as e:
 			print(e)
@@ -102,6 +101,9 @@ def main():
 			combined_table = sum(matching_tables[1:], matching_tables[0])
 			combined_tables.append(combined_table)
 		tables = combined_tables
+
+	for table in tables:
+		table.post_processing(args)
 
 	if args.print:
 		for table in tables:
