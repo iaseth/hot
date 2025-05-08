@@ -26,7 +26,7 @@ class HotDocument:
 					html = f.read()
 				self.add_hot_tables_from_html(html)
 			elif "." in input_path:
-				html = get_page_html(input_path, fetch=self.args.fetch)
+				html = get_page_html(input_path, fetch=self.args.fetch, cache=self.args.cache)
 				self.add_hot_tables_from_html(html)
 			else:
 				print(f"File not found: '{input_path}'")

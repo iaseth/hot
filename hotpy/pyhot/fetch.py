@@ -30,7 +30,7 @@ def get_cache_path(page_url: str):
 	cache_path = f"cache/{md5_hash}.html"
 	return cache_path
 
-def get_page_html(page_url: str, fetch=False):
+def get_page_html(page_url: str, fetch=False, cache=False):
 	page_url = to_full_url(page_url)
 	cache_path = get_cache_path(page_url)
 	if not fetch and os.path.isfile(cache_path):
@@ -39,11 +39,13 @@ def get_page_html(page_url: str, fetch=False):
 		return html
 
 	response = session.get(page_url)
-	with open(cache_path, "w") as f:
-		f.write(response.text)
-	print(f"Saved cache: {cache_path}")
+	html = response.text
+	if cache:
+		with open(cache_path, "w") as f:
+			f.write(html)
+		print(f"Saved cache: {cache_path}")
 
-	return get_page_html(page_url)
+	return html
 
 def get_soup(page_url: str):
 	html = get_page_html(page_url)
