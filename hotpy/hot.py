@@ -4,45 +4,12 @@ import argparse
 import json
 import os
 
-import requests
 from bs4 import BeautifulSoup
 from tabulate import tabulate
 
 from pyhot.fetch import get_page_html
+from pyhot.utils import is_int, is_float, filter_array
 
-
-
-def is_int(s):
-	try:
-		int(s)
-		return True
-	except ValueError:
-		return False
-
-def is_float(s):
-	try:
-		float(s)
-		return True
-	except ValueError:
-		return False
-
-
-def filter_array(arr, s):
-	if s is None:
-		return arr
-	elif is_int(s):
-		index = int(s)
-		return arr[:index]
-
-	try:
-		# Parse slice string
-		parts = s.split(':')
-		if len(parts) > 3:
-			raise ValueError("Invalid slice format")
-		slice_args = [int(p) if p else None for p in parts]
-		return arr[slice(*slice_args)]
-	except Exception as e:
-		raise ValueError(f"Invalid filter string: {s}") from e
 
 
 def get_row_cols(tr, cols_filter):
@@ -123,6 +90,8 @@ def main():
 	parser.add_argument("-i", "--input", default=None, help="Optional input file")
 	parser.add_argument("-o", "--output", default=None, help="Optional output file")
 
+	parser.add_argument("--fetch", action="store_true", help="Fetch the page again, don't used cache")
+
 	parser.add_argument("-m", "--minified", action="store_true", help="Output JSON in minified format")
 	parser.add_argument("-p", "--print", action="store_true", help="Print output in table format")
 	parser.add_argument("-f", "--fmt", default="simple", help="Set table formatting")
@@ -138,7 +107,7 @@ def main():
 	args = parser.parse_args()
 
 	if args.url:
-		html = get_page_html(args.url)
+		html = get_page_html(args.url, fetch=args.fetch)
 	elif args.input:
 		if os.path.isfile(args.input):
 			with open(args.input) as f:

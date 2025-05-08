@@ -25,9 +25,9 @@ def get_cache_path(page_url: str):
 	cache_path = f"cache/{md5_hash}.html"
 	return cache_path
 
-def get_page_html(page_url: str):
+def get_page_html(page_url: str, fetch=False):
 	cache_path = get_cache_path(page_url)
-	if os.path.isfile(cache_path):
+	if not fetch and os.path.isfile(cache_path):
 		with open(cache_path) as f:
 			html = f.read()
 		return html
