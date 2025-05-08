@@ -17,11 +17,11 @@ def main():
 
 	parser.add_argument("-o", "--output", default=None, help="Optional output file")
 	parser.add_argument("--csv", default=False, action="store_true", help="Output as CSV")
-	parser.add_argument("--json", default=False, action="store_true", help="Output as JSON")
 	parser.add_argument("--html", default=False, action="store_true", help="Output as HTML")
 	parser.add_argument("--html5", default=False, action="store_true", help="Output as HTML5")
-	parser.add_argument("--xml", default=False, action="store_true", help="Output as XML")
+	parser.add_argument("--json", default=False, action="store_true", help="Output as JSON")
 	parser.add_argument("--markdown", default=False, action="store_true", help="Output as Markdown")
+	parser.add_argument("--xml", default=False, action="store_true", help="Output as XML")
 
 	parser.add_argument("-m", "--minified", action="store_true", help="Output JSON in minified format")
 	parser.add_argument("--s2", action="store_true", help="Indent JSON with 2 spaces")

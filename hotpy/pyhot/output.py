@@ -10,10 +10,10 @@ env = Environment(
 )
 env.trim_blocks = True
 env.lstrip_blocks = True
-table_template = env.get_template("table.html")
 
 
 def document_to_html5(document):
+	table_template = env.get_template("table.html")
 	html = table_template.render(document=document)
 	return html
 
