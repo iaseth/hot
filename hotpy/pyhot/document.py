@@ -96,14 +96,15 @@ class HotDocument:
 	def produce_output(self):
 		if self.args.summary:
 			self.print_summary()
-		elif self.args.print:
-			self.print_tables()
-		elif self.args.output:
-			with open(self.args.output, "w") as f:
-				f.write(self.json_text)
-			print(f"Saved: '{self.args.output}' ({len(self.tables)} tables)")
+		elif self.args.json:
+			if self.args.output:
+				with open(self.args.output, "w") as f:
+					f.write(self.json_text)
+				print(f"Saved: '{self.args.output}' ({len(self.tables)} tables)")
+			else:
+				print(self.json_text)
 		else:
-			print(self.json_text)
+			self.print_tables()
 
 	@property
 	def empty(self):
