@@ -71,13 +71,14 @@ class HotTable:
 	def post_processing(self):
 		args = self.args
 		if args.template:
-			for template in args.template:
-				if "=" in template:
-					parts = template.split("=")
-					self.headers = [*self.headers, parts[0] or "@"]
-					self.rows = [[*row, evaluate_template(parts[1], row)] for row in self.rows]
+			for arg in args.template:
+				parts = arg.split("=")
+				if len(parts) == 2:
+					header, template = parts
 				else:
-					print(f"Invalid template arg: '{template}'")
+					header, template = ("@", arg)
+				self.headers = [*self.headers, header]
+				self.rows = [[*row, evaluate_template(template, row)] for row in self.rows]
 
 		if args.ascending:
 			self.rows = sorted(self.rows, key=lambda x:x[args.ascending])

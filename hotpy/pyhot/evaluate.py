@@ -2,17 +2,19 @@ import re
 
 
 
-def replace_match(match, arr):
-	index = int(match.group(1))
-	if 0 <= index < len(arr):
-		return str(arr[index])
-	return "0"
+alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+def transform(template, arr):
+	for ch, val in zip(alphabet, arr):
+		if ch in template:
+			template = template.replace(ch, str(val))
+	return template
 
 def evaluate_template(template: str, arr: list):
 	# Replace all $n occurrences with corresponding values
-	replaced = re.sub(r'\@(\d+)', lambda x:replace_match(x, arr), template)
+	transformed = transform(template, arr)
 	try:
-		return eval(replaced)
+		return eval(transformed)
 	except Exception as e:
-		print(f"Error evaluating expression '{replaced}': {e}")
+		print(f"Error evaluating expression '{transformed}': {e}")
 
