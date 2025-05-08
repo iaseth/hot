@@ -13,7 +13,8 @@ def get_row_cols(tr, cols_filter):
 	return data
 
 
-def create_table_from_table_tag(table_tag, args):
+def create_table_from_table_tag(document, table_tag):
+	args = document.args
 	thead = table_tag.find("thead")
 	tbody = table_tag.find("tbody")
 
@@ -41,7 +42,7 @@ def create_table_from_table_tag(table_tag, args):
 				for row in rows:
 					row[n] = float(row[n])
 
-	hot_table = HotTable()
+	hot_table = HotTable(document)
 	hot_table.headers = headers
 	hot_table.rows = rows
 	return hot_table

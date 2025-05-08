@@ -31,7 +31,12 @@ class HotTable:
 		table["data"] = self.rows
 		return table
 
-	def is_acceptable(self, args):
+	@property
+	def args(self):
+		return self.document.args
+
+	def is_acceptable(self):
+		args = self.args
 		if args.min and self.row_count < args.min:
 			return False
 		elif args.max and self.row_count > args.max:
@@ -42,7 +47,8 @@ class HotTable:
 			return False
 		return True
 
-	def post_processing(self, args):
+	def post_processing(self):
+		args = self.args
 		if args.ascending:
 			self.rows = sorted(self.rows, key=lambda x:x[args.ascending])
 		elif args.descending:
@@ -68,16 +74,16 @@ class HotTable:
 			self.headers = ["UUID", *self.headers]
 			self.rows = [[str(uuid.uuid4()), *row] for row in self.rows]
 
-	def print_table(self, args):
+	def print_table(self):
 		table_text = tabulate(
 			self.rows,
 			headers=self.headers,
-			tablefmt=args.fmt
+			tablefmt=self.args.fmt
 		)
 		print(table_text)
 
 	def __add__(self, other):
-		result = HotTable()
+		result = HotTable(self.document)
 		result.headers = self.headers
 		result.rows = [*self.rows, *other.rows]
 		return result

@@ -40,8 +40,8 @@ class HotDocument:
 
 		for table_tag in table_tags:
 			try:
-				table = create_table_from_table_tag(table_tag, self.args)
-				if table.is_acceptable(self.args):
+				table = create_table_from_table_tag(self, table_tag)
+				if table.is_acceptable():
 					self.tables.append(table)
 			except Exception as e:
 				print(e)
@@ -59,11 +59,11 @@ class HotDocument:
 			self.tables = combined_tables
 
 		for table in self.tables:
-			table.post_processing(self.args)
+			table.post_processing()
 
 	def print_tables(self):
 		for table in self.tables:
-			table.print_table(self.args)
+			table.print_table()
 
 	def produce_output(self):
 		if self.args.print:
