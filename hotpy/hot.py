@@ -51,6 +51,9 @@ def main():
 	parser.add_argument("-p", "--print", action="store_true", help="Print output in table format")
 	parser.add_argument("-f", "--fmt", default="simple", help="Set table formatting")
 
+	parser.add_argument("--longest", action="store_true", help="Select the table with most rows")
+	parser.add_argument("--widest", action="store_true", help="Select the table with most cols")
+
 	parser.add_argument("--r1", default=None, help="Filter rows before processing")
 	parser.add_argument("--c1", default=None, help="Filter columns before processing")
 	parser.add_argument("--t1", default=None, help="Filter tables before processing")
