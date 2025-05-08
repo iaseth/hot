@@ -19,6 +19,11 @@ DEFAULT_HEADERS = {
 def to_md5(message: str):
 	return hashlib.md5(message.encode('utf-8')).hexdigest()
 
+def to_full_url(url: str):
+	if not url.startswith("http"):
+		url = f"https://{url}"
+	return url
+
 
 def get_cache_path(page_url: str):
 	md5_hash = to_md5(page_url)
@@ -26,6 +31,7 @@ def get_cache_path(page_url: str):
 	return cache_path
 
 def get_page_html(page_url: str, fetch=False):
+	page_url = to_full_url(page_url)
 	cache_path = get_cache_path(page_url)
 	if not fetch and os.path.isfile(cache_path):
 		with open(cache_path) as f:
