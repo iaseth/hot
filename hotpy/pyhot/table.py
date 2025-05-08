@@ -32,6 +32,10 @@ class HotTable:
 			return False
 		elif args.max and self.row_count > args.max:
 			return False
+		elif args.minc and self.col_count < args.minc:
+			return False
+		elif args.maxc and self.col_count > args.maxc:
+			return False
 		return True
 
 	def post_processing(self, args):

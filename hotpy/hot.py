@@ -69,6 +69,8 @@ def main():
 
 	parser.add_argument("--min", type=int, default=None, help="Minimum table rows expected")
 	parser.add_argument("--max", type=int, default=None, help="Maximum table rows expected")
+	parser.add_argument("--minc", type=int, default=None, help="Minimum table cols expected")
+	parser.add_argument("--maxc", type=int, default=None, help="Maximum table cols expected")
 	args = parser.parse_args()
 
 	if args.url:
