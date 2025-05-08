@@ -22,6 +22,11 @@ def main():
 	parser.add_argument("--markdown", default=False, action="store_true", help="Output as Markdown")
 
 	parser.add_argument("-m", "--minified", action="store_true", help="Output JSON in minified format")
+	parser.add_argument("--s2", action="store_true", help="Indent JSON with 2 spaces")
+	parser.add_argument("--s4", action="store_true", help="Indent JSON with 4 spaces")
+	parser.add_argument("--flat", action="store_true", help="Output flat JSON if single table")
+	parser.add_argument("--naked", action="store_true", help="Output naked JSON if single table")
+
 	parser.add_argument("-p", "--print", action="store_true", help="Print output in table format")
 	parser.add_argument("-f", "--fmt", default="simple", help="Set table formatting")
 

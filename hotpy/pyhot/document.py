@@ -97,16 +97,36 @@ class HotDocument:
 		return len(self.tables) == 0
 
 	@property
+	def table_count(self):
+		return len(self.tables)
+
+	@property
 	def jo(self):
 		jo = {}
-		jo["tables"] = [table.jo for table in self.tables]
+		if self.args.flat and self.table_count == 1:
+			jo["table"] = self.tables[0].jo
+		elif self.args.naked and self.table_count == 1:
+			jo = self.tables[0].jo
+		else:
+			jo["tables"] = [table.jo for table in self.tables]
 		return jo
+
+	@property
+	def indent(self):
+		if self.args.minified:
+			return None
+		elif self.args.s2:
+			return 2
+		elif self.args.s4:
+			return 4
+		else:
+			return "\t"
 
 	@property
 	def json_text(self):
 		json_text = json.dumps(
 			self.jo, sort_keys = True, 
-			indent=None if self.args.minified else "\t"
+			indent=self.indent
 		)
 		return json_text
 
