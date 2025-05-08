@@ -2,6 +2,7 @@ import json
 import os
 
 from bs4 import BeautifulSoup
+import pyperclip
 
 from .fetch import get_page_html
 from .filter_list import filter_list
@@ -16,9 +17,9 @@ class HotDocument:
 		self.tables = []
 
 	def add_hot_tables_from_args(self, input_paths):
-		if not input_paths:
-			print(f"No URLs or Input file paths provided!")
-			return
+		if self.args.paste:
+			html = pyperclip.paste()
+			self.add_hot_tables_from_html(html)
 
 		for input_path in input_paths:
 			if os.path.isfile(input_path):
@@ -104,6 +105,9 @@ class HotDocument:
 			with open(self.args.output, "w") as f:
 				f.write(output_text)
 			print(f"Saved: '{self.args.output}' ({len(self.tables)} tables)")
+		elif self.args.copy:
+			pyperclip.copy(output_text)
+			print(f"Copied output to clipboard.")
 		else:
 			print(output_text)
 
