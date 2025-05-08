@@ -50,8 +50,10 @@ def get_table_data(table, args):
 				for row in rows:
 					row[n] = float(row[n])
 
-	if args.sort:
-		rows = sorted(rows, key=lambda x:x[args.sort])
+	if args.ascending:
+		rows = sorted(rows, key=lambda x:x[args.ascending])
+	elif args.descending:
+		rows = sorted(rows, key=lambda x:x[args.descending], reverse=True)
 
 	if args.reverse:
 		rows.reverse()
@@ -110,8 +112,9 @@ def main():
 	parser.add_argument("--c2", default=None, help="Filter columns after processing")
 	parser.add_argument("--t2", default=None, help="Filter tables after processing")
 
+	parser.add_argument("-a", "--ascending", type=int, default=None, help="Sort table rows by nth column (ascending order).")
+	parser.add_argument("-d", "--descending", type=int, default=None, help="Sort table rows by nth column (descending order).")
 	parser.add_argument("-r", "--reverse", action="store_true", help="Reverse table rows.")
-	parser.add_argument("-s", "--sort", type=int, default=None, help="Sort table rows by nth column.")
 
 	parser.add_argument("--min", type=int, default=None, help="Minimum table rows expected.")
 	parser.add_argument("--max", type=int, default=None, help="Maximum table rows expected.")
