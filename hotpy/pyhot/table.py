@@ -4,6 +4,7 @@ import uuid
 
 from tabulate import tabulate
 
+from .evaluate import evaluate_template
 from .filter_list import filter_list
 from .table_utils import camelize
 
@@ -69,6 +70,15 @@ class HotTable:
 
 	def post_processing(self):
 		args = self.args
+		if args.template:
+			for template in args.template:
+				if "=" in template:
+					parts = template.split("=")
+					self.headers = [*self.headers, parts[0] or "@"]
+					self.rows = [[*row, evaluate_template(parts[1], row)] for row in self.rows]
+				else:
+					print(f"Invalid template arg: '{template}'")
+
 		if args.ascending:
 			self.rows = sorted(self.rows, key=lambda x:x[args.ascending])
 		elif args.descending:
