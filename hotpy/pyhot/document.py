@@ -101,13 +101,18 @@ class HotDocument:
 			return
 
 		output_text = self.get_output_text()
+		if self.args.cut:
+			pyperclip.copy(output_text)
+			print(f"Put output into clipboard.")
+			return
+		elif self.args.copy:
+			pyperclip.copy(output_text)
+			print(f"Copied output to clipboard.")
+
 		if self.args.output:
 			with open(self.args.output, "w") as f:
 				f.write(output_text)
 			print(f"Saved: '{self.args.output}' ({len(self.tables)} tables)")
-		elif self.args.copy:
-			pyperclip.copy(output_text)
-			print(f"Copied output to clipboard.")
 		else:
 			print(output_text)
 

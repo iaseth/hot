@@ -11,8 +11,9 @@ def main():
 	parser.add_argument("--cache", action="store_true", help="Cache any fetch requests")
 	parser.add_argument("--fetch", action="store_true", help="Fetch the page again, don't use cache")
 
-	parser.add_argument("-v", "--paste", action="store_true", help="Take input from clipboard")
+	parser.add_argument("-x", "--cut", action="store_true", help="Put output into clipboard")
 	parser.add_argument("-c", "--copy", action="store_true", help="Copy output to clipboard")
+	parser.add_argument("-v", "--paste", action="store_true", help="Take input from clipboard")
 
 	parser.add_argument("-o", "--output", default=None, help="Optional output file")
 	parser.add_argument("--csv", default=False, action="store_true", help="Output as CSV")
