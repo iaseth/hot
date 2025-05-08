@@ -10,73 +10,14 @@ from tabulate import tabulate
 
 from pyhot.fetch import get_page_html
 from pyhot.filter_list import filter_list
-from pyhot.utils import is_int, is_float
+from pyhot.factory import create_table_from_table_tag
 
 
 
-def get_row_cols(tr, cols_filter):
-	cells = tr.find_all("th")
-	if not cells:
-		cells = tr.find_all("td")
-	data = [cell.text.strip() for cell in cells]
-	data = filter_list(data, cols_filter)
-	return data
-
-
-def get_table_data(table, args):
-	thead = table.find("thead")
-	tbody = table.find("tbody")
-
-	if thead and tbody:
-		headers = get_row_cols(thead.find('tr'), args.c1)
-		tr_tags = tbody.find_all("tr")
-	else:
-		tr_tags = table.find_all("tr")
-		headers = get_row_cols(tr_tags[0], args.c1)
-		tr_tags = tr_tags[1:]
-
-	tr_tags = filter_list(tr_tags, args.r1)
-	rows = [get_row_cols(tr, args.c1) for tr in tr_tags]
-
-	n_cols = len(rows[0])
-	rows_are_uniform = all(len(row) == n_cols for row in rows)
-	if rows_are_uniform:
-		for n in range(n_cols):
-			all_values_are_int = all(is_int(row[n]) for row in rows)
-			all_values_are_float = all(is_float(row[n]) for row in rows)
-			if all_values_are_int:
-				for row in rows:
-					row[n] = int(row[n])
-			elif all_values_are_float:
-				for row in rows:
-					row[n] = float(row[n])
-
-	if args.ascending:
-		rows = sorted(rows, key=lambda x:x[args.ascending])
-	elif args.descending:
-		rows = sorted(rows, key=lambda x:x[args.descending], reverse=True)
-
-	if args.reverse:
-		rows.reverse()
-
-	if args.r2:
-		rows = filter_list(rows, args.r2)
-
-	if args.c2:
-		headers = filter_list(headers, args.c2)
-		rows = [filter_list(row, args.c2) for row in rows]
-
-	if args.id:
-		headers = ["#", *headers]
-		rows = [[i+1, *row] for i, row in enumerate(rows)]
-	elif args.index:
-		headers = ["#", *headers]
-		rows = [[i, *row] for i, row in enumerate(rows)]
-	elif args.uuid:
-		headers = ["UUID", *headers]
-		rows = [[str(uuid.uuid4()), *row] for row in rows]
-
-	return headers, rows
+def get_table_data(table_tag, args):
+	hot_table = create_table_from_table_tag(table_tag, args)
+	hot_table.post_processing(args)
+	return hot_table.values()
 
 
 def get_tables_from_html(html: str, args):
