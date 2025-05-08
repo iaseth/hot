@@ -1,3 +1,4 @@
+import json
 import os
 
 from bs4 import BeautifulSoup
@@ -46,5 +47,32 @@ class HotDocument:
 				print(e)
 
 		self.tables = filter_list(self.tables, self.args.t2)
+
+	def post_processing(self):
+		if self.args.combine:
+			col_counts = set(t.col_count for t in self.tables)
+			combined_tables = []
+			for col_count in col_counts:
+				matching_tables = [t for t in self.tables if t.col_count == col_count]
+				combined_table = sum(matching_tables[1:], matching_tables[0])
+				combined_tables.append(combined_table)
+			self.tables = combined_tables
+
+		for table in self.tables:
+			table.post_processing(self.args)
+
+	@property
+	def jo(self):
+		jo = {}
+		jo["tables"] = [table.jo for table in self.tables]
+		return jo
+
+	@property
+	def json_text(self):
+		json_text = json.dumps(
+			self.jo, sort_keys = True, 
+			indent=None if self.args.minified else "\t"
+		)
+		return json_text
 
 

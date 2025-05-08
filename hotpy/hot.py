@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse
-import json
 
 from pyhot.document import HotDocument
 
@@ -51,44 +50,26 @@ def main():
 	parser.add_argument("--maxc", type=int, default=None, help="Maximum table cols expected")
 	args = parser.parse_args()
 
-	hot = HotDocument(args)
-	hot.add_hot_tables_from_args()
-	tables = hot.tables
+	hotdoc = HotDocument(args)
+	hotdoc.add_hot_tables_from_args()
 
-	if len(tables) == 0:
+	if len(hotdoc.tables) == 0:
 		print("No tables found!")
 		return
 
-	if args.combine:
-		col_counts = set(t.col_count for t in tables)
-		combined_tables = []
-		for col_count in col_counts:
-			matching_tables = [t for t in tables if t.col_count == col_count]
-			combined_table = sum(matching_tables[1:], matching_tables[0])
-			combined_tables.append(combined_table)
-		tables = combined_tables
-
-	for table in tables:
-		table.post_processing(args)
+	hotdoc.post_processing()
 
 	if args.print:
-		for table in tables:
+		for table in hotdoc.tables:
 			table.print_table(args)
 		return
 
-	jo = {}
-	jo["tables"] = [table.jo for table in tables]
-	json_text = json.dumps(
-		jo, sort_keys = True, 
-		indent=None if args.minified else "\t"
-	)
-
 	if args.output:
 		with open(args.output, "w") as f:
-			f.write(json_text)
-		print(f"Saved: '{args.output}' ({len(tables)} tables)")
+			f.write(hotdoc.json_text)
+		print(f"Saved: '{args.output}' ({len(hotdoc.tables)} tables)")
 	else:
-		print(json_text)
+		print(hotdoc.json_text)
 
 
 if __name__ == '__main__':
