@@ -26,14 +26,15 @@ def get_table_data(table, args):
 	tbody = table.find("tbody")
 
 	if thead and tbody:
-		headers = get_row_cols(thead.find('tr'), args.cols)
+		headers = get_row_cols(thead.find('tr'), args.c1)
 		tr_tags = tbody.find_all("tr")
 	else:
 		tr_tags = table.find_all("tr")
-		headers = get_row_cols(tr_tags[0], args.cols)
+		headers = get_row_cols(tr_tags[0], args.c1)
 		tr_tags = tr_tags[1:]
 
-	rows = [get_row_cols(tr, args.cols) for tr in tr_tags]
+	tr_tags = filter_array(tr_tags, args.r1)
+	rows = [get_row_cols(tr, args.c1) for tr in tr_tags]
 
 	n_cols = len(rows[0])
 	rows_are_uniform = all(len(row) == n_cols for row in rows)
@@ -52,10 +53,14 @@ def get_table_data(table, args):
 		rows = sorted(rows, key=lambda x:x[args.sort])
 
 	if args.reverse:
-		rows = reversed(rows)
+		rows.reverse()
 
-	if args.rows:
-		rows = filter_array(rows, args.rows)
+	if args.r2:
+		rows = filter_array(rows, args.r2)
+
+	if args.c2:
+		headers = filter_array(headers, args.c2)
+		rows = [filter_array(row, args.c2) for row in rows]
 
 	return headers, rows
 
@@ -63,8 +68,7 @@ def get_table_data(table, args):
 def get_tables_from_html(html: str, args):
 	soup = BeautifulSoup(html, "lxml")
 	table_tags = soup.find_all("table")
-	if args.tables:
-		table_tags = filter_array(table_tags, args.tables)
+	table_tags = filter_array(table_tags, args.t1)
 
 	tables = []
 	for table_tag in table_tags:
@@ -81,6 +85,8 @@ def get_tables_from_html(html: str, args):
 				tables.append(table)
 		except Exception as e:
 			print(e)
+
+	tables = filter_array(tables, args.t2)
 	return tables
 
 
@@ -96,12 +102,16 @@ def main():
 	parser.add_argument("-p", "--print", action="store_true", help="Print output in table format")
 	parser.add_argument("-f", "--fmt", default="simple", help="Set table formatting")
 
-	parser.add_argument("-r", "--rows", default=None, help="Filter rows")
-	parser.add_argument("-c", "--cols", default=None, help="Filter columns")
-	parser.add_argument("-t", "--tables", default=None, help="Filter tables")
+	parser.add_argument("--r1", default=None, help="Filter rows before processing")
+	parser.add_argument("--c1", default=None, help="Filter columns before processing")
+	parser.add_argument("--t1", default=None, help="Filter tables before processing")
+	parser.add_argument("--r2", default=None, help="Filter rows after processing")
+	parser.add_argument("--c2", default=None, help="Filter columns after processing")
+	parser.add_argument("--t2", default=None, help="Filter tables after processing")
 
+	parser.add_argument("-r", "--reverse", action="store_true", help="Reverse table rows.")
 	parser.add_argument("-s", "--sort", type=int, default=None, help="Sort table rows by nth column.")
-	parser.add_argument("--reverse", action="store_true", help="Reverse table rows.")
+
 	parser.add_argument("--min", type=int, default=None, help="Minimum table rows expected.")
 	parser.add_argument("--max", type=int, default=None, help="Maximum table rows expected.")
 	args = parser.parse_args()
