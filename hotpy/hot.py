@@ -8,7 +8,8 @@ from bs4 import BeautifulSoup
 from tabulate import tabulate
 
 from pyhot.fetch import get_page_html
-from pyhot.utils import is_int, is_float, filter_array
+from pyhot.filter_list import filter_list
+from pyhot.utils import is_int, is_float
 
 
 
@@ -17,7 +18,7 @@ def get_row_cols(tr, cols_filter):
 	if not cells:
 		cells = tr.find_all("td")
 	data = [cell.text.strip() for cell in cells]
-	data = filter_array(data, cols_filter)
+	data = filter_list(data, cols_filter)
 	return data
 
 
@@ -33,7 +34,7 @@ def get_table_data(table, args):
 		headers = get_row_cols(tr_tags[0], args.c1)
 		tr_tags = tr_tags[1:]
 
-	tr_tags = filter_array(tr_tags, args.r1)
+	tr_tags = filter_list(tr_tags, args.r1)
 	rows = [get_row_cols(tr, args.c1) for tr in tr_tags]
 
 	n_cols = len(rows[0])
@@ -56,11 +57,11 @@ def get_table_data(table, args):
 		rows.reverse()
 
 	if args.r2:
-		rows = filter_array(rows, args.r2)
+		rows = filter_list(rows, args.r2)
 
 	if args.c2:
-		headers = filter_array(headers, args.c2)
-		rows = [filter_array(row, args.c2) for row in rows]
+		headers = filter_list(headers, args.c2)
+		rows = [filter_list(row, args.c2) for row in rows]
 
 	return headers, rows
 
@@ -68,7 +69,7 @@ def get_table_data(table, args):
 def get_tables_from_html(html: str, args):
 	soup = BeautifulSoup(html, "lxml")
 	table_tags = soup.find_all("table")
-	table_tags = filter_array(table_tags, args.t1)
+	table_tags = filter_list(table_tags, args.t1)
 
 	tables = []
 	for table_tag in table_tags:
@@ -86,7 +87,7 @@ def get_tables_from_html(html: str, args):
 		except Exception as e:
 			print(e)
 
-	tables = filter_array(tables, args.t2)
+	tables = filter_list(tables, args.t2)
 	return tables
 
 
