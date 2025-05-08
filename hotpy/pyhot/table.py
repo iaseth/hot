@@ -100,6 +100,12 @@ class HotTable:
 		)
 		print(table_text)
 
+	def join(self, other):
+		result = HotTable(self.document)
+		result.headers = [*self.headers, *other.headers]
+		result.rows = [[*r1, *r2] for r1, r2 in zip(self.rows, other.rows)]
+		return result
+
 	def __add__(self, other):
 		result = HotTable(self.document)
 		result.headers = self.headers

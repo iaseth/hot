@@ -71,6 +71,16 @@ class HotDocument:
 				combined_table = sum(matching_tables[1:], matching_tables[0])
 				combined_tables.append(combined_table)
 			self.tables = combined_tables
+		elif self.args.join:
+			row_counts = set(t.row_count for t in self.tables)
+			joined_tables = []
+			for row_count in row_counts:
+				matching_tables = [t for t in self.tables if t.row_count == row_count]
+				joined_table = matching_tables[0]
+				for table in matching_tables[1:]:
+					joined_table = joined_table.join(table)
+				joined_tables.append(joined_table)
+			self.tables = joined_tables
 
 		for table in self.tables:
 			table.post_processing()

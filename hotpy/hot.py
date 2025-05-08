@@ -34,6 +34,7 @@ def main():
 	parser.add_argument("--longest", action="store_true", help="Select the table with most rows")
 	parser.add_argument("--widest", action="store_true", help="Select the table with most cols")
 	parser.add_argument("-c", "--combine", action="store_true", help="Combine tables with same number of cols")
+	parser.add_argument("-j", "--join", action="store_true", help="Join tables with same number of rows")
 
 	parser.add_argument("--r1", default=None, help="Filter rows before processing")
 	parser.add_argument("--c1", default=None, help="Filter columns before processing")
