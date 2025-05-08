@@ -8,6 +8,11 @@ def filter_list(arr, s):
 	elif is_int(s):
 		index = int(s)
 		return arr[:index]
+	elif "," in s:
+		parts = [p for p in s.split(",") if p and is_int(p)]
+		indices = [int(p) for p in parts]
+		arr = [arr[i] for i in indices]
+		return arr
 
 	try:
 		# Parse slice string
