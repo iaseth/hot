@@ -46,11 +46,12 @@ class HotTable:
 	@property
 	def jo(self):
 		table = {}
-		table["headers"] = self.headers
 		if self.args.obj and self.has_unique_column_names():
 			camel_headers = self.camel_headers
+			table["headers"] = self.make_row_object(self.headers, headers=camel_headers)
 			table["data"] = [self.make_row_object(row, headers=camel_headers) for row in self.rows]
 		else:
+			table["headers"] = self.headers
 			table["data"] = self.rows
 		return table
 
