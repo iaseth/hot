@@ -74,3 +74,12 @@ class HotTable:
 		)
 		print(table_text)
 
+	def __add__(self, other):
+		result = HotTable()
+		result.headers = self.headers
+		result.rows = [*self.rows, *other.rows]
+		return result
+
+	def __repr__(self):
+		return f"HotTable ({self.col_count} cols, {self.row_count} rows)"
+

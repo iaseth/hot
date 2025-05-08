@@ -53,6 +53,7 @@ def main():
 
 	parser.add_argument("--longest", action="store_true", help="Select the table with most rows")
 	parser.add_argument("--widest", action="store_true", help="Select the table with most cols")
+	parser.add_argument("--combine", action="store_true", help="Combine tables with same number of cols")
 
 	parser.add_argument("--r1", default=None, help="Filter rows before processing")
 	parser.add_argument("--c1", default=None, help="Filter columns before processing")
@@ -92,6 +93,15 @@ def main():
 	if len(tables) == 0:
 		print("No tables found!")
 		return
+
+	if args.combine:
+		col_counts = set(t.col_count for t in tables)
+		combined_tables = []
+		for col_count in col_counts:
+			matching_tables = [t for t in tables if t.col_count == col_count]
+			combined_table = sum(matching_tables[1:], matching_tables[0])
+			combined_tables.append(combined_table)
+		tables = combined_tables
 
 	if args.print:
 		for table in tables:
