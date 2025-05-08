@@ -1,3 +1,5 @@
+from tabulate import tabulate
+
 from .filter_list import filter_list
 
 
@@ -63,4 +65,12 @@ class HotTable:
 		elif args.uuid:
 			headers = ["UUID", *headers]
 			self.rows = [[str(uuid.uuid4()), *row] for row in self.rows]
+
+	def print_table(self, args):
+		table_text = tabulate(
+			self.rows,
+			headers=self.headers,
+			tablefmt=args.fmt
+		)
+		print(table_text)
 

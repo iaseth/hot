@@ -6,7 +6,6 @@ import os
 import uuid
 
 from bs4 import BeautifulSoup
-from tabulate import tabulate
 
 from pyhot.fetch import get_page_html
 from pyhot.filter_list import filter_list
@@ -14,7 +13,7 @@ from pyhot.factory import create_table_from_table_tag
 
 
 
-def get_tables_from_html(html: str, args):
+def get_hot_tables_from_html(html: str, args):
 	soup = BeautifulSoup(html, "lxml")
 	table_tags = soup.find_all("table")
 	table_tags = filter_list(table_tags, args.t1)
@@ -22,10 +21,10 @@ def get_tables_from_html(html: str, args):
 	tables = []
 	for table_tag in table_tags:
 		try:
-			hot_table = create_table_from_table_tag(table_tag, args)
-			if hot_table.is_acceptable(args):
-				hot_table.post_processing(args)
-				tables.append(hot_table.jo)
+			table = create_table_from_table_tag(table_tag, args)
+			if table.is_acceptable(args):
+				table.post_processing(args)
+				tables.append(table)
 		except Exception as e:
 			print(e)
 
@@ -86,23 +85,18 @@ def main():
 		print(f"No URL of Input file provided!")
 		return
 
-	tables = get_tables_from_html(html, args)
+	tables = get_hot_tables_from_html(html, args)
 	if len(tables) == 0:
 		print("No tables found!")
 		return
 
 	if args.print:
 		for table in tables:
-			table_text = tabulate(
-				table["data"],
-				headers=table["headers"],
-				tablefmt=args.fmt
-			)
-			print(table_text)
+			table.print_table(args)
 		return
 
 	jo = {}
-	jo["tables"] = tables
+	jo["tables"] = [table.jo for table in tables]
 	json_text = json.dumps(
 		jo, sort_keys = True, 
 		indent=None if args.minified else "\t"
