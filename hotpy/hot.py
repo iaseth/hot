@@ -53,23 +53,12 @@ def main():
 	hotdoc = HotDocument(args)
 	hotdoc.add_hot_tables_from_args()
 
-	if len(hotdoc.tables) == 0:
+	if hotdoc.empty:
 		print("No tables found!")
 		return
 
 	hotdoc.post_processing()
-
-	if args.print:
-		for table in hotdoc.tables:
-			table.print_table(args)
-		return
-
-	if args.output:
-		with open(args.output, "w") as f:
-			f.write(hotdoc.json_text)
-		print(f"Saved: '{args.output}' ({len(hotdoc.tables)} tables)")
-	else:
-		print(hotdoc.json_text)
+	hotdoc.produce_output()
 
 
 if __name__ == '__main__':
