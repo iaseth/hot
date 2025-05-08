@@ -15,22 +15,21 @@ class HotDocument:
 		self.args = args
 		self.tables = []
 
-	def add_hot_tables_from_args(self):
-		if not self.args.url and not self.args.input:
-			print(f"No URL of Input file provided!")
+	def add_hot_tables_from_args(self, input_paths):
+		if not input_paths:
+			print(f"No URLs or Input file paths provided!")
 			return
 
-		if self.args.url:
-			html = get_page_html(self.args.url, fetch=self.args.fetch)
-			self.add_hot_tables_from_html(html)
-
-		if self.args.input:
-			if os.path.isfile(self.args.input):
-				with open(self.args.input) as f:
+		for input_path in input_paths:
+			if os.path.isfile(input_path):
+				with open(input_path) as f:
 					html = f.read()
 				self.add_hot_tables_from_html(html)
+			elif "." in input_path:
+				html = get_page_html(input_path, fetch=self.args.fetch)
+				self.add_hot_tables_from_html(html)
 			else:
-				print(f"File not found: '{self.args.input}'")
+				print(f"File not found: '{input_path}'")
 				return
 
 	def add_hot_tables_from_html(self, html: str):

@@ -8,12 +8,9 @@ from pyhot.document import HotDocument
 
 def main():
 	parser = argparse.ArgumentParser(description="Convert webpage tables to JSON table data.")
-	parser.add_argument("url", nargs='?', help="URL of the webpage to extract tables from")
-	parser.add_argument("-i", "--input", default=None, help="Optional input file")
-	parser.add_argument("-o", "--output", default=None, help="Optional output file")
-
 	parser.add_argument("--fetch", action="store_true", help="Fetch the page again, don't used cache")
 
+	parser.add_argument("-o", "--output", default=None, help="Optional output file")
 	parser.add_argument("--csv", default=False, action="store_true", help="Output as CSV")
 	parser.add_argument("--json", default=False, action="store_true", help="Output as JSON")
 	parser.add_argument("--html", default=False, action="store_true", help="Output as HTML")
@@ -59,10 +56,9 @@ def main():
 	parser.add_argument("--maxc", type=int, default=None, help="Maximum table cols expected")
 	parser.add_argument("--exactc", type=int, default=None, help="Exact number of table cols expected")
 
-	args = parser.parse_args()
-
+	args, input_paths = parser.parse_known_args()
 	hotdoc = HotDocument(args)
-	hotdoc.add_hot_tables_from_args()
+	hotdoc.add_hot_tables_from_args(input_paths)
 
 	if hotdoc.empty:
 		print("No tables found!")
