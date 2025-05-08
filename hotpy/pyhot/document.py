@@ -48,7 +48,21 @@ class HotDocument:
 
 		self.tables = filter_list(self.tables, self.args.t2)
 
+	def longest_tables(self):
+		n = max(t.row_count for t in self.tables)
+		return [t for t in self.tables if t.row_count == n]
+
+	def widest_tables(self):
+		n = max(t.col_count for t in self.tables)
+		return [t for t in self.tables if t.col_count == n]
+
 	def post_processing(self):
+		if self.args.longest:
+			self.tables = self.longest_tables()
+
+		if self.args.widest:
+			self.tables = self.widest_tables()
+
 		if self.args.combine:
 			col_counts = set(t.col_count for t in self.tables)
 			combined_tables = []
@@ -64,6 +78,7 @@ class HotDocument:
 	def print_tables(self):
 		for table in self.tables:
 			table.print_table()
+			print()
 
 	def produce_output(self):
 		if self.args.print:
