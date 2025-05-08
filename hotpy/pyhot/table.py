@@ -35,6 +35,15 @@ class HotTable:
 		return row_object
 
 	@property
+	def args(self):
+		return self.document.args
+
+	def has_unique_column_names(self):
+		if not all(self.headers):
+			return False
+		return len(set(self.headers)) == len(self.headers)
+
+	@property
 	def jo(self):
 		table = {}
 		table["headers"] = self.headers
@@ -44,13 +53,6 @@ class HotTable:
 		else:
 			table["data"] = self.rows
 		return table
-
-	@property
-	def args(self):
-		return self.document.args
-
-	def has_unique_column_names(self):
-		return len(set(self.headers)) == len(self.headers)
 
 	def is_acceptable(self):
 		args = self.args
