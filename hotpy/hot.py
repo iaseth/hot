@@ -3,7 +3,6 @@
 import argparse
 import json
 import os
-import uuid
 
 from bs4 import BeautifulSoup
 
