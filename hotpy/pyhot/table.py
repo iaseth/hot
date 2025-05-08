@@ -3,6 +3,7 @@ import uuid
 from tabulate import tabulate
 
 from .filter_list import filter_list
+from .table_utils import camelize
 
 
 
@@ -25,15 +26,31 @@ class HotTable:
 		return len(self.headers)
 
 	@property
+	def camel_headers(self):
+		return [camelize(h) for h in self.headers]
+
+	def make_row_object(self, row, headers=None):
+		headers = headers or self.headers
+		row_object = { h: v for h, v in zip(headers, row) }
+		return row_object
+
+	@property
 	def jo(self):
 		table = {}
 		table["headers"] = self.headers
-		table["data"] = self.rows
+		if self.args.obj and self.has_unique_column_names():
+			camel_headers = self.camel_headers
+			table["data"] = [self.make_row_object(row, headers=camel_headers) for row in self.rows]
+		else:
+			table["data"] = self.rows
 		return table
 
 	@property
 	def args(self):
 		return self.document.args
+
+	def has_unique_column_names(self):
+		return len(set(self.headers)) == len(self.headers)
 
 	def is_acceptable(self):
 		args = self.args
