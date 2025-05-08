@@ -12,7 +12,7 @@ exe:
 	rm hot.zip
 
 deploy: build
-	cp hot ~/.local/bin/
+	mv hot ~/.local/bin/
 
 clean:
 	rm -f hot.zip hot
