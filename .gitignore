@@ -4,6 +4,8 @@
 secret/
 cache/
 
+hot
+
 temp_epub/
 *.epub
 
