@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import uuid
 
 from bs4 import BeautifulSoup
 from tabulate import tabulate
@@ -65,6 +66,16 @@ def get_table_data(table, args):
 		headers = filter_list(headers, args.c2)
 		rows = [filter_list(row, args.c2) for row in rows]
 
+	if args.id:
+		headers = ["#", *headers]
+		rows = [[i+1, *row] for i, row in enumerate(rows)]
+	elif args.index:
+		headers = ["#", *headers]
+		rows = [[i, *row] for i, row in enumerate(rows)]
+	elif args.uuid:
+		headers = ["UUID", *headers]
+		rows = [[str(uuid.uuid4()), *row] for row in rows]
+
 	return headers, rows
 
 
@@ -122,6 +133,10 @@ def main():
 	parser.add_argument("-a", "--ascending", type=int, default=None, help="Sort table rows by nth column (ascending order)")
 	parser.add_argument("-d", "--descending", type=int, default=None, help="Sort table rows by nth column (descending order)")
 	parser.add_argument("-r", "--reverse", action="store_true", help="Reverse table rows")
+
+	parser.add_argument("--id", default=False, action="store_true", help="Add id to table rows")
+	parser.add_argument("--index", default=False, action="store_true", help="Add index to table rows")
+	parser.add_argument("--uuid", default=False, action="store_true", help="Add uuid to table rows")
 
 	parser.add_argument("--min", type=int, default=None, help="Minimum table rows expected")
 	parser.add_argument("--max", type=int, default=None, help="Maximum table rows expected")
