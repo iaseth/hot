@@ -14,12 +14,6 @@ from pyhot.factory import create_table_from_table_tag
 
 
 
-def get_table_data(table_tag, args):
-	hot_table = create_table_from_table_tag(table_tag, args)
-	hot_table.post_processing(args)
-	return hot_table.values()
-
-
 def get_tables_from_html(html: str, args):
 	soup = BeautifulSoup(html, "lxml")
 	table_tags = soup.find_all("table")
@@ -28,16 +22,10 @@ def get_tables_from_html(html: str, args):
 	tables = []
 	for table_tag in table_tags:
 		try:
-			headers, rows = get_table_data(table_tag, args)
-			if args.min and len(rows) < args.min:
-				continue
-			elif args.max and len(rows) > args.max:
-				continue
-			else:
-				table = {}
-				table["headers"] = headers
-				table["data"] = rows
-				tables.append(table)
+			hot_table = create_table_from_table_tag(table_tag, args)
+			if hot_table.is_acceptable(args):
+				hot_table.post_processing(args)
+				tables.append(hot_table.jo)
 		except Exception as e:
 			print(e)
 

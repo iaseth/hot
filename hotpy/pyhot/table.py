@@ -8,8 +8,31 @@ class HotTable:
 		self.headers = []
 		self.rows = []
 
+	@property
 	def values(self):
 		return (self.headers, self.rows)
+
+	@property
+	def row_count(self):
+		return len(self.rows)
+
+	@property
+	def col_count(self):
+		return len(self.headers)
+
+	@property
+	def jo(self):
+		table = {}
+		table["headers"] = self.headers
+		table["data"] = self.rows
+		return table
+
+	def is_acceptable(self, args):
+		if args.min and self.row_count < args.min:
+			return False
+		elif args.max and self.row_count > args.max:
+			return False
+		return True
 
 	def post_processing(self, args):
 		if args.ascending:
