@@ -89,6 +89,22 @@ class HotTable:
 			for drop_col in drop_cols:
 				self.drop_column_by_name(drop_col)
 
+		if args.max:
+			for max_value in args.max:
+				try:
+					col_index, value = [int(x) for x in max_value.split("=")]
+					self.rows = [row for row in self.rows if row[col_index] < value]
+				except:
+					print(f"Invalid max arg: '{max_value}'")
+
+		if args.min:
+			for min_value in args.min:
+				try:
+					col_index, value = [int(x) for x in min_value.split("=")]
+					self.rows = [row for row in self.rows if row[col_index] > value]
+				except:
+					print(f"Invalid min arg: '{min_value}'")
+
 		if args.ascending:
 			self.rows = sorted(self.rows, key=lambda x:x[args.ascending])
 		elif args.descending:

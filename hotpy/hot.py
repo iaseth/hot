@@ -50,8 +50,8 @@ def main():
 	parser.add_argument("-f", "--filter", nargs='+', help="Filter rows by condition")
 	parser.add_argument("--drop", nargs='+', help="Drop certain columns")
 	parser.add_argument("--keep", nargs='+', help="Keep certain columns")
-	parser.add_argument("--min", type=int, nargs='+', help="Filter rows by minimum value for column")
-	parser.add_argument("--max", type=int, nargs='+', help="Filter rows by maximum value for column")
+	parser.add_argument("--min", nargs='+', help="Filter rows by minimum value for column")
+	parser.add_argument("--max", nargs='+', help="Filter rows by maximum value for column")
 
 	parser.add_argument("-a", "--ascending", type=int, default=None, help="Sort table rows by nth column (ascending order)")
 	parser.add_argument("-d", "--descending", type=int, default=None, help="Sort table rows by nth column (descending order)")
