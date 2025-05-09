@@ -9,10 +9,12 @@ def to_bool(val):
 
 def to_int(val):
 	if val == "-": return 0
+	if val[-1] in ["%", "*"]:
+		val = val[:-1]
 	if "." in val:
 		val = val.split(".")[0]
-	if val[-1] == "*":
-		val = val[:-1]
+	if "," in val:
+		val = "".join(val.split(","))
 
 	try:
 		return int(val)
@@ -22,6 +24,8 @@ def to_int(val):
 
 def to_float(val):
 	if val == "-": return 0.0
+	if val[-1] in ["%"]:
+		val = val[:-1]
 
 	try:
 		return float(val)
