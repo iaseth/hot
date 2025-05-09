@@ -92,15 +92,8 @@ class HotTable:
 		args = self.args
 		self.perform_conversions()
 		self.add_template_columns_and_indexes()
-		self.perform_filtering()
 		self.perform_ordering()
-
-		if args.r2:
-			self.rows = filter_list(self.rows, args.r2)
-
-		if args.c2:
-			self.headers = filter_list(self.headers, args.c2)
-			self.rows = [filter_list(row, args.c2) for row in self.rows]
+		self.perform_filtering()
 
 	def perform_conversions(self):
 		args = self.args
@@ -145,6 +138,17 @@ class HotTable:
 			self.headers = ["UUID", *self.headers]
 			self.rows = [[str(uuid.uuid4()), *row] for row in self.rows]
 
+	def perform_ordering(self):
+		if self.args.ascending:
+			col_index = self.get_column_index(self.args.ascending)
+			self.rows = sorted(self.rows, key=lambda x:x[col_index])
+		elif self.args.descending:
+			col_index = self.get_column_index(self.args.descending)
+			self.rows = sorted(self.rows, key=lambda x:x[col_index], reverse=True)
+
+		if self.args.reverse:
+			self.rows.reverse()
+
 	def perform_filtering(self):
 		args = self.args
 		if args.drop:
@@ -171,16 +175,12 @@ class HotTable:
 				except:
 					print(f"Invalid min arg: '{min_value}'")
 
-	def perform_ordering(self):
-		if self.args.ascending:
-			col_index = self.get_column_index(self.args.ascending)
-			self.rows = sorted(self.rows, key=lambda x:x[col_index])
-		elif self.args.descending:
-			col_index = self.get_column_index(self.args.descending)
-			self.rows = sorted(self.rows, key=lambda x:x[col_index], reverse=True)
+		if args.r2:
+			self.rows = filter_list(self.rows, args.r2)
 
-		if self.args.reverse:
-			self.rows.reverse()
+		if args.c2:
+			self.headers = filter_list(self.headers, args.c2)
+			self.rows = [filter_list(row, args.c2) for row in self.rows]
 
 
 	def get_tabulate(self):
