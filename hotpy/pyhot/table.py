@@ -4,9 +4,10 @@ import uuid
 
 from tabulate import tabulate
 
+from .convert_utils import to_int, to_float, to_str
 from .evaluate import evaluate_template
 from .filter_list import filter_list
-from .number_utils import is_int, to_int, to_float
+from .number_utils import is_int
 from .table_utils import camelize
 
 
@@ -187,7 +188,7 @@ class HotTable:
 
 	def convert_columns_to_str(self, col_index):
 		for row in self.rows:
-			row[col_index] = str(row[col_index])
+			row[col_index] = to_str(row[col_index])
 
 	def drop_column_by_index(self, col_index):
 		if col_index < self.col_count:
