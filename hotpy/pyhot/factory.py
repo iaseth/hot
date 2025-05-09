@@ -47,3 +47,10 @@ def create_table_from_table_tag(document, table_tag):
 	hot_table.rows = rows
 	return hot_table
 
+
+def create_table_from_jo(document, table_jo):
+	hot_table = HotTable(document)
+	hot_table.headers = table_jo["headers"]
+	hot_table.rows = table_jo["data"]
+	return hot_table
+

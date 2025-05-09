@@ -4,7 +4,7 @@ import os
 from bs4 import BeautifulSoup
 import pyperclip
 
-from .factory import create_table_from_table_tag
+from .factory import create_table_from_table_tag, create_table_from_jo
 from .fetch import get_page_html
 from .filter_list import filter_list
 from .output import document_to_html5, document_to_html, document_to_xml
@@ -28,15 +28,36 @@ class HotDocument:
 
 		for input_path in input_paths:
 			if os.path.isfile(input_path):
-				with open(input_path) as f:
-					html = f.read()
-				self.add_hot_tables_from_html(html)
+				self.add_hot_tables_from_file(input_path)
 			elif "." in input_path:
 				html = get_page_html(input_path, fetch=self.args.fetch, cache=self.args.cache)
 				self.add_hot_tables_from_html(html)
 			else:
 				print(f"File not found: '{input_path}'")
 				return
+
+		self.tables = filter_list(self.tables, self.args.t2)
+
+	def add_hot_tables_from_file(self, input_path: str):
+		if input_path.endswith(".json"):
+			self.add_hot_tables_from_json_file(input_path)
+		else:
+			with open(input_path) as f:
+				html = f.read()
+			self.add_hot_tables_from_html(html)
+
+	def add_hot_tables_from_json_file(self, json_path):
+		with open(json_path) as f:
+			jo = json.load(f)
+		if not "tables" in jo: return
+
+		for table_jo in jo["tables"]:
+			try:
+				table = create_table_from_jo(self, table_jo)
+				if table.is_acceptable():
+					self.tables.append(table)
+			except Exception as e:
+				print(e)
 
 	def add_hot_tables_from_html(self, html: str):
 		soup = BeautifulSoup(html, "lxml")
@@ -50,8 +71,6 @@ class HotDocument:
 					self.tables.append(table)
 			except Exception as e:
 				print(e)
-
-		self.tables = filter_list(self.tables, self.args.t2)
 
 	def longest_tables(self):
 		n = max(t.row_count for t in self.tables)
