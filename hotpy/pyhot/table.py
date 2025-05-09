@@ -113,6 +113,11 @@ class HotTable:
 			for col_index in col_indexes:
 				self.convert_columns_to_float(col_index)
 
+		if args.str:
+			col_indexes = self.get_column_indexes(args.str)
+			for col_index in col_indexes:
+				self.convert_columns_to_str(col_index)
+
 		if args.max:
 			for max_value in args.max:
 				try:
@@ -179,6 +184,10 @@ class HotTable:
 	def convert_columns_to_float(self, col_index):
 		for row in self.rows:
 			row[col_index] = to_float(row[col_index])
+
+	def convert_columns_to_str(self, col_index):
+		for row in self.rows:
+			row[col_index] = str(row[col_index])
 
 	def drop_column_by_index(self, col_index):
 		if col_index < self.col_count:
