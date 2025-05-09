@@ -104,6 +104,10 @@ class HotTable:
 			for drop_col in drop_cols:
 				self.drop_column_by_name(drop_col)
 
+		if args.keep:
+			col_indexes = self.get_column_indexes(args.keep)
+			self.keep_certain_columns(col_indexes)
+
 		if args.bool:
 			col_indexes = self.get_column_indexes(args.bool)
 			for col_index in col_indexes:
@@ -219,6 +223,12 @@ class HotTable:
 			return
 
 		self.drop_column_by_index(col_index)
+
+	def keep_certain_columns(self, col_indexes):
+		def keep(arr):
+			return [x for i, x in enumerate(arr) if i in col_indexes]
+		self.headers = keep(self.headers)
+		self.rows = [keep(row) for row in self.rows]
 
 
 	def to_csv(self):
