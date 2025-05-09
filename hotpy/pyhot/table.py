@@ -6,6 +6,7 @@ from tabulate import tabulate
 
 from .evaluate import evaluate_template
 from .filter_list import filter_list
+from .number_utils import is_int, to_int
 from .table_utils import camelize
 
 
@@ -72,6 +73,19 @@ class HotTable:
 		if args.exactc and self.col_count != args.exactc: return False
 		return True
 
+	def get_column_index(self, name):
+		if name.lower() in self.headers_lower:
+			return self.headers_lower.index(name.lower())
+		elif is_int(name):
+			return int(name)
+		else:
+			return None
+
+	def get_column_indexes(self, args):
+		column_names = ",".join(args).split(",")
+		column_indexes = [self.get_column_index(name) for name in column_names]
+		return column_indexes
+
 	def post_processing(self):
 		args = self.args
 		if args.template:
@@ -88,6 +102,11 @@ class HotTable:
 			drop_cols = ",".join(args.drop).split(",")
 			for drop_col in drop_cols:
 				self.drop_column_by_name(drop_col)
+
+		if args.int:
+			col_indexes = self.get_column_indexes(args.int)
+			for col_index in col_indexes:
+				self.convert_columns_to_int(col_index)
 
 		if args.max:
 			for max_value in args.max:
@@ -148,6 +167,10 @@ class HotTable:
 		return result
 
 
+	def convert_columns_to_int(self, col_index):
+		for row in self.rows:
+			row[col_index] = to_int(row[col_index])
+
 	def drop_column_by_index(self, col_index):
 		if col_index < self.col_count:
 			self.headers.pop(col_index)
@@ -155,7 +178,6 @@ class HotTable:
 				row.pop(col_index)
 		else:
 			print(f"Column index too high: '{col_index}' ({self.col_count} columns)")
-
 
 	def drop_column_by_name(self, col_name):
 		if col_name.lower() in self.headers_lower:

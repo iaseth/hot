@@ -48,6 +48,9 @@ def main():
 
 	parser.add_argument("-t", "--template", nargs='+', help="Add a template column")
 	parser.add_argument("-f", "--filter", nargs='+', help="Filter rows by condition")
+	parser.add_argument("--int", nargs='+', help="Convert column values to int")
+	parser.add_argument("--float", nargs='+', help="Convert column values to float")
+	parser.add_argument("--str", nargs='+', help="Convert column values to string")
 	parser.add_argument("--drop", nargs='+', help="Drop certain columns")
 	parser.add_argument("--keep", nargs='+', help="Keep certain columns")
 	parser.add_argument("--min", nargs='+', help="Filter rows by minimum value for column")
