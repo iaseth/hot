@@ -22,6 +22,10 @@ class HotDocument:
 			html = pyperclip.paste()
 			self.add_hot_tables_from_html(html)
 
+		if self.args.paste_path:
+			path_in_clipboard = pyperclip.paste()
+			input_paths.append(path_in_clipboard)
+
 		for input_path in input_paths:
 			if os.path.isfile(input_path):
 				with open(input_path) as f:

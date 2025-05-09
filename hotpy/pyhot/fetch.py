@@ -38,7 +38,7 @@ def get_page_html(page_url: str, fetch=False, cache=False):
 			html = f.read()
 		return html
 
-	response = session.get(page_url)
+	response = session.get(page_url, timeout=10)
 	html = response.text
 	if cache:
 		with open(cache_path, "w") as f:
