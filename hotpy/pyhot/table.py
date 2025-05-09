@@ -99,28 +99,11 @@ class HotTable:
 		self.add_indexes()
 
 	def perform_conversions(self):
-		args = self.args
-		if args.bool:
-			col_indexes = self.get_column_indexes(args.bool)
-			for col_index in col_indexes:
-				self.convert_columns_to_bool(col_index)
-
-		if args.int:
-			col_indexes = self.get_column_indexes(args.int)
-			for col_index in col_indexes:
-				self.convert_columns_to_int(col_index)
-
-		if args.float:
-			col_indexes = self.get_column_indexes(args.float)
-			for col_index in col_indexes:
-				self.convert_columns_to_float(col_index)
-
-		if args.str:
-			col_indexes = self.get_column_indexes(args.str)
-			for col_index in col_indexes:
-				self.convert_columns_to_str(col_index)
-
-		if args.shave:
+		self.convert_columns_to_x(self.args.bool, to_bool)
+		self.convert_columns_to_x(self.args.int, to_int)
+		self.convert_columns_to_x(self.args.float, to_float)
+		self.convert_columns_to_x(self.args.str, to_str)
+		if self.args.shave:
 			self.shave_headers()
 
 	def perform_scaling(self):
@@ -221,21 +204,12 @@ class HotTable:
 		return result
 
 
-	def convert_columns_to_bool(self, col_index):
+	def convert_columns_to_x(self, args, to_x):
+		if not args: return None
+		col_indexes = self.get_column_indexes(args)
 		for row in self.rows:
-			row[col_index] = to_bool(row[col_index])
-
-	def convert_columns_to_int(self, col_index):
-		for row in self.rows:
-			row[col_index] = to_int(row[col_index])
-
-	def convert_columns_to_float(self, col_index):
-		for row in self.rows:
-			row[col_index] = to_float(row[col_index])
-
-	def convert_columns_to_str(self, col_index):
-		for row in self.rows:
-			row[col_index] = to_str(row[col_index])
+			for col_index in col_indexes:
+				row[col_index] = to_x(row[col_index])
 
 
 	def scale_columns(self, args, divisor=0, multiplier=0):
