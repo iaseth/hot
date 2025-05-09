@@ -5,7 +5,7 @@ import uuid
 from tabulate import tabulate
 
 from .convert_utils import to_bool, to_int, to_float, to_str
-from .evaluate import evaluate_template
+from .evaluate import alphabet, alphabet_upper, evaluate_template
 from .filter_list import filter_list
 from .number_utils import is_int
 from .table_utils import camelize
@@ -79,6 +79,10 @@ class HotTable:
 			return self.headers_lower.index(name.lower())
 		elif is_int(name):
 			return int(name)
+		elif len(name) == 1 and name in alphabet:
+			return alphabet.index(name)
+		elif len(name) == 1 and name in alphabet_upper:
+			return self.col_count - (1 + alphabet_upper.index(name))
 		else:
 			print(f"Column not found: '{name}'")
 			return None
@@ -86,6 +90,7 @@ class HotTable:
 	def get_column_indexes(self, args):
 		column_names = ",".join(args).split(",")
 		column_indexes = [self.get_column_index(name) for name in column_names]
+		column_indexes = [idx for idx in column_indexes if idx != None]
 		column_indexes = [idx for idx in column_indexes if abs(idx) < self.col_count]
 		return column_indexes
 
