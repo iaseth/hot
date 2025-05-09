@@ -55,8 +55,8 @@ def main():
 	parser.add_argument("--index", default=False, action="store_true", help="Add index to table rows")
 	parser.add_argument("--uuid", default=False, action="store_true", help="Add uuid to table rows")
 
-	parser.add_argument("--min", type=int, default=None, help="Minimum table rows expected")
-	parser.add_argument("--max", type=int, default=None, help="Maximum table rows expected")
+	parser.add_argument("--minr", type=int, default=None, help="Minimum table rows expected")
+	parser.add_argument("--maxr", type=int, default=None, help="Maximum table rows expected")
 	parser.add_argument("--exact", type=int, default=None, help="Exact number of table rows expected")
 	parser.add_argument("--minc", type=int, default=None, help="Minimum table cols expected")
 	parser.add_argument("--maxc", type=int, default=None, help="Maximum table cols expected")
