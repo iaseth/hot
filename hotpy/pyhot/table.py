@@ -152,21 +152,8 @@ class HotTable:
 			col_indexes = self.get_column_indexes(args.keep)
 			self.keep_certain_columns(col_indexes)
 
-		if args.max:
-			for max_value in args.max:
-				try:
-					col_index, value = [int(x) for x in max_value.split("=")]
-					self.rows = [row for row in self.rows if row[col_index] < value]
-				except:
-					print(f"Invalid max arg: '{max_value}'")
-
-		if args.min:
-			for min_value in args.min:
-				try:
-					col_index, value = [int(x) for x in min_value.split("=")]
-					self.rows = [row for row in self.rows if row[col_index] > value]
-				except:
-					print(f"Invalid min arg: '{min_value}'")
+		self.min_max_filtering(args.min, max=False)
+		self.min_max_filtering(args.max, max=True)
 
 		if args.r2:
 			self.rows = filter_list(self.rows, args.r2)
@@ -239,6 +226,20 @@ class HotTable:
 			return [x for i, x in enumerate(arr) if i in col_indexes]
 		self.headers = keep_filter(self.headers)
 		self.rows = [keep_filter(row) for row in self.rows]
+
+	def min_max_filtering(self, args, max=False):
+		if not args: return
+		for arg in args:
+			try:
+				col_index, value = arg.split("=")
+				col_index = self.get_column_index(col_index)
+				value = to_float(value)
+				if max:
+					self.rows = [row for row in self.rows if row[col_index] <= value]
+				else:
+					self.rows = [row for row in self.rows if row[col_index] >= value]
+			except:
+				print(f"Invalid min/max arg: '{arg}'")
 
 
 	def to_csv(self):
