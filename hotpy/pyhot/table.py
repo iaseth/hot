@@ -80,6 +80,7 @@ class HotTable:
 		elif is_int(name):
 			return int(name)
 		else:
+			print(f"Column not found: '{name}'")
 			return None
 
 	def get_column_indexes(self, args):
@@ -99,14 +100,15 @@ class HotTable:
 				self.headers = [*self.headers, header]
 				self.rows = [[*row, evaluate_template(template, row)] for row in self.rows]
 
+
 		if args.drop:
-			drop_cols = ",".join(args.drop).split(",")
-			for drop_col in drop_cols:
-				self.drop_column_by_name(drop_col)
+			col_indexes = self.get_column_indexes(args.drop)
+			self.drop_certain_columns(col_indexes)
 
 		if args.keep:
 			col_indexes = self.get_column_indexes(args.keep)
 			self.keep_certain_columns(col_indexes)
+
 
 		if args.bool:
 			col_indexes = self.get_column_indexes(args.bool)
@@ -205,30 +207,18 @@ class HotTable:
 		for row in self.rows:
 			row[col_index] = to_str(row[col_index])
 
-	def drop_column_by_index(self, col_index):
-		if col_index < self.col_count:
-			self.headers.pop(col_index)
-			for row in self.rows:
-				row.pop(col_index)
-		else:
-			print(f"Column index too high: '{col_index}' ({self.col_count} columns)")
 
-	def drop_column_by_name(self, col_name):
-		if col_name.lower() in self.headers_lower:
-			col_index = self.headers_lower.index(col_name)
-		elif col_name.isnumeric():
-			col_index = int(col_name)
-		else:
-			print(f"Bad column name: '{col_name}'")
-			return
-
-		self.drop_column_by_index(col_index)
+	def drop_certain_columns(self, col_indexes):
+		def drop_filter(arr):
+			return [x for i, x in enumerate(arr) if not i in col_indexes]
+		self.headers = drop_filter(self.headers)
+		self.rows = [drop_filter(row) for row in self.rows]
 
 	def keep_certain_columns(self, col_indexes):
-		def keep(arr):
+		def keep_filter(arr):
 			return [x for i, x in enumerate(arr) if i in col_indexes]
-		self.headers = keep(self.headers)
-		self.rows = [keep(row) for row in self.rows]
+		self.headers = keep_filter(self.headers)
+		self.rows = [keep_filter(row) for row in self.rows]
 
 
 	def to_csv(self):
