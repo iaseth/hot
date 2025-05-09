@@ -90,26 +90,6 @@ class HotTable:
 
 	def post_processing(self):
 		args = self.args
-		if args.template:
-			for arg in args.template:
-				parts = arg.split("=")
-				if len(parts) == 2:
-					header, template = parts
-				else:
-					header, template = ("@", arg)
-				self.headers = [*self.headers, header]
-				self.rows = [[*row, evaluate_template(template, row)] for row in self.rows]
-
-
-		if args.drop:
-			col_indexes = self.get_column_indexes(args.drop)
-			self.drop_certain_columns(col_indexes)
-
-		if args.keep:
-			col_indexes = self.get_column_indexes(args.keep)
-			self.keep_certain_columns(col_indexes)
-
-
 		if args.bool:
 			col_indexes = self.get_column_indexes(args.bool)
 			for col_index in col_indexes:
@@ -129,6 +109,27 @@ class HotTable:
 			col_indexes = self.get_column_indexes(args.str)
 			for col_index in col_indexes:
 				self.convert_columns_to_str(col_index)
+
+
+		if args.template:
+			for arg in args.template:
+				parts = arg.split("=")
+				if len(parts) == 2:
+					header, template = parts
+				else:
+					header, template = ("@", arg)
+				self.headers = [*self.headers, header]
+				self.rows = [[*row, evaluate_template(template, row)] for row in self.rows]
+
+
+		if args.drop:
+			col_indexes = self.get_column_indexes(args.drop)
+			self.drop_certain_columns(col_indexes)
+
+		if args.keep:
+			col_indexes = self.get_column_indexes(args.keep)
+			self.keep_certain_columns(col_indexes)
+
 
 		if args.max:
 			for max_value in args.max:
