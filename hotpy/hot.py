@@ -54,6 +54,10 @@ def main():
 	parser.add_argument("--float", nargs='+', help="Convert column values to float")
 	parser.add_argument("--str", nargs='+', help="Convert column values to string")
 
+	parser.add_argument("--kilo", nargs='+', help="Divide column values by 1000")
+	parser.add_argument("--mega", nargs='+', help="Divide column values by 1000,000")
+	parser.add_argument("--giga", nargs='+', help="Divide column values by 1000,000,000")
+
 	parser.add_argument("--drop", nargs='+', help="Drop certain columns")
 	parser.add_argument("--keep", nargs='+', help="Keep certain columns")
 	parser.add_argument("--min", nargs='+', help="Filter rows by minimum value for column")

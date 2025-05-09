@@ -86,11 +86,13 @@ class HotTable:
 	def get_column_indexes(self, args):
 		column_names = ",".join(args).split(",")
 		column_indexes = [self.get_column_index(name) for name in column_names]
+		column_indexes = [idx for idx in column_indexes if abs(idx) < self.col_count]
 		return column_indexes
 
 	def post_processing(self):
 		args = self.args
 		self.perform_conversions()
+		self.perform_scaling()
 		self.add_template_columns()
 		self.perform_ordering()
 		self.perform_filtering()
@@ -120,6 +122,11 @@ class HotTable:
 
 		if args.shave:
 			self.shave_headers()
+
+	def perform_scaling(self):
+		self.scale_columns(self.args.kilo, divisor=1000)
+		self.scale_columns(self.args.mega, divisor=1000_000)
+		self.scale_columns(self.args.giga, divisor=1000_000_000)
 
 	def add_template_columns(self):
 		if self.args.template:
@@ -225,6 +232,15 @@ class HotTable:
 	def convert_columns_to_str(self, col_index):
 		for row in self.rows:
 			row[col_index] = to_str(row[col_index])
+
+
+	def scale_columns(self, args, divisor=0):
+		if not args: return None
+		col_indexes = self.get_column_indexes(args)
+		for row in self.rows:
+			for col_index in col_indexes:
+				if divisor:
+					row[col_index] = row[col_index] // divisor
 
 
 	def drop_certain_columns(self, col_indexes):
