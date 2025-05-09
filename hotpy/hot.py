@@ -59,8 +59,8 @@ def main():
 	parser.add_argument("--min", nargs='+', help="Filter rows by minimum value for column")
 	parser.add_argument("--max", nargs='+', help="Filter rows by maximum value for column")
 
-	parser.add_argument("-a", "--ascending", type=int, default=None, help="Sort table rows by nth column (ascending order)")
-	parser.add_argument("-d", "--descending", type=int, default=None, help="Sort table rows by nth column (descending order)")
+	parser.add_argument("-a", "--ascending", default=None, help="Sort table rows by nth column (ascending order)")
+	parser.add_argument("-d", "--descending", default=None, help="Sort table rows by nth column (descending order)")
 	parser.add_argument("-r", "--reverse", action="store_true", help="Reverse table rows order")
 
 	parser.add_argument("--id", default=False, action="store_true", help="Add id to table rows")

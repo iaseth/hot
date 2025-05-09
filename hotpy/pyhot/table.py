@@ -141,9 +141,11 @@ class HotTable:
 					print(f"Invalid min arg: '{min_value}'")
 
 		if args.ascending:
-			self.rows = sorted(self.rows, key=lambda x:x[args.ascending])
+			col_index = self.get_column_index(args.ascending)
+			self.rows = sorted(self.rows, key=lambda x:x[col_index])
 		elif args.descending:
-			self.rows = sorted(self.rows, key=lambda x:x[args.descending], reverse=True)
+			col_index = self.get_column_index(args.descending)
+			self.rows = sorted(self.rows, key=lambda x:x[col_index], reverse=True)
 
 		if args.reverse:
 			self.rows.reverse()
