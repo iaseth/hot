@@ -1,6 +1,6 @@
 from .table import HotTable
 from .filter_list import filter_list
-from .utils import is_int, is_float
+from .number_utils import is_int, is_float
 
 
 
