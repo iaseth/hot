@@ -118,6 +118,9 @@ class HotTable:
 			for col_index in col_indexes:
 				self.convert_columns_to_str(col_index)
 
+		if args.shave:
+			self.shave_headers()
+
 	def add_template_columns(self):
 		if self.args.template:
 			for arg in self.args.template:
@@ -183,6 +186,10 @@ class HotTable:
 		elif self.args.uuid:
 			self.headers = ["UUID", *self.headers]
 			self.rows = [[str(uuid.uuid4()), *row] for row in self.rows]
+
+
+	def shave_headers(self):
+		self.headers = [header.split(" ")[0] for header in self.headers]
 
 
 	def get_tabulate(self):
