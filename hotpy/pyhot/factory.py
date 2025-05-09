@@ -1,3 +1,5 @@
+import csv
+
 from .table import HotTable
 from .filter_list import filter_list
 from .number_utils import is_int, is_float
@@ -53,4 +55,16 @@ def create_table_from_jo(document, table_jo):
 	hot_table.headers = table_jo["headers"]
 	hot_table.rows = table_jo["data"]
 	return hot_table
+
+def create_table_from_csv(document, csv_path):
+	try:
+		hot_table = HotTable(document)
+		with open(csv_path, 'r') as file:
+			csv_reader = csv.reader(file)
+			hot_table.headers = next(csv_reader)
+			hot_table.rows = list(csv_reader)
+
+		return hot_table
+	except Exception as e:
+		return None
 

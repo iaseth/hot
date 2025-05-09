@@ -4,7 +4,7 @@ import os
 from bs4 import BeautifulSoup
 import pyperclip
 
-from .factory import create_table_from_table_tag, create_table_from_jo
+from .factory import create_table_from_table_tag, create_table_from_jo, create_table_from_csv
 from .fetch import get_page_html
 from .filter_list import filter_list
 from .output import document_to_html5, document_to_html, document_to_xml
@@ -39,12 +39,19 @@ class HotDocument:
 		self.tables = filter_list(self.tables, self.args.t2)
 
 	def add_hot_tables_from_file(self, input_path: str):
-		if input_path.endswith(".json"):
+		if input_path.endswith(".csv"):
+			self.add_hot_tables_from_csv_file(input_path)
+		elif input_path.endswith(".json"):
 			self.add_hot_tables_from_json_file(input_path)
 		else:
 			with open(input_path) as f:
 				html = f.read()
 			self.add_hot_tables_from_html(html)
+
+	def add_hot_tables_from_csv_file(self, input_path):
+		table = create_table_from_csv(self, input_path)
+		if table and table.is_acceptable():
+			self.tables.append(table)
 
 	def add_hot_tables_from_json_file(self, json_path):
 		with open(json_path) as f:
