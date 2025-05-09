@@ -90,6 +90,20 @@ class HotTable:
 
 	def post_processing(self):
 		args = self.args
+		self.perform_conversions()
+		self.add_template_columns_and_indexes()
+		self.perform_filtering()
+		self.perform_ordering()
+
+		if args.r2:
+			self.rows = filter_list(self.rows, args.r2)
+
+		if args.c2:
+			self.headers = filter_list(self.headers, args.c2)
+			self.rows = [filter_list(row, args.c2) for row in self.rows]
+
+	def perform_conversions(self):
+		args = self.args
 		if args.bool:
 			col_indexes = self.get_column_indexes(args.bool)
 			for col_index in col_indexes:
@@ -110,9 +124,9 @@ class HotTable:
 			for col_index in col_indexes:
 				self.convert_columns_to_str(col_index)
 
-
-		if args.template:
-			for arg in args.template:
+	def add_template_columns_and_indexes(self):
+		if self.args.template:
+			for arg in self.args.template:
 				parts = arg.split("=")
 				if len(parts) == 2:
 					header, template = parts
@@ -121,7 +135,18 @@ class HotTable:
 				self.headers = [*self.headers, header]
 				self.rows = [[*row, evaluate_template(template, row)] for row in self.rows]
 
+		if self.args.id:
+			self.headers = ["Id", *self.headers]
+			self.rows = [[i+1, *row] for i, row in enumerate(self.rows)]
+		elif self.args.index:
+			self.headers = ["Index", *self.headers]
+			self.rows = [[i, *row] for i, row in enumerate(self.rows)]
+		elif self.args.uuid:
+			self.headers = ["UUID", *self.headers]
+			self.rows = [[str(uuid.uuid4()), *row] for row in self.rows]
 
+	def perform_filtering(self):
+		args = self.args
 		if args.drop:
 			col_indexes = self.get_column_indexes(args.drop)
 			self.drop_certain_columns(col_indexes)
@@ -129,7 +154,6 @@ class HotTable:
 		if args.keep:
 			col_indexes = self.get_column_indexes(args.keep)
 			self.keep_certain_columns(col_indexes)
-
 
 		if args.max:
 			for max_value in args.max:
@@ -147,32 +171,17 @@ class HotTable:
 				except:
 					print(f"Invalid min arg: '{min_value}'")
 
-		if args.ascending:
-			col_index = self.get_column_index(args.ascending)
+	def perform_ordering(self):
+		if self.args.ascending:
+			col_index = self.get_column_index(self.args.ascending)
 			self.rows = sorted(self.rows, key=lambda x:x[col_index])
-		elif args.descending:
-			col_index = self.get_column_index(args.descending)
+		elif self.args.descending:
+			col_index = self.get_column_index(self.args.descending)
 			self.rows = sorted(self.rows, key=lambda x:x[col_index], reverse=True)
 
-		if args.reverse:
+		if self.args.reverse:
 			self.rows.reverse()
 
-		if args.r2:
-			self.rows = filter_list(self.rows, args.r2)
-
-		if args.c2:
-			self.headers = filter_list(self.headers, args.c2)
-			self.rows = [filter_list(row, args.c2) for row in self.rows]
-
-		if args.id:
-			self.headers = ["#", *self.headers]
-			self.rows = [[i+1, *row] for i, row in enumerate(self.rows)]
-		elif args.index:
-			self.headers = ["#", *self.headers]
-			self.rows = [[i, *row] for i, row in enumerate(self.rows)]
-		elif args.uuid:
-			self.headers = ["UUID", *self.headers]
-			self.rows = [[str(uuid.uuid4()), *row] for row in self.rows]
 
 	def get_tabulate(self):
 		table_text = tabulate(
