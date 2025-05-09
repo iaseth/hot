@@ -21,6 +21,10 @@ class HotTable:
 		return (self.headers, self.rows)
 
 	@property
+	def headers_lower(self):
+		return [h.lower() for h in self.headers]
+
+	@property
 	def row_count(self):
 		return len(self.rows)
 
@@ -80,6 +84,11 @@ class HotTable:
 				self.headers = [*self.headers, header]
 				self.rows = [[*row, evaluate_template(template, row)] for row in self.rows]
 
+		if args.drop:
+			drop_cols = ",".join(args.drop).split(",")
+			for drop_col in drop_cols:
+				self.drop_column_by_name(drop_col)
+
 		if args.ascending:
 			self.rows = sorted(self.rows, key=lambda x:x[args.ascending])
 		elif args.descending:
@@ -121,6 +130,27 @@ class HotTable:
 		result.headers = [*self.headers, *other.headers]
 		result.rows = [[*r1, *r2] for r1, r2 in zip(self.rows, other.rows)]
 		return result
+
+
+	def drop_column_by_index(self, col_index):
+		if col_index < self.col_count:
+			self.headers.pop(col_index)
+			for row in self.rows:
+				row.pop(col_index)
+		else:
+			print(f"Column index too high: '{col_index}' ({self.col_count} columns)")
+
+
+	def drop_column_by_name(self, col_name):
+		if col_name.lower() in self.headers_lower:
+			col_index = self.headers_lower.index(col_name)
+		elif col_name.isnumeric():
+			col_index = int(col_name)
+		else:
+			print(f"Bad column name: '{col_name}'")
+			return
+
+		self.drop_column_by_index(col_index)
 
 
 	def to_csv(self):
