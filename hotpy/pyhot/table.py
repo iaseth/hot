@@ -91,9 +91,10 @@ class HotTable:
 	def post_processing(self):
 		args = self.args
 		self.perform_conversions()
-		self.add_template_columns_and_indexes()
+		self.add_template_columns()
 		self.perform_ordering()
 		self.perform_filtering()
+		self.add_indexes()
 
 	def perform_conversions(self):
 		args = self.args
@@ -117,7 +118,7 @@ class HotTable:
 			for col_index in col_indexes:
 				self.convert_columns_to_str(col_index)
 
-	def add_template_columns_and_indexes(self):
+	def add_template_columns(self):
 		if self.args.template:
 			for arg in self.args.template:
 				parts = arg.split("=")
@@ -127,16 +128,6 @@ class HotTable:
 					header, template = ("@", arg)
 				self.headers = [*self.headers, header]
 				self.rows = [[*row, evaluate_template(template, row)] for row in self.rows]
-
-		if self.args.id:
-			self.headers = ["Id", *self.headers]
-			self.rows = [[i+1, *row] for i, row in enumerate(self.rows)]
-		elif self.args.index:
-			self.headers = ["Index", *self.headers]
-			self.rows = [[i, *row] for i, row in enumerate(self.rows)]
-		elif self.args.uuid:
-			self.headers = ["UUID", *self.headers]
-			self.rows = [[str(uuid.uuid4()), *row] for row in self.rows]
 
 	def perform_ordering(self):
 		if self.args.ascending:
@@ -181,6 +172,17 @@ class HotTable:
 		if args.c2:
 			self.headers = filter_list(self.headers, args.c2)
 			self.rows = [filter_list(row, args.c2) for row in self.rows]
+
+	def add_indexes(self):
+		if self.args.id:
+			self.headers = ["Id", *self.headers]
+			self.rows = [[i+1, *row] for i, row in enumerate(self.rows)]
+		elif self.args.index:
+			self.headers = ["Index", *self.headers]
+			self.rows = [[i, *row] for i, row in enumerate(self.rows)]
+		elif self.args.uuid:
+			self.headers = ["UUID", *self.headers]
+			self.rows = [[str(uuid.uuid4()), *row] for row in self.rows]
 
 
 	def get_tabulate(self):
