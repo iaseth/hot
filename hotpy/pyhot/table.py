@@ -127,6 +127,10 @@ class HotTable:
 		self.scale_columns(self.args.kilo, divisor=1000)
 		self.scale_columns(self.args.mega, divisor=1000_000)
 		self.scale_columns(self.args.giga, divisor=1000_000_000)
+		self.scale_columns(self.args.centi, multiplier=100)
+		self.scale_columns(self.args.milli, multiplier=1000)
+		self.scale_columns(self.args.micro, multiplier=1000_000)
+		self.scale_columns(self.args.nano, multiplier=1000_000_000)
 
 	def add_template_columns(self):
 		if self.args.template:
@@ -234,13 +238,15 @@ class HotTable:
 			row[col_index] = to_str(row[col_index])
 
 
-	def scale_columns(self, args, divisor=0):
+	def scale_columns(self, args, divisor=0, multiplier=0):
 		if not args: return None
 		col_indexes = self.get_column_indexes(args)
 		for row in self.rows:
 			for col_index in col_indexes:
 				if divisor:
 					row[col_index] = row[col_index] // divisor
+				elif multiplier:
+					row[col_index] = int(row[col_index] * multiplier)
 
 
 	def drop_certain_columns(self, col_indexes):
