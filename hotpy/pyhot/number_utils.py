@@ -27,4 +27,12 @@ def to_int(s):
 	except ValueError:
 		return 0
 
+def to_float(s):
+	if s == "-": return 0
+
+	try:
+		return float(s)
+	except ValueError:
+		return 0
+
 
