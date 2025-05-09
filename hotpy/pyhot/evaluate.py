@@ -20,6 +20,7 @@ def evaluate_expression(expression: str, arr: list):
 		return eval(expression)
 	except Exception as e:
 		print(f"Error evaluating expression '{expression}': {e}")
+		return 0
 
 def evaluate_template(template: str, arr: list):
 	expression = transform_template(template, arr)
