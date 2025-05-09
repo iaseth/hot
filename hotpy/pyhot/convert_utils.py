@@ -1,6 +1,12 @@
 
 
 
+def to_bool(val):
+	if val in ["-", "", 0, 0.0]:
+		return False
+	return True if val else False
+
+
 def to_int(val):
 	if val == "-": return 0
 	if "." in val:
@@ -13,6 +19,7 @@ def to_int(val):
 	except ValueError:
 		return 0
 
+
 def to_float(val):
 	if val == "-": return 0.0
 
@@ -20,6 +27,7 @@ def to_float(val):
 		return float(val)
 	except ValueError:
 		return 0
+
 
 def to_str(val):
 	if isinstance(val, str):

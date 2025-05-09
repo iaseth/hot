@@ -4,7 +4,7 @@ import uuid
 
 from tabulate import tabulate
 
-from .convert_utils import to_int, to_float, to_str
+from .convert_utils import to_bool, to_int, to_float, to_str
 from .evaluate import evaluate_template
 from .filter_list import filter_list
 from .number_utils import is_int
@@ -104,6 +104,11 @@ class HotTable:
 			for drop_col in drop_cols:
 				self.drop_column_by_name(drop_col)
 
+		if args.bool:
+			col_indexes = self.get_column_indexes(args.bool)
+			for col_index in col_indexes:
+				self.convert_columns_to_bool(col_index)
+
 		if args.int:
 			col_indexes = self.get_column_indexes(args.int)
 			for col_index in col_indexes:
@@ -177,6 +182,10 @@ class HotTable:
 		result.rows = [[*r1, *r2] for r1, r2 in zip(self.rows, other.rows)]
 		return result
 
+
+	def convert_columns_to_bool(self, col_index):
+		for row in self.rows:
+			row[col_index] = to_bool(row[col_index])
 
 	def convert_columns_to_int(self, col_index):
 		for row in self.rows:
