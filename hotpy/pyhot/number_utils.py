@@ -17,21 +17,23 @@ def is_float(s):
 
 
 
-def to_int(s):
-	if s == "-": return 0
-	if s[-1] == "*":
-		s = s[:-1]
+def to_int(val):
+	if val == "-": return 0
+	if "." in val:
+		val = val.split(".")[0]
+	if val[-1] == "*":
+		val = val[:-1]
 
 	try:
-		return int(s)
+		return int(val)
 	except ValueError:
 		return 0
 
-def to_float(s):
-	if s == "-": return 0
+def to_float(val):
+	if val == "-": return 0.0
 
 	try:
-		return float(s)
+		return float(val)
 	except ValueError:
 		return 0
 
