@@ -31,7 +31,7 @@ def main():
 	parser.add_argument("--naked", action="store_true", help="Output naked JSON if single table")
 	parser.add_argument("--obj", action="store_true", help="Output rows as objects in JSON")
 
-	parser.add_argument("-f", "--fmt", default="simple", help="Set table formatting")
+	parser.add_argument("--fmt", default="simple", help="Set table formatting")
 	parser.add_argument("-s", "--summary", action="store_true", help="Print output in summary format")
 
 	parser.add_argument("--longest", action="store_true", help="Select the table with most rows")
@@ -46,11 +46,17 @@ def main():
 	parser.add_argument("--c2", default=None, help="Filter columns after processing")
 	parser.add_argument("--t2", default=None, help="Filter tables after processing")
 
+	parser.add_argument("-t", "--template", nargs='+', help="Add a template column")
+	parser.add_argument("-f", "--filter", nargs='+', help="Filter rows by condition")
+	parser.add_argument("--drop", nargs='+', help="Drop certain columns")
+	parser.add_argument("--keep", nargs='+', help="Keep certain columns")
+	parser.add_argument("--min", type=int, nargs='+', help="Filter rows by minimum value for column")
+	parser.add_argument("--max", type=int, nargs='+', help="Filter rows by maximum value for column")
+
 	parser.add_argument("-a", "--ascending", type=int, default=None, help="Sort table rows by nth column (ascending order)")
 	parser.add_argument("-d", "--descending", type=int, default=None, help="Sort table rows by nth column (descending order)")
 	parser.add_argument("-r", "--reverse", action="store_true", help="Reverse table rows order")
 
-	parser.add_argument("-t", "--template", nargs='+', help="Add a template column")
 	parser.add_argument("--id", default=False, action="store_true", help="Add id to table rows")
 	parser.add_argument("--index", default=False, action="store_true", help="Add index to table rows")
 	parser.add_argument("--uuid", default=False, action="store_true", help="Add uuid to table rows")
