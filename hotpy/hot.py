@@ -57,6 +57,9 @@ def main():
 	parser.add_argument("--str", nargs='+', help="Convert column values to string")
 	parser.add_argument("--lower", nargs='+', help="Convert column values to lowercase")
 	parser.add_argument("--upper", nargs='+', help="Convert column values to uppercase")
+	parser.add_argument("--strip", nargs='+', help="Strip column values")
+	parser.add_argument("--lstrip", nargs='+', help="Strip column values from left")
+	parser.add_argument("--rstrip", nargs='+', help="Strip column values from right")
 
 	parser.add_argument("--kilo", nargs='+', help="Divide column values by 1000")
 	parser.add_argument("--mega", nargs='+', help="Divide column values by 1000,000")

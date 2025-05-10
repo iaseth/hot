@@ -113,6 +113,9 @@ class HotTable:
 		self.convert_columns_to_x(self.args.str, to_str)
 		self.convert_columns_to_x(self.args.lower, str.lower)
 		self.convert_columns_to_x(self.args.upper, str.upper)
+		self.convert_columns_to_x(self.args.strip, str.strip)
+		self.convert_columns_to_x(self.args.lstrip, str.lstrip)
+		self.convert_columns_to_x(self.args.rstrip, str.rstrip)
 		if self.args.shave:
 			self.shave_headers()
 
