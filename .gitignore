@@ -11,6 +11,7 @@ temp_epub/
 *.epub
 
 *.json
+*.png
 
 # === Python ===
 __pycache__/

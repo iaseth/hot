@@ -139,6 +139,9 @@ class HotDocument:
 		if self.args.summary:
 			self.print_summary()
 			return
+		elif self.args.image:
+			self.tables[0].produce_table_image("image.png")
+			return
 
 		output_text = self.get_output_text()
 		if self.args.cut:
