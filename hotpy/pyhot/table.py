@@ -99,6 +99,7 @@ class HotTable:
 	def pre_processing(self):
 		args = self.args
 		if args.pre_snip: self.snip_table(args.pre_snip)
+		if args.pre_transpose: self.transpose_table()
 
 	def post_processing(self):
 		args = self.args
@@ -180,6 +181,7 @@ class HotTable:
 		if args.head is not None: self.rows = self.rows[:args.head]
 		if args.tail is not None: self.rows = self.rows[-args.tail:]
 		if args.snip: self.snip_table(args.snip)
+		if args.transpose: self.transpose_table()
 
 	def add_indexes(self):
 		if self.args.id:
@@ -288,6 +290,16 @@ class HotTable:
 
 		self.headers = self.headers[c1:c2+1]
 		self.rows = [row[c1:c2+1] for row in self.rows]
+
+	def transpose_table(self):
+		total_rows = [self.headers, *self.rows]
+		def get_nth_column(rows, n):
+			return [row[n] for row in rows]
+
+		headers = get_nth_column(total_rows, 0)
+		rows = [get_nth_column(total_rows, i) for i in range(1, self.col_count)]
+		self.headers = headers
+		self.rows = rows
 
 
 	def to_csv(self):
