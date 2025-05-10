@@ -68,7 +68,6 @@ def main():
 	parser.add_argument("--bool", nargs='+', help="Convert column values to boolean")
 	parser.add_argument("--int", nargs='+', help="Convert column values to int")
 	parser.add_argument("--float", nargs='+', help="Convert column values to float")
-	parser.add_argument("--round", nargs='+', help="Round column values to n digits")
 
 	parser.add_argument("--str", nargs='+', help="Convert column values to string")
 	parser.add_argument("--lower", nargs='+', help="Convert column values to lowercase")
@@ -89,6 +88,7 @@ def main():
 
 	parser.add_argument("-t", "--template", nargs='+', help="Add a template column")
 	parser.add_argument("-f", "--filter", nargs='+', help="Filter rows by condition")
+	parser.add_argument("--round", nargs='+', help="Round column values to n digits")
 
 	parser.add_argument("-a", "--ascending", default=None, help="Sort table rows by nth column (ascending order)")
 	parser.add_argument("-d", "--descending", default=None, help="Sort table rows by nth column (descending order)")

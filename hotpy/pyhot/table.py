@@ -126,7 +126,6 @@ class HotTable:
 		self.convert_columns_to_x(self.args.bool, to_bool)
 		self.convert_columns_to_x(self.args.int, to_int)
 		self.convert_columns_to_x(self.args.float, to_float)
-		self.round_columns_to_n_digits(self.args.round)
 
 		self.convert_columns_to_x(self.args.str, to_str)
 		self.convert_columns_to_x(self.args.lower, str.lower)
@@ -156,6 +155,7 @@ class HotTable:
 					header, template = ("@", arg)
 				self.headers = [*self.headers, header]
 				self.rows = [[*row, evaluate_template(template, row)] for row in self.rows]
+		self.round_columns_to_n_digits(self.args.round)
 
 	def perform_ordering(self):
 		if self.args.ascending:
