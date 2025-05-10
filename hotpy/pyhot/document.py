@@ -177,14 +177,16 @@ class HotDocument:
 
 	@property
 	def indent(self):
-		if self.args.minified:
-			return None
+		if self.args.tabs:
+			return "\t"
 		elif self.args.s2:
 			return 2
 		elif self.args.s4:
 			return 4
+		elif self.args.minified:
+			return None
 		else:
-			return "\t"
+			return None
 
 	@property
 	def space(self):
