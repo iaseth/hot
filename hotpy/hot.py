@@ -8,7 +8,7 @@ from pyhot.document import HotDocument
 
 class CustomFormatter(argparse.HelpFormatter):
 	def __init__(self, *args, **kwargs):
-		kwargs['max_help_position'] = 36
+		kwargs['max_help_position'] = 32
 		# kwargs['width'] = 120
 		super().__init__(*args, **kwargs)
 
@@ -105,6 +105,7 @@ def main():
 	parser.add_argument("--randomx", nargs='?', const=10, type=int, default=None, help="Select N rows at random")
 	parser.add_argument("--head", nargs='?', const=10, type=int, default=None, help="Select first N rows")
 	parser.add_argument("--tail", nargs='?', const=10, type=int, default=None, help="Select last N rows")
+	parser.add_argument("--middle", nargs='?', const=10, type=int, default=None, help="Select middle N rows")
 
 	parser.add_argument("--transpose", default=False, action="store_true", help="Interchange rows and columns (post processing)")
 	parser.add_argument("--snip", default=None, help="Cut snippet from c1, r1 to c2, r2 (post processing)")

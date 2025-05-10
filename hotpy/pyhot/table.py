@@ -178,8 +178,14 @@ class HotTable:
 
 		if args.random: self.select_random_rows(args.random, preserve_order=True)
 		if args.randomx: self.select_random_rows(args.randomx, preserve_order=False)
+
 		if args.head is not None: self.rows = self.rows[:args.head]
 		if args.tail is not None: self.rows = self.rows[-args.tail:]
+		if args.middle is not None and 0 < args.middle < self.row_count:
+			start = (self.row_count - args.middle) // 2
+			end = start + args.middle
+			self.rows = self.rows[start:end]
+
 		if args.snip: self.snip_table(args.snip)
 		if args.transpose: self.transpose_table()
 
