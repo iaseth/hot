@@ -88,6 +88,9 @@ class HotDocument:
 		return [t for t in self.tables if t.col_count == n]
 
 	def post_processing(self):
+		for table in self.tables:
+			table.pre_processing()
+
 		if self.args.longest:
 			self.tables = self.longest_tables()
 

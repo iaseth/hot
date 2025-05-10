@@ -93,6 +93,7 @@ def main():
 	parser.add_argument("--head", nargs='?', const=10, type=int, default=None, help="Select first N rows")
 	parser.add_argument("--tail", nargs='?', const=10, type=int, default=None, help="Select last N rows")
 
+	parser.add_argument("--pre-snip", default=None, help="Cut snippet from c1, r1 to c2, r2 (pre processing)")
 	parser.add_argument("--snip", default=None, help="Cut snippet from c1, r1 to c2, r2 (post processing)")
 
 	parser.add_argument("--id", default=False, action="store_true", help="Add id to table rows")

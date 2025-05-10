@@ -96,6 +96,10 @@ class HotTable:
 		column_indexes = [idx for idx in column_indexes if abs(idx) < self.col_count]
 		return column_indexes
 
+	def pre_processing(self):
+		args = self.args
+		if args.pre_snip: self.snip_table(args.pre_snip)
+
 	def post_processing(self):
 		args = self.args
 		self.perform_conversions()
