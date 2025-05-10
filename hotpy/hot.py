@@ -6,8 +6,18 @@ from pyhot.document import HotDocument
 
 
 
+class CustomFormatter(argparse.HelpFormatter):
+	def __init__(self, *args, **kwargs):
+		kwargs['max_help_position'] = 36
+		# kwargs['width'] = 120
+		super().__init__(*args, **kwargs)
+
+
 def main():
-	parser = argparse.ArgumentParser(description="Convert webpage tables to JSON table data.")
+	parser = argparse.ArgumentParser(
+		description="Convert webpage tables to JSON table data.",
+		formatter_class=CustomFormatter
+	)
 	parser.add_argument("--cache", action="store_true", help="Cache any fetch requests")
 	parser.add_argument("--fetch", action="store_true", help="Fetch the page again, don't use cache")
 
@@ -104,6 +114,10 @@ def main():
 	parser.add_argument("--uuid", default=False, action="store_true", help="Add uuid to table rows")
 
 	args, input_paths = parser.parse_known_args()
+	if not input_paths:
+		parser.print_help()
+		return
+
 	hotdoc = HotDocument(args)
 	hotdoc.add_hot_tables_from_args(input_paths)
 
