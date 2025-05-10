@@ -8,6 +8,11 @@ def to_bool(val):
 
 
 def to_int(val):
+	if isinstance(val, int):
+		return val
+	if isinstance(val, float):
+		return int(val)
+
 	if val == "-": return 0
 	if val[-1] in ["%", "*"]:
 		val = val[:-1]
@@ -23,6 +28,11 @@ def to_int(val):
 
 
 def to_float(val):
+	if isinstance(val, float):
+		return val
+	if isinstance(val, int):
+		return float(val)
+
 	if val == "-": return 0.0
 	if val[-1] in ["%"]:
 		val = val[:-1]
