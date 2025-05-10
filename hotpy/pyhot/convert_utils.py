@@ -49,3 +49,15 @@ def to_str(val):
 	return str(val)
 
 
+def strip_leading_dots(val: str, ch="."):
+	count = 0
+	while val.startswith(ch):
+		val = val[1:]
+		count += 1
+	return (count, val)
+
+def to_rounded(val, digits=0):
+	val = to_float(val)
+	return round(val, digits)
+
+

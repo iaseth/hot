@@ -5,6 +5,7 @@ import uuid
 from tabulate import tabulate
 
 from .convert_utils import to_bool, to_int, to_float, to_str
+from .convert_utils import strip_leading_dots, to_rounded
 from .evaluate import alphabet, alphabet_upper, evaluate_template
 from .filter_list import filter_list
 from .number_utils import is_int
@@ -107,6 +108,7 @@ class HotTable:
 		self.convert_columns_to_x(self.args.bool, to_bool)
 		self.convert_columns_to_x(self.args.int, to_int)
 		self.convert_columns_to_x(self.args.float, to_float)
+		self.round_columns_to_n_digits(self.args.round)
 		self.convert_columns_to_x(self.args.str, to_str)
 		if self.args.shave:
 			self.shave_headers()
@@ -202,6 +204,16 @@ class HotTable:
 		for row in self.rows:
 			for col_index in col_indexes:
 				row[col_index] = to_x(row[col_index])
+
+	def round_columns_to_n_digits(self, args):
+		if not args: return None
+		for arg in args:
+			digits, col_arg = strip_leading_dots(arg)
+			col_indexes = self.get_column_indexes([col_arg])
+
+			for row in self.rows:
+				for col_index in col_indexes:
+					row[col_index] = to_rounded(row[col_index], digits)
 
 
 	def scale_columns(self, args, divisor=0, multiplier=0):
