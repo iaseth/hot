@@ -96,6 +96,13 @@ class HotTable:
 		column_indexes = [idx for idx in column_indexes if abs(idx) < self.col_count]
 		return column_indexes
 
+	def perform_c1_r1_filtering(self):
+		# used by non-HTML factories
+		self.rows = filter_list(self.rows, self.args.r1)
+		if self.args.c1:
+			self.headers = filter_list(self.headers, self.args.c1)
+			self.rows = [filter_list(row, self.args.c1) for row in self.rows]
+
 	def pre_processing(self):
 		args = self.args
 		if args.pre_snip: self.snip_table(args.pre_snip)

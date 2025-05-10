@@ -54,6 +54,7 @@ def create_table_from_jo(document, table_jo):
 	hot_table = HotTable(document)
 	hot_table.headers = table_jo["headers"]
 	hot_table.rows = table_jo["data"]
+	hot_table.perform_c1_r1_filtering()
 	return hot_table
 
 def create_table_from_csv(document, csv_path):
@@ -64,6 +65,7 @@ def create_table_from_csv(document, csv_path):
 			hot_table.headers = next(csv_reader)
 			hot_table.rows = list(csv_reader)
 
+		hot_table.perform_c1_r1_filtering()
 		return hot_table
 	except Exception as e:
 		return None
