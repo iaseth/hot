@@ -44,7 +44,6 @@ def main():
 
 	parser.add_argument("--fmt", default="simple", help="Set table formatting")
 	parser.add_argument("-s", "--summary", action="store_true", help="Print output in summary format")
-	parser.add_argument("--image", action="store_true", help="Generate table image")
 
 	parser.add_argument("--r1", default=None, help="Filter rows before processing")
 	parser.add_argument("--c1", default=None, help="Filter columns before processing")
@@ -127,7 +126,7 @@ def main():
 	hotdoc = HotDocument(args)
 	hotdoc.add_hot_tables_from_args(input_paths)
 
-	if hotdoc.empty:
+	if hotdoc.is_empty:
 		print("No tables found!")
 		return
 

@@ -139,9 +139,6 @@ class HotDocument:
 		if self.args.summary:
 			self.print_summary()
 			return
-		elif self.args.image:
-			self.tables[0].produce_table_image("image.png")
-			return
 
 		output_text = self.get_output_text()
 		if self.args.cut:
@@ -160,7 +157,7 @@ class HotDocument:
 			print(output_text)
 
 	@property
-	def empty(self):
+	def is_empty(self):
 		return len(self.tables) == 0
 
 	@property

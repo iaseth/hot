@@ -3,10 +3,6 @@ import io
 import random
 import uuid
 
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-import plotly.io as pio
 from tabulate import tabulate
 
 from .convert_utils import to_bool, to_int, to_float, to_str
@@ -73,15 +69,6 @@ class HotTable:
 			table["headers"] = self.headers
 			table["data"] = self.rows
 		return table
-
-	def produce_table_image(self, png_path):
-		# df = self.to_dataframe()
-		fig = go.Figure(data=[go.Table(
-			header=dict(values=self.headers, fill_color='paleturquoise', align='left'),
-			cells=dict(values=list(zip(*self.rows)), fill_color='lavender', align='left'))
-		])
-		fig.write_image(png_path)
-		print(f"Saved: {png_path}")
 
 	def is_acceptable(self):
 		args = self.args
