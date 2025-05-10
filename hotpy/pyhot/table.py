@@ -93,8 +93,8 @@ class HotTable:
 			print(f"Column not found: '{name}'")
 			return None
 
-	def get_column_indexes(self, args):
-		column_names = ",".join(args).split(",")
+	def get_column_indexes(self, args, separator=","):
+		column_names = separator.join(args).split(separator)
 		column_indexes = [self.get_column_index(name) for name in column_names]
 		column_indexes = [idx for idx in column_indexes if idx != None]
 		column_indexes = [idx for idx in column_indexes if abs(idx) < self.col_count]
@@ -177,6 +177,10 @@ class HotTable:
 		if args.keep:
 			col_indexes = self.get_column_indexes(args.keep)
 			self.keep_certain_columns(col_indexes)
+
+		if args.swap:
+			for arg in args.swap:
+				self.swap_two_columns(arg)
 
 		self.min_max_filtering(args.min, max=False)
 		self.min_max_filtering(args.max, max=True)
@@ -277,6 +281,19 @@ class HotTable:
 			return [x for i, x in enumerate(arr) if i in col_indexes]
 		self.headers = keep_filter(self.headers)
 		self.rows = [keep_filter(row) for row in self.rows]
+
+	def swap_two_columns(self, arg):
+		column_indexes = self.get_column_indexes([arg], separator=":")
+		if len(column_indexes) != 2:
+			print(f"Bad swap arg: '{arg}'")
+			return
+
+		c1, c2 = column_indexes
+		def swap(arr):
+			arr[c1], arr[c2] = arr[c2], arr[c1]
+		swap(self.headers)
+		for row in self.rows:
+			swap(row)
 
 	def min_max_filtering(self, args, max=False):
 		if not args: return

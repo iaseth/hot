@@ -31,7 +31,7 @@ def main():
 	parser.add_argument("--html", default=False, action="store_true", help="Output as HTML")
 	parser.add_argument("--html5", default=False, action="store_true", help="Output as HTML5")
 	parser.add_argument("--json", default=False, action="store_true", help="Output as JSON")
-	parser.add_argument("--markdown", default=False, action="store_true", help="Output as Markdown")
+	parser.add_argument("--markdown", "--md", default=False, action="store_true", help="Output as Markdown")
 	parser.add_argument("--xml", default=False, action="store_true", help="Output as XML")
 
 	parser.add_argument("-m", "--minified", action="store_true", help="Output JSON in minified format")
@@ -96,6 +96,7 @@ def main():
 
 	parser.add_argument("--drop", nargs='+', help="Drop certain columns")
 	parser.add_argument("--keep", nargs='+', help="Keep certain columns")
+	parser.add_argument("--swap", nargs='+', help="Swap two columns")
 	parser.add_argument("--min", nargs='+', help="Filter rows by minimum value for column")
 	parser.add_argument("--max", nargs='+', help="Filter rows by maximum value for column")
 
