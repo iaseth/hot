@@ -186,6 +186,7 @@ class HotTable:
 			end = start + args.middle
 			self.rows = self.rows[start:end]
 
+		if args.shuffle: random.shuffle(self.rows)
 		if args.snip: self.snip_table(args.snip)
 		if args.transpose: self.transpose_table()
 
