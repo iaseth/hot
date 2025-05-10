@@ -218,13 +218,13 @@ class HotTable:
 
 	def add_indexes(self):
 		if self.args.id:
-			self.headers = ["Id", *self.headers]
+			self.headers = [self.args.id, *self.headers]
 			self.rows = [[i+1, *row] for i, row in enumerate(self.rows)]
-		elif self.args.index:
-			self.headers = ["Index", *self.headers]
+		if self.args.index:
+			self.headers = [self.args.index, *self.headers]
 			self.rows = [[i, *row] for i, row in enumerate(self.rows)]
-		elif self.args.uuid:
-			self.headers = ["UUID", *self.headers]
+		if self.args.uuid:
+			self.headers = [self.args.uuid, *self.headers]
 			self.rows = [[str(uuid.uuid4()), *row] for row in self.rows]
 
 
