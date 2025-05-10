@@ -88,10 +88,12 @@ def main():
 	parser.add_argument("--c2", default=None, help="Filter columns after processing")
 	parser.add_argument("--t2", default=None, help="Filter tables after processing")
 
-	parser.add_argument("--head", nargs='?', const=10, type=int, default=None, help="Select first N rows")
-	parser.add_argument("--tail", nargs='?', const=10, type=int, default=None, help="Select last N rows")
 	parser.add_argument("--random", nargs='?', const=10, type=int, default=None, help="Select N rows at random, preserves order")
 	parser.add_argument("--randomx", nargs='?', const=10, type=int, default=None, help="Select N rows at random")
+	parser.add_argument("--head", nargs='?', const=10, type=int, default=None, help="Select first N rows")
+	parser.add_argument("--tail", nargs='?', const=10, type=int, default=None, help="Select last N rows")
+
+	parser.add_argument("--snip", default=None, help="Cut snippet from c1, r1 to c2, r2 (post processing)")
 
 	parser.add_argument("--id", default=False, action="store_true", help="Add id to table rows")
 	parser.add_argument("--index", default=False, action="store_true", help="Add index to table rows")

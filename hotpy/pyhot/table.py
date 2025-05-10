@@ -10,7 +10,7 @@ from .convert_utils import strip_leading_dots, to_rounded
 from .evaluate import alphabet, alphabet_upper, evaluate_template
 from .filter_list import filter_list
 from .number_utils import is_int
-from .table_utils import camelize
+from .table_utils import camelize, get_snippet_args
 
 
 
@@ -175,6 +175,7 @@ class HotTable:
 		if args.randomx: self.select_random_rows(args.randomx, preserve_order=False)
 		if args.head is not None: self.rows = self.rows[:args.head]
 		if args.tail is not None: self.rows = self.rows[-args.tail:]
+		if args.snip: self.snip_table(args.snip)
 
 	def add_indexes(self):
 		if self.args.id:
@@ -271,6 +272,18 @@ class HotTable:
 		if preserve_order:
 			indices = sorted(indices)
 		self.rows = [self.rows[i] for i in indices]
+
+	def snip_table(self, arg):
+		snip_args = get_snippet_args(arg)
+		if not snip_args:
+			print(f"Bad snippet arg: '{arg}'")
+			return
+
+		c1, r1, c2, r2 = snip_args
+		self.rows = self.rows[r1-1:r2]
+
+		self.headers = self.headers[c1:c2+1]
+		self.rows = [row[c1:c2+1] for row in self.rows]
 
 
 	def to_csv(self):
