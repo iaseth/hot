@@ -1,5 +1,6 @@
 import csv
 import io
+import random
 import uuid
 
 from tabulate import tabulate
@@ -170,6 +171,8 @@ class HotTable:
 			self.headers = filter_list(self.headers, args.c2)
 			self.rows = [filter_list(row, args.c2) for row in self.rows]
 
+		if args.random: self.select_random_rows(args.random, preserve_order=True)
+		if args.randomx: self.select_random_rows(args.randomx, preserve_order=False)
 		if args.head is not None: self.rows = self.rows[:args.head]
 		if args.tail is not None: self.rows = self.rows[-args.tail:]
 
@@ -261,6 +264,13 @@ class HotTable:
 					self.rows = [row for row in self.rows if row[col_index] >= value]
 			except:
 				print(f"Invalid min/max arg: '{arg}'")
+
+
+	def select_random_rows(self, n, preserve_order=False):
+		indices = random.sample(range(self.row_count), n)
+		if preserve_order:
+			indices = sorted(indices)
+		self.rows = [self.rows[i] for i in indices]
 
 
 	def to_csv(self):
