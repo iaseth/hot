@@ -109,7 +109,10 @@ class HotTable:
 		self.convert_columns_to_x(self.args.int, to_int)
 		self.convert_columns_to_x(self.args.float, to_float)
 		self.round_columns_to_n_digits(self.args.round)
+
 		self.convert_columns_to_x(self.args.str, to_str)
+		self.convert_columns_to_x(self.args.lower, str.lower)
+		self.convert_columns_to_x(self.args.upper, str.upper)
 		if self.args.shave:
 			self.shave_headers()
 

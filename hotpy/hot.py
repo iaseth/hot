@@ -53,7 +53,10 @@ def main():
 	parser.add_argument("--int", nargs='+', help="Convert column values to int")
 	parser.add_argument("--float", nargs='+', help="Convert column values to float")
 	parser.add_argument("--round", nargs='+', help="Round column values to n digits")
+
 	parser.add_argument("--str", nargs='+', help="Convert column values to string")
+	parser.add_argument("--lower", nargs='+', help="Convert column values to lowercase")
+	parser.add_argument("--upper", nargs='+', help="Convert column values to uppercase")
 
 	parser.add_argument("--kilo", nargs='+', help="Divide column values by 1000")
 	parser.add_argument("--mega", nargs='+', help="Divide column values by 1000,000")
