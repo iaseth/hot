@@ -48,6 +48,7 @@ def main():
 	parser.add_argument("--c1", default=None, help="Filter columns before processing")
 	parser.add_argument("--t1", default=None, help="Filter tables before processing")
 
+	parser.add_argument("--pre-mirror", default=False, action="store_true", help="Mirror columns (pre processing)")
 	parser.add_argument("--pre-snip", default=None, help="Cut snippet from c1, r1 to c2, r2 (pre processing)")
 	parser.add_argument("--pre-transpose", default=False, action="store_true", help="Interchange rows and columns (pre processing)")
 
@@ -107,6 +108,7 @@ def main():
 	parser.add_argument("--tail", nargs='?', const=10, type=int, default=None, help="Select last N rows")
 	parser.add_argument("--middle", nargs='?', const=10, type=int, default=None, help="Select middle N rows")
 
+	parser.add_argument("--mirror", default=False, action="store_true", help="Mirror columns (post processing)")
 	parser.add_argument("--shuffle", default=False, action="store_true", help="Shuffle table rows")
 	parser.add_argument("--snip", default=None, help="Cut snippet from c1, r1 to c2, r2 (post processing)")
 	parser.add_argument("--transpose", default=False, action="store_true", help="Interchange rows and columns (post processing)")

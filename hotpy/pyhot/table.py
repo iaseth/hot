@@ -105,6 +105,7 @@ class HotTable:
 
 	def pre_processing(self):
 		args = self.args
+		if args.pre_mirror: self.mirror_table()
 		if args.pre_snip: self.snip_table(args.pre_snip)
 		if args.pre_transpose: self.transpose_table()
 
@@ -193,6 +194,7 @@ class HotTable:
 			end = start + args.middle
 			self.rows = self.rows[start:end]
 
+		if args.mirror: self.mirror_table()
 		if args.shuffle: random.shuffle(self.rows)
 		if args.snip: self.snip_table(args.snip)
 		if args.transpose: self.transpose_table()
@@ -292,6 +294,10 @@ class HotTable:
 		if preserve_order:
 			indices = sorted(indices)
 		self.rows = [self.rows[i] for i in indices]
+
+	def mirror_table(self):
+		self.headers = reversed(self.headers)
+		self.rows = [reversed(row) for row in self.rows]
 
 	def snip_table(self, arg):
 		snip_args = get_snippet_args(arg)
