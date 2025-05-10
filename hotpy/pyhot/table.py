@@ -170,6 +170,9 @@ class HotTable:
 			self.headers = filter_list(self.headers, args.c2)
 			self.rows = [filter_list(row, args.c2) for row in self.rows]
 
+		if args.head is not None: self.rows = self.rows[:args.head]
+		if args.tail is not None: self.rows = self.rows[-args.tail:]
+
 	def add_indexes(self):
 		if self.args.id:
 			self.headers = ["Id", *self.headers]
