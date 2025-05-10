@@ -34,20 +34,21 @@ def main():
 	parser.add_argument("--fmt", default="simple", help="Set table formatting")
 	parser.add_argument("-s", "--summary", action="store_true", help="Print output in summary format")
 
+	parser.add_argument("--r1", default=None, help="Filter rows before processing")
+	parser.add_argument("--c1", default=None, help="Filter columns before processing")
+	parser.add_argument("--t1", default=None, help="Filter tables before processing")
+
 	parser.add_argument("--longest", action="store_true", help="Select the table with most rows")
 	parser.add_argument("--widest", action="store_true", help="Select the table with most cols")
 	parser.add_argument("-j", "--join", action="store_true", help="Join tables with same number of rows")
 	parser.add_argument("-u", "--union", action="store_true", help="Combine tables with same number of cols")
 
-	parser.add_argument("--r1", default=None, help="Filter rows before processing")
-	parser.add_argument("--c1", default=None, help="Filter columns before processing")
-	parser.add_argument("--t1", default=None, help="Filter tables before processing")
-	parser.add_argument("--r2", default=None, help="Filter rows after processing")
-	parser.add_argument("--c2", default=None, help="Filter columns after processing")
-	parser.add_argument("--t2", default=None, help="Filter tables after processing")
-
-	parser.add_argument("-t", "--template", nargs='+', help="Add a template column")
-	parser.add_argument("-f", "--filter", nargs='+', help="Filter rows by condition")
+	parser.add_argument("--minr", type=int, default=None, help="Minimum table rows expected")
+	parser.add_argument("--maxr", type=int, default=None, help="Maximum table rows expected")
+	parser.add_argument("--exact", type=int, default=None, help="Exact number of table rows expected")
+	parser.add_argument("--minc", type=int, default=None, help="Minimum table cols expected")
+	parser.add_argument("--maxc", type=int, default=None, help="Maximum table cols expected")
+	parser.add_argument("--exactc", type=int, default=None, help="Exact number of table cols expected")
 
 	parser.add_argument("--bool", nargs='+', help="Convert column values to boolean")
 	parser.add_argument("--int", nargs='+', help="Convert column values to int")
@@ -60,6 +61,7 @@ def main():
 	parser.add_argument("--strip", nargs='+', help="Strip column values")
 	parser.add_argument("--lstrip", nargs='+', help="Strip column values from left")
 	parser.add_argument("--rstrip", nargs='+', help="Strip column values from right")
+	parser.add_argument("--shave", action="store_true", help="Limit column names to first word")
 
 	parser.add_argument("--kilo", nargs='+', help="Divide column values by 1000")
 	parser.add_argument("--mega", nargs='+', help="Divide column values by 1000,000")
@@ -70,27 +72,25 @@ def main():
 	parser.add_argument("--micro", nargs='+', help="Multiply column values by 1000,000")
 	parser.add_argument("--nano", nargs='+', help="Multiply column values by 1000,000,000")
 
-	parser.add_argument("--drop", nargs='+', help="Drop certain columns")
-	parser.add_argument("--keep", nargs='+', help="Keep certain columns")
-	parser.add_argument("--min", nargs='+', help="Filter rows by minimum value for column")
-	parser.add_argument("--max", nargs='+', help="Filter rows by maximum value for column")
-
-	parser.add_argument("--shave", action="store_true", help="Limit column names to first word")
+	parser.add_argument("-t", "--template", nargs='+', help="Add a template column")
+	parser.add_argument("-f", "--filter", nargs='+', help="Filter rows by condition")
 
 	parser.add_argument("-a", "--ascending", default=None, help="Sort table rows by nth column (ascending order)")
 	parser.add_argument("-d", "--descending", default=None, help="Sort table rows by nth column (descending order)")
 	parser.add_argument("-r", "--reverse", action="store_true", help="Reverse table rows order")
 
+	parser.add_argument("--drop", nargs='+', help="Drop certain columns")
+	parser.add_argument("--keep", nargs='+', help="Keep certain columns")
+	parser.add_argument("--min", nargs='+', help="Filter rows by minimum value for column")
+	parser.add_argument("--max", nargs='+', help="Filter rows by maximum value for column")
+
+	parser.add_argument("--r2", default=None, help="Filter rows after processing")
+	parser.add_argument("--c2", default=None, help="Filter columns after processing")
+	parser.add_argument("--t2", default=None, help="Filter tables after processing")
+
 	parser.add_argument("--id", default=False, action="store_true", help="Add id to table rows")
 	parser.add_argument("--index", default=False, action="store_true", help="Add index to table rows")
 	parser.add_argument("--uuid", default=False, action="store_true", help="Add uuid to table rows")
-
-	parser.add_argument("--minr", type=int, default=None, help="Minimum table rows expected")
-	parser.add_argument("--maxr", type=int, default=None, help="Maximum table rows expected")
-	parser.add_argument("--exact", type=int, default=None, help="Exact number of table rows expected")
-	parser.add_argument("--minc", type=int, default=None, help="Minimum table cols expected")
-	parser.add_argument("--maxc", type=int, default=None, help="Maximum table cols expected")
-	parser.add_argument("--exactc", type=int, default=None, help="Exact number of table cols expected")
 
 	args, input_paths = parser.parse_known_args()
 	hotdoc = HotDocument(args)
