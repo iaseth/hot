@@ -4,6 +4,7 @@ import argparse
 
 from pyhot.document import HotDocument
 from pyhot.hotparse import HotParse
+from pyhot.manipulation import manipulate_table
 
 
 
@@ -19,6 +20,8 @@ def main():
 		description="Convert webpage tables to JSON table data.",
 		formatter_class=CustomFormatter
 	)
+	hot_parser = HotParse()
+
 	parser.add_argument("--cache", action="store_true", help="Cache any fetch requests")
 	parser.add_argument("--fetch", action="store_true", help="Fetch the page again, don't use cache")
 
@@ -122,8 +125,7 @@ def main():
 	parser.add_argument("--uuid", nargs='?', const="UUID", default=None, help="Add uuid to table rows")
 
 	args, rest = parser.parse_known_args()
-	hot_parser = HotParse()
-	hotflags = hot_parser.parse_args(rest)
+	hot_parser.parse_args(rest)
 
 	input_paths = [arg.arg for arg in hot_parser.args]
 	if not input_paths and not args.paste:
@@ -138,6 +140,9 @@ def main():
 		return
 
 	hotdoc.post_processing()
+	for flag in hot_parser:
+		for table in hotdoc.tables:
+			manipulate_table(table, flag)
 	hotdoc.produce_output()
 
 

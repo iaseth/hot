@@ -376,5 +376,5 @@ class HotTable:
 		return result
 
 	def __repr__(self):
-		return f"HotTable ({self.col_count} cols, {self.row_count} rows)"
+		return f"HotTable ({self.row_count} x {self.col_count})"
 

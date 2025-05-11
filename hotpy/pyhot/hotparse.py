@@ -16,6 +16,9 @@ class HotFlag:
 		self.args = []
 		self.n = 0
 
+	def __iter__(self):
+		return iter(self.args)
+
 	@property
 	def count(self):
 		return len(self.args)
@@ -30,13 +33,16 @@ class HotFlag:
 			return [idx, *self.row()]
 
 	def __repr__(self):
-		return f"HotArg ('{self.flag}', [{self.args}])"
+		return f"HotArg ('{self.flag}', {self.args})"
 
 
 class HotParse(HotFlag):
 	def __init__(self):
 		self.flags = []
 		self.args = []
+
+	def __iter__(self):
+		return iter(self.flags)
 
 	@property
 	def flags_count(self):
