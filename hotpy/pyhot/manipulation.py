@@ -123,6 +123,10 @@ def start_repl(hotdoc):
 		elif not current_input:
 			hotdoc.print_tables()
 			continue
+		elif current_input.isnumeric():
+			n = int(current_input)
+			hotdoc.print_tables(n)
+			continue
 
 		start_time = time.perf_counter()
 		parts = current_input.split(" ")

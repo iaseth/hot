@@ -113,10 +113,11 @@ class HotDocument:
 			joined_tables.append(joined_table)
 		self.tables = joined_tables
 
-	def print_tables(self):
-		n = 10 if self.table_count == 1 else 5
+	def print_tables(self, n=None):
+		if not n:
+			n = 10 if self.table_count == 1 else default
 		for table in self.tables:
-			table.print_table()
+			table.print_table(n)
 
 	def print_summary(self):
 		for table in self.tables:
