@@ -178,6 +178,10 @@ class HotTable:
 			col_indexes = self.get_column_indexes(args.keep)
 			self.keep_certain_columns(col_indexes)
 
+		if args.move:
+			for arg in args.move:
+				self.move_columns(arg)
+
 		if args.swap:
 			for arg in args.swap:
 				self.swap_two_columns(arg)
@@ -281,6 +285,9 @@ class HotTable:
 			return [x for i, x in enumerate(arr) if i in col_indexes]
 		self.headers = keep_filter(self.headers)
 		self.rows = [keep_filter(row) for row in self.rows]
+
+	def move_columns(self, arg):
+		pass
 
 	def swap_two_columns(self, arg):
 		column_indexes = self.get_column_indexes([arg], separator=":")

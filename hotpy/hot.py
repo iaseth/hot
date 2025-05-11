@@ -96,6 +96,7 @@ def main():
 
 	parser.add_argument("--drop", nargs='+', help="Drop certain columns")
 	parser.add_argument("--keep", nargs='+', help="Keep certain columns")
+	parser.add_argument("--move", nargs='+', help="Move columns to Nth position")
 	parser.add_argument("--swap", nargs='+', help="Swap two columns")
 	parser.add_argument("--min", nargs='+', help="Filter rows by minimum value for column")
 	parser.add_argument("--max", nargs='+', help="Filter rows by maximum value for column")
