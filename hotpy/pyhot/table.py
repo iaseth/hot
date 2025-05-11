@@ -72,12 +72,12 @@ class HotTable:
 
 	def is_acceptable(self):
 		args = self.args
-		if args.minr and self.row_count < args.minr: return False
-		if args.maxr and self.row_count > args.maxr: return False
-		if args.exact and self.row_count != args.exact: return False
-		if args.minc and self.col_count < args.minc: return False
-		if args.maxc and self.col_count > args.maxc: return False
-		if args.exactc and self.col_count != args.exactc: return False
+		if args.min_rows and self.row_count < args.min_rows: return False
+		if args.max_rows and self.row_count > args.max_rows: return False
+		if args.exact_rows and self.row_count != args.exact_rows: return False
+		if args.min_cols and self.col_count < args.min_cols: return False
+		if args.max_cols and self.col_count > args.max_cols: return False
+		if args.exact_cols and self.col_count != args.exact_cols: return False
 		return True
 
 	def get_column_index(self, name, silent=False):
