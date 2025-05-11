@@ -54,14 +54,10 @@ def main():
 	parser.add_argument("--t1", default=None, help="Filter tables before processing")
 	parser.add_argument("--t2", default=None, help="Filter tables after processing")
 
-	parser.add_argument("--pre-mirror", default=False, action="store_true", help="Mirror columns (pre processing)")
-	parser.add_argument("--pre-snip", default=None, help="Cut snippet from c1, r1 to c2, r2 (pre processing)")
-	parser.add_argument("--pre-transpose", default=False, action="store_true", help="Interchange rows and columns (pre processing)")
-
-	parser.add_argument("--longest", action="store_true", help="Select the table with most rows")
-	parser.add_argument("--widest", action="store_true", help="Select the table with most cols")
-	parser.add_argument("-j", "--join", action="store_true", help="Join tables with same number of rows")
-	parser.add_argument("-u", "--union", action="store_true", help="Combine tables with same number of cols")
+	hot_parser.add_argument("--longest", action="store_true", help="Select the table with most rows")
+	hot_parser.add_argument("--widest", action="store_true", help="Select the table with most cols")
+	hot_parser.add_argument("-j", "--join", action="store_true", help="Join tables with same number of rows")
+	hot_parser.add_argument("-u", "--union", action="store_true", help="Combine tables with same number of cols")
 
 	parser.add_argument("--minr", type=int, default=None, help="Minimum table rows expected")
 	parser.add_argument("--maxr", type=int, default=None, help="Maximum table rows expected")
@@ -140,10 +136,19 @@ def main():
 		print("No tables found!")
 		return
 
-	hotdoc.post_processing()
 	for flag in hot_parser:
 		for table in hotdoc.tables:
-			manipulate_table(table, flag)
+			match flag.flag:
+				case "--longest":
+					hotdoc.tables = hotdoc.longest_tables()
+				case "--widest":
+					hotdoc.tables = hotdoc.widest_tables()
+				case "--join":
+					hotdoc.join_tables()
+				case "--union":
+					hotdoc.union_tables()
+				case _:
+					manipulate_table(table, flag)
 	hotdoc.produce_output()
 
 
