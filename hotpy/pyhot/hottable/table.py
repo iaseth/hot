@@ -10,7 +10,7 @@ from .table_utils import camelize, get_snippet_args
 from ..utils import filter_list
 from ..utils import to_bool, to_int, to_float, to_str
 from ..utils import strip_leading_dots, to_rounded
-from ..utils import is_int
+from ..utils import is_int, pop_first_parenthesis_value
 
 
 
@@ -198,6 +198,18 @@ class HotTable:
 		swap(self.headers)
 		for row in self.rows:
 			swap(row)
+
+	def extract_paren_args(self, arg):
+		cdx = self.get_column_index(arg)
+		if cdx is None: return
+		if cdx >= self.col_count: return
+
+		self.headers.insert(cdx+1, "New")
+		for row in self.rows:
+			c1, c2 = pop_first_parenthesis_value(row[cdx])
+			row[cdx] = c1
+			row.insert(cdx+1, c2)
+
 
 	def min_max_filtering(self, args, max=False):
 		if not args: return

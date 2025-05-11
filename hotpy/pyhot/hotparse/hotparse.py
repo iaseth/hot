@@ -31,8 +31,11 @@ class HotFlag:
 		self.args.append(HotArg(arg))
 
 	def forEachArg(self, func):
-		for arg in self.args:
-			func(arg.arg)
+		if not self.args:
+			print(f"No args provided for {func.__name__}!")
+		else:
+			for arg in self.args:
+				func(arg.arg)
 
 	def row(self, idx=None):
 		if idx is None:
