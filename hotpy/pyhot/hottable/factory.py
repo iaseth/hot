@@ -1,8 +1,8 @@
 import csv
 
 from .table import HotTable
-from .utils import filter_list
-from .utils import is_int, is_float
+from ..utils import filter_list
+from ..utils import is_int, is_float
 
 
 

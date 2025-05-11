@@ -2,7 +2,7 @@
 
 import argparse
 
-from pyhot.document import HotDocument
+from pyhot.hottable.document import HotDocument
 from pyhot.hotparse import HotParse
 from pyhot.manipulation import manipulate_document
 

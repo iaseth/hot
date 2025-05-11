@@ -5,10 +5,10 @@ from bs4 import BeautifulSoup
 import pyperclip
 
 from .factory import create_table_from_table_tag, create_table_from_jo, create_table_from_csv
-from .fetch import get_page_html
-from .output import document_to_html5, document_to_html, document_to_xml
 from .table import HotTable
-from .utils import filter_list
+from ..fetch import get_page_html
+from ..output import document_to_html5, document_to_html, document_to_xml
+from ..utils import filter_list
 
 
 

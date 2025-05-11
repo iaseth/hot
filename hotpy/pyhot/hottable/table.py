@@ -7,10 +7,10 @@ from tabulate import tabulate
 
 from .evaluate import alphabet, alphabet_upper, evaluate_template
 from .table_utils import camelize, get_snippet_args
-from .utils import filter_list
-from .utils import to_bool, to_int, to_float, to_str
-from .utils import strip_leading_dots, to_rounded
-from .utils import is_int
+from ..utils import filter_list
+from ..utils import to_bool, to_int, to_float, to_str
+from ..utils import strip_leading_dots, to_rounded
+from ..utils import is_int
 
 
 
