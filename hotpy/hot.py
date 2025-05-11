@@ -4,7 +4,7 @@ import argparse
 
 from pyhot.document import HotDocument
 from pyhot.hotparse import HotParse
-from pyhot.manipulation import manipulate_table
+from pyhot.manipulation import manipulate_document
 
 
 
@@ -137,18 +137,7 @@ def main():
 		return
 
 	for flag in hot_parser:
-		for table in hotdoc.tables:
-			match flag.flag:
-				case "--longest":
-					hotdoc.tables = hotdoc.longest_tables()
-				case "--widest":
-					hotdoc.tables = hotdoc.widest_tables()
-				case "--join":
-					hotdoc.join_tables()
-				case "--union":
-					hotdoc.union_tables()
-				case _:
-					manipulate_table(table, flag)
+		manipulate_document(hotdoc, flag)
 	hotdoc.produce_output()
 
 

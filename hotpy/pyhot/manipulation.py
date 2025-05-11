@@ -98,3 +98,19 @@ def manipulate_table(table, flag):
 			print(f"Unknown manipulator: '{manipulator}'")
 
 
+def manipulate_document(hotdoc, flag):
+	manipulator = flag.flag
+
+	match manipulator:
+		case "--longest":
+			hotdoc.tables = hotdoc.longest_tables()
+		case "--widest":
+			hotdoc.tables = hotdoc.widest_tables()
+		case "--join":
+			hotdoc.join_tables()
+		case "--union":
+			hotdoc.union_tables()
+		case _:
+			for table in hotdoc.tables:
+				manipulate_table(table, flag)
+
