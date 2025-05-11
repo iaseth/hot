@@ -33,6 +33,14 @@ def manipulate_table(table, flag):
 		case "--rstrip": table.convert_columns_to_x(args, str.rstrip)
 		case "--shave": table.shave_headers(args)
 
+		case "--kilo": table.scale_columns(args, divisor=1000)
+		case "--mega": table.scale_columns(args, divisor=1000_000)
+		case "--giga": table.scale_columns(args, divisor=1000_000_000)
+		case "--centi": table.scale_columns(args, multiplier=100)
+		case "--milli": table.scale_columns(args, multiplier=1000)
+		case "--micro": table.scale_columns(args, multiplier=1000_000)
+		case "--nano": table.scale_columns(args, multiplier=1000_000_000)
+
 		case _:
 			print(f"Unknown manipulator: '{manipulator}'")
 

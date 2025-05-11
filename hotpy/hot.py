@@ -81,14 +81,14 @@ def main():
 	hot_parser.add_argument("--rstrip", nargs='+', help="Strip column values from right")
 	hot_parser.add_argument("--shave", action="store_true", help="Limit column names to first word")
 
-	parser.add_argument("--kilo", nargs='+', help="Divide column values by 1000")
-	parser.add_argument("--mega", nargs='+', help="Divide column values by 1000,000")
-	parser.add_argument("--giga", nargs='+', help="Divide column values by 1000,000,000")
+	hot_parser.add_argument("--kilo", nargs='+', help="Divide column values by 1000")
+	hot_parser.add_argument("--mega", nargs='+', help="Divide column values by 1000,000")
+	hot_parser.add_argument("--giga", nargs='+', help="Divide column values by 1000,000,000")
 
-	parser.add_argument("--centi", nargs='+', help="Multiply column values by 100")
-	parser.add_argument("--milli", nargs='+', help="Multiply column values by 1000")
-	parser.add_argument("--micro", nargs='+', help="Multiply column values by 1000,000")
-	parser.add_argument("--nano", nargs='+', help="Multiply column values by 1000,000,000")
+	hot_parser.add_argument("--centi", nargs='+', help="Multiply column values by 100")
+	hot_parser.add_argument("--milli", nargs='+', help="Multiply column values by 1000")
+	hot_parser.add_argument("--micro", nargs='+', help="Multiply column values by 1000,000")
+	hot_parser.add_argument("--nano", nargs='+', help="Multiply column values by 1000,000,000")
 
 	parser.add_argument("-t", "--template", nargs='+', help="Add a template column")
 	parser.add_argument("-f", "--filter", nargs='+', help="Filter rows by condition")

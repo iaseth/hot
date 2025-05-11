@@ -115,19 +115,9 @@ class HotTable:
 
 	def post_processing(self):
 		args = self.args
-		self.perform_scaling()
 		self.add_template_columns()
 		self.perform_ordering()
 		self.perform_filtering()
-
-	def perform_scaling(self):
-		self.scale_columns(self.args.kilo, divisor=1000)
-		self.scale_columns(self.args.mega, divisor=1000_000)
-		self.scale_columns(self.args.giga, divisor=1000_000_000)
-		self.scale_columns(self.args.centi, multiplier=100)
-		self.scale_columns(self.args.milli, multiplier=1000)
-		self.scale_columns(self.args.micro, multiplier=1000_000)
-		self.scale_columns(self.args.nano, multiplier=1000_000_000)
 
 	def add_template_columns(self):
 		if self.args.template:
