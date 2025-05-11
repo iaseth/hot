@@ -70,12 +70,8 @@ def manipulate_table(table, flag):
 
 		case "--drop": table.drop_certain_columns(column_indexes)
 		case "--keep": table.keep_certain_columns(column_indexes)
-		case "--move":
-			for arg in args:
-				table.move_columns(arg)
-		case "--swap":
-			for arg in args.swap:
-				table.swap_two_columns(arg)
+		case "--move": flag.forEachArg(table.move_columns)
+		case "--swap": flag.forEachArg(table.swap_two_columns)
 
 		case "--min": table.min_max_filtering(args, max=False)
 		case "--max": table.min_max_filtering(args, max=True)

@@ -30,6 +30,10 @@ class HotFlag:
 	def add_arg(self, arg):
 		self.args.append(HotArg(arg))
 
+	def forEachArg(self, func):
+		for arg in self.args:
+			func(arg.arg)
+
 	def row(self, idx=None):
 		if idx is None:
 			return [self.flag, self.count, self.args]
