@@ -24,3 +24,9 @@ def filter_list(arr, s):
 	except Exception as e:
 		raise ValueError(f"Invalid filter string: {s}") from e
 
+
+def filter_list_by_args(arr, args):
+	for arg in args:
+		arr = filter_list(arr, arg)
+	return arr
+

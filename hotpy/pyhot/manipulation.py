@@ -2,6 +2,7 @@ import uuid
 
 from .convert_utils import to_bool, to_int, to_float, to_str
 from .convert_utils import strip_leading_dots, to_rounded
+from .filter_list import filter_list_by_args
 
 
 
@@ -55,7 +56,32 @@ def manipulate_table(table, flag):
 		case "-d" | "--descending":
 			col_index = table.get_column_index(first_arg)
 			table.rows = sorted(table.rows, key=lambda x:x[col_index], reverse=True)
-		case "-r" | "--reverse": table.rows.reverse()
+		case "-R" | "--reverse": table.rows.reverse()
+
+		# filtering stuff
+		case "-r" | "--rows":
+			table.rows = filter_list_by_args(table.rows, args)
+
+		case "-c" |  "--cols":
+			table.headers = filter_list_by_args(table.headers, args)
+			table.rows = [filter_list_by_args(row, args) for row in table.rows]
+
+		case "--min": table.min_max_filtering(args, max=False)
+		case "--max": table.min_max_filtering(args, max=True)
+		case "--random": table.select_random_rows(10, preserve_order=True)
+		case "--randomx": table.select_random_rows(10, preserve_order=False)
+
+		case "--head": table.rows = table.rows[:10]
+		case "--tail": table.rows = table.rows[-10:]
+		case "--middle":
+			start = (table.row_count - 10) // 2
+			end = start + 10
+			table.rows = table.rows[start:end]
+
+		case "--mirror": table.mirror_table()
+		case "--shuffle": random.shuffle(table.rows)
+		case "--snip": table.snip_table(args)
+		case "--transpose": table.transpose_table()
 
 		case _:
 			print(f"Unknown manipulator: '{manipulator}'")

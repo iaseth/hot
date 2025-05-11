@@ -145,31 +145,6 @@ class HotTable:
 			for arg in args.swap:
 				self.swap_two_columns(arg)
 
-		self.min_max_filtering(args.min, max=False)
-		self.min_max_filtering(args.max, max=True)
-
-		if args.r2:
-			self.rows = filter_list(self.rows, args.r2)
-
-		if args.c2:
-			self.headers = filter_list(self.headers, args.c2)
-			self.rows = [filter_list(row, args.c2) for row in self.rows]
-
-		if args.random: self.select_random_rows(args.random, preserve_order=True)
-		if args.randomx: self.select_random_rows(args.randomx, preserve_order=False)
-
-		if args.head is not None: self.rows = self.rows[:args.head]
-		if args.tail is not None: self.rows = self.rows[-args.tail:]
-		if args.middle is not None and 0 < args.middle < self.row_count:
-			start = (self.row_count - args.middle) // 2
-			end = start + args.middle
-			self.rows = self.rows[start:end]
-
-		if args.mirror: self.mirror_table()
-		if args.shuffle: random.shuffle(self.rows)
-		if args.snip: self.snip_table(args.snip)
-		if args.transpose: self.transpose_table()
-
 
 	def shave_headers(self):
 		self.headers = [header.split(" ")[0] for header in self.headers]
