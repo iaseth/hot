@@ -1,6 +1,6 @@
 import uuid
 
-from .filter_list import filter_list_by_args
+from .utils import filter_list_by_args
 from .utils import to_bool, to_int, to_float, to_str
 from .utils import strip_leading_dots, to_rounded
 
