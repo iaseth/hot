@@ -135,6 +135,16 @@ class HotTable:
 	def print_tabulate(self):
 		print(self.get_tabulate())
 
+	def print_table(self, n=10):
+		table_text = tabulate(
+			self.rows[:n],
+			headers=self.headers,
+			tablefmt=self.args.fmt
+		)
+		print(table_text)
+		if n < self.row_count:
+			print(f"({self.row_count-n} more rows in table)")
+
 	def join(self, other):
 		result = HotTable(self.document)
 		result.headers = [*self.headers, *other.headers]

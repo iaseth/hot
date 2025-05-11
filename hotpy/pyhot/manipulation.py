@@ -92,7 +92,7 @@ def manipulate_table(table, flag):
 		case "--snip": table.snip_table(first_arg)
 		case "--transpose": table.transpose_table()
 
-		case "--print": table.print_tabulate()
+		case "-p" | "--print": table.print_table()
 
 		case _:
 			print(f"Unknown manipulator: {flag}")
@@ -117,11 +117,19 @@ def manipulate_document(hotdoc, flag):
 def start_repl(hotdoc):
 	while True:
 		current_input = input("Hot >>> ").strip()
-		if current_input in ["quit", "exit"]:
+		if current_input in ["q", "quit", "exit"]:
 			break
 
 		parts = current_input.split(" ")
 		main, *rest = [part.strip() for part in parts]
-		flag = HotFlag(f"--{main}", args=rest)
+		if len(main) == 1:
+			main = f"-{main}"
+		elif main[0] != "-":
+			main = f"--{main}"
+
+		flag = HotFlag(main)
+		for arg in rest:
+			flag.add_arg(arg)
+
 		manipulate_document(hotdoc, flag)
 

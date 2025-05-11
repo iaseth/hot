@@ -11,9 +11,9 @@ class HotArg:
 
 
 class HotFlag:
-	def __init__(self, arg, args=None):
+	def __init__(self, arg):
 		self.flag = arg
-		self.args = args or []
+		self.args = []
 
 	def __iter__(self):
 		return iter(self.args)
