@@ -121,7 +121,7 @@ def main():
 	parser.add_argument("--uuid", nargs='?', const="UUID", default=None, help="Add uuid to table rows")
 
 	args, input_paths = parser.parse_known_args()
-	if not input_paths:
+	if not input_paths and not args.paste:
 		parser.print_help()
 		return
 

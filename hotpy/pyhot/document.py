@@ -29,6 +29,8 @@ class HotDocument:
 		for input_path in input_paths:
 			if os.path.isfile(input_path):
 				self.add_hot_tables_from_file(input_path)
+			elif input_path.startswith("-"):
+				print(f"Unknown flag: '{input_path}'")
 			elif "." in input_path:
 				html = get_page_html(input_path, fetch=self.args.fetch, cache=self.args.cache)
 				self.add_hot_tables_from_html(html)
