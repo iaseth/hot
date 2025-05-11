@@ -3,6 +3,7 @@
 import argparse
 
 from pyhot.document import HotDocument
+from pyhot.hotparse import HotParse
 
 
 
@@ -120,7 +121,11 @@ def main():
 	parser.add_argument("--index", nargs='?', const="Index", default=None, help="Add index to table rows")
 	parser.add_argument("--uuid", nargs='?', const="UUID", default=None, help="Add uuid to table rows")
 
-	args, input_paths = parser.parse_known_args()
+	args, rest = parser.parse_known_args()
+	hot_parser = HotParse()
+	hotflags = hot_parser.parse_args(rest)
+
+	input_paths = [arg.arg for arg in hot_parser.args]
 	if not input_paths and not args.paste:
 		parser.print_help()
 		return
