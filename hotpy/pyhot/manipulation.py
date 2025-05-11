@@ -1,5 +1,6 @@
 import uuid
 
+from .hotparse import HotFlag
 from .utils import filter_list_by_args
 from .utils import to_bool, to_int, to_float, to_str
 from .utils import strip_leading_dots, to_rounded
@@ -91,8 +92,10 @@ def manipulate_table(table, flag):
 		case "--snip": table.snip_table(first_arg)
 		case "--transpose": table.transpose_table()
 
+		case "--print": table.print_tabulate()
+
 		case _:
-			print(f"Unknown manipulator: '{manipulator}'")
+			print(f"Unknown manipulator: {flag}")
 
 
 def manipulate_document(hotdoc, flag):
@@ -110,4 +113,15 @@ def manipulate_document(hotdoc, flag):
 		case _:
 			for table in hotdoc.tables:
 				manipulate_table(table, flag)
+
+def start_repl(hotdoc):
+	while True:
+		current_input = input("Hot >>> ").strip()
+		if current_input in ["quit", "exit"]:
+			break
+
+		parts = current_input.split(" ")
+		main, *rest = [part.strip() for part in parts]
+		flag = HotFlag(f"--{main}", args=rest)
+		manipulate_document(hotdoc, flag)
 

@@ -11,10 +11,9 @@ class HotArg:
 
 
 class HotFlag:
-	def __init__(self, arg):
+	def __init__(self, arg, args=None):
 		self.flag = arg
-		self.args = []
-		self.n = 0
+		self.args = args or []
 
 	def __iter__(self):
 		return iter(self.args)
@@ -44,7 +43,7 @@ class HotFlag:
 			return [idx, *self.row()]
 
 	def __repr__(self):
-		return f"HotArg ('{self.flag}', {self.args})"
+		return f"HotFlag ('{self.flag}', {self.args})"
 
 
 class HotParse(HotFlag):

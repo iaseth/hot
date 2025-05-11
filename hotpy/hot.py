@@ -4,7 +4,7 @@ import argparse
 
 from pyhot.hottable.document import HotDocument
 from pyhot.hotparse import HotParse
-from pyhot.manipulation import manipulate_document
+from pyhot.manipulation import manipulate_document, start_repl
 
 
 
@@ -31,6 +31,7 @@ def main():
 	parser.add_argument("-v", "--paste", action="store_true", help="Take input HTML from clipboard")
 	parser.add_argument("--paste-path", action="store_true", help="Take input path from clipboard")
 
+	parser.add_argument("--repl", default=False, action="store_true", help="Start in REPL mode")
 	parser.add_argument("-o", "--output", default=None, help="Optional output file")
 	parser.add_argument("--csv", default=False, action="store_true", help="Output as CSV")
 	parser.add_argument("--html", default=False, action="store_true", help="Output as HTML")
@@ -126,20 +127,19 @@ def main():
 	hot_parser.parse_args(rest)
 
 	input_paths = [arg.arg for arg in hot_parser.args]
-	if not input_paths and not args.paste:
-		parser.print_help()
-		return
-
 	hotdoc = HotDocument(args)
 	hotdoc.add_hot_tables_from_args(input_paths)
 
-	if hotdoc.is_empty:
+	if args.repl or not input_paths:
+		print(f"Lets go to the REPL!")
+		start_repl(hotdoc)
+	elif hotdoc.is_empty:
 		print("No tables found!")
 		return
-
-	for flag in hot_parser:
-		manipulate_document(hotdoc, flag)
-	hotdoc.produce_output()
+	else:
+		for flag in hot_parser:
+			manipulate_document(hotdoc, flag)
+		hotdoc.produce_output()
 
 
 if __name__ == '__main__':
