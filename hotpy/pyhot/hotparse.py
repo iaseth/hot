@@ -23,6 +23,10 @@ class HotFlag:
 	def count(self):
 		return len(self.args)
 
+	@property
+	def string_args(self):
+		return [arg.arg for arg in self.args]
+
 	def add_arg(self, arg):
 		self.args.append(HotArg(arg))
 

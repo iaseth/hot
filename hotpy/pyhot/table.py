@@ -115,25 +115,10 @@ class HotTable:
 
 	def post_processing(self):
 		args = self.args
-		self.perform_conversions()
 		self.perform_scaling()
 		self.add_template_columns()
 		self.perform_ordering()
 		self.perform_filtering()
-
-	def perform_conversions(self):
-		self.convert_columns_to_x(self.args.bool, to_bool)
-		self.convert_columns_to_x(self.args.int, to_int)
-		self.convert_columns_to_x(self.args.float, to_float)
-
-		self.convert_columns_to_x(self.args.str, to_str)
-		self.convert_columns_to_x(self.args.lower, str.lower)
-		self.convert_columns_to_x(self.args.upper, str.upper)
-		self.convert_columns_to_x(self.args.strip, str.strip)
-		self.convert_columns_to_x(self.args.lstrip, str.lstrip)
-		self.convert_columns_to_x(self.args.rstrip, str.rstrip)
-		if self.args.shave:
-			self.shave_headers()
 
 	def perform_scaling(self):
 		self.scale_columns(self.args.kilo, divisor=1000)
