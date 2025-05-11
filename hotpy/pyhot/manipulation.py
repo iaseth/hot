@@ -1,9 +1,10 @@
+import time
 import uuid
 
 from .hotparse import HotFlag
-from .utils import filter_list_by_args
-from .utils import to_bool, to_int, to_float, to_str
-from .utils import strip_leading_dots, to_rounded
+from .utils import filter_list_by_args, strip_leading_dots
+from .utils import to_bool, to_int, to_float, to_str, to_rounded
+from .utils import format_duration_ns
 
 
 
@@ -119,7 +120,11 @@ def start_repl(hotdoc):
 		current_input = input("Hot >>> ").strip()
 		if current_input in ["q", "quit", "exit"]:
 			break
+		elif not current_input:
+			hotdoc.print_tables()
+			continue
 
+		start_time = time.perf_counter()
 		parts = current_input.split(" ")
 		main, *rest = [part.strip() for part in parts]
 		if len(main) == 1:
@@ -132,4 +137,10 @@ def start_repl(hotdoc):
 			flag.add_arg(arg)
 
 		manipulate_document(hotdoc, flag)
+		end_time = time.perf_counter()
+		hotdoc.print_tables()
+
+		execution_time = end_time - start_time
+		formatted_time = format_duration_ns(execution_time * 1000_000_000)
+		print(f"Execution finished in {formatted_time} seconds")
 

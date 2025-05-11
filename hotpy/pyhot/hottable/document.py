@@ -17,6 +17,10 @@ class HotDocument:
 		self.args = args
 		self.tables = []
 
+	@property
+	def table_count(self):
+		return len(self.tables)
+
 	def add_hot_tables_from_args(self, input_paths):
 		if self.args.paste:
 			html = pyperclip.paste()
@@ -108,6 +112,11 @@ class HotDocument:
 				joined_table = joined_table.join(table)
 			joined_tables.append(joined_table)
 		self.tables = joined_tables
+
+	def print_tables(self):
+		n = 10 if self.table_count == 1 else 5
+		for table in self.tables:
+			table.print_table()
 
 	def print_summary(self):
 		for table in self.tables:
