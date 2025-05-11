@@ -209,11 +209,17 @@ class HotTable:
 		self.extract_column_between_xny(arg, start_char='[', end_char=']')
 
 	def extract_column_between_xny(self, arg, start_char, end_char):
+		header = "New"
+		eq_idx = arg.find("=")
+		if eq_idx != -1:
+			header = arg[eq_idx+1:]
+			arg = arg[:eq_idx]
+
 		cdx = self.get_column_index(arg)
 		if cdx is None: return
 		if cdx >= self.col_count: return
 
-		self.headers.insert(cdx+1, "New")
+		self.headers.insert(cdx+1, header)
 		for row in self.rows:
 			c1, c2 = pop_first_value_between_xny(row[cdx], start_char=start_char, end_char=end_char)
 			row[cdx] = c1
