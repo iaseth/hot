@@ -27,6 +27,9 @@ def start_repl(hotdoc):
 			current_input = input("Hot >>> ").strip()
 			if current_input in ["q", "quit", "exit"]:
 				break
+			elif current_input in ["qq"]:
+				hotdoc.save_document()
+				break
 			elif not current_input:
 				hotdoc.print_tables()
 				continue

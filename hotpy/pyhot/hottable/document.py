@@ -21,12 +21,17 @@ class HotDocument:
 	def table_count(self):
 		return len(self.tables)
 
+	def empty_document(self):
+		self.tables = []
+
 	def load_document(self, json_path="hotdoc.json"):
 		self.add_hot_tables_from_json_file(json_path)
 
 	def save_document(self, json_path="hotdoc.json"):
+		if not self.tables: return
 		with open(json_path, "w") as f:
 			f.write(self.json_text)
+		print(f"Saved: '{json_path}' ({self.table_count} tables)")
 
 	def add_hot_tables_from_args(self, input_paths):
 		if self.args.paste:
@@ -122,7 +127,7 @@ class HotDocument:
 
 	def print_tables(self, n=None):
 		if not n:
-			n = 10 if self.table_count == 1 else default
+			n = 10 if self.table_count == 1 else 5
 		for table in self.tables:
 			table.print_table(n)
 

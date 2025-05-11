@@ -106,6 +106,8 @@ def manipulate_document(hotdoc, flag):
 			hotdoc.tables = hotdoc.widest_tables()
 		case "--join": hotdoc.join_tables()
 		case "--union": hotdoc.union_tables()
+
+		case "--empty": hotdoc.empty_document()
 		case "--load": hotdoc.load_document()
 		case "--save": hotdoc.save_document()
 		case _:
