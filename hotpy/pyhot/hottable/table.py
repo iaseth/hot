@@ -160,6 +160,14 @@ class HotTable:
 					row[col_index] = to_rounded(row[col_index], digits)
 
 
+	def sort_rows(self, arg, reverse=False):
+		cdx = self.get_column_index(arg)
+		if cdx is None:
+			print(f"Invalid column for sorting: '{arg}'")
+			return
+		self.rows = sorted(self.rows, key=lambda x:x[cdx], reverse=reverse)
+
+
 	def scale_columns(self, args, divisor=0, multiplier=0):
 		if not args: return None
 		col_indexes = self.get_column_indexes(args)

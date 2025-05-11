@@ -52,12 +52,8 @@ def manipulate_table(table, flag):
 		case "--round": table.round_columns_to_n_digits(args)
 
 		# ordering stuff
-		case "-a" | "--ascending":
-			col_index = table.get_column_index(first_arg)
-			table.rows = sorted(table.rows, key=lambda x:x[col_index])
-		case "-d" | "--descending":
-			col_index = table.get_column_index(first_arg)
-			table.rows = sorted(table.rows, key=lambda x:x[col_index], reverse=True)
+		case "-a" | "--ascending": table.sort_rows(first_arg)
+		case "-d" | "--descending": table.sort_rows(first_arg, reverse=True)
 		case "-R" | "--reverse": table.rows.reverse()
 
 		# filtering stuff
