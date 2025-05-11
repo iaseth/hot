@@ -4,7 +4,8 @@ import argparse
 
 from pyhot.hottable.document import HotDocument
 from pyhot.hotparse import HotParse
-from pyhot.manipulation import manipulate_document, start_repl
+from pyhot.manipulation import manipulate_document
+from pyhot.repl import start_repl
 
 
 
