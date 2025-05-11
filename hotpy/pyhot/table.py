@@ -115,7 +115,6 @@ class HotTable:
 
 	def post_processing(self):
 		args = self.args
-		self.perform_ordering()
 		self.perform_filtering()
 
 	def process_template_args(self, args):
@@ -127,17 +126,6 @@ class HotTable:
 				header, template = ("@", arg)
 			self.headers = [*self.headers, header]
 			self.rows = [[*row, evaluate_template(template, row)] for row in self.rows]
-
-	def perform_ordering(self):
-		if self.args.ascending:
-			col_index = self.get_column_index(self.args.ascending)
-			self.rows = sorted(self.rows, key=lambda x:x[col_index])
-		elif self.args.descending:
-			col_index = self.get_column_index(self.args.descending)
-			self.rows = sorted(self.rows, key=lambda x:x[col_index], reverse=True)
-
-		if self.args.reverse:
-			self.rows.reverse()
 
 	def perform_filtering(self):
 		args = self.args

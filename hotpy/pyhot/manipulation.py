@@ -9,6 +9,7 @@ def manipulate_table(table, flag):
 	manipulator = flag.flag
 	hotargs = flag.args
 	args = flag.string_args
+	first_arg = args[0] if args else None
 
 	match manipulator:
 		# index addition stuff
@@ -46,6 +47,15 @@ def manipulate_table(table, flag):
 
 		case "-t" | "--template": table.process_template_args(args)
 		case "--round": table.round_columns_to_n_digits(args)
+
+		# ordering stuff
+		case "-a" | "--ascending":
+			col_index = table.get_column_index(first_arg)
+			table.rows = sorted(table.rows, key=lambda x:x[col_index])
+		case "-d" | "--descending":
+			col_index = table.get_column_index(first_arg)
+			table.rows = sorted(table.rows, key=lambda x:x[col_index], reverse=True)
+		case "-r" | "--reverse": table.rows.reverse()
 
 		case _:
 			print(f"Unknown manipulator: '{manipulator}'")

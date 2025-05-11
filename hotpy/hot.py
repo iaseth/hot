@@ -94,9 +94,9 @@ def main():
 	hot_parser.add_argument("-f", "--filter", nargs='+', help="Filter rows by condition")
 	hot_parser.add_argument("--round", nargs='+', help="Round column values to n digits")
 
-	parser.add_argument("-a", "--ascending", default=None, help="Sort table rows by nth column (ascending order)")
-	parser.add_argument("-d", "--descending", default=None, help="Sort table rows by nth column (descending order)")
-	parser.add_argument("-r", "--reverse", action="store_true", help="Reverse table rows order")
+	hot_parser.add_argument("-a", "--ascending", default=None, help="Sort table rows by nth column (ascending order)")
+	hot_parser.add_argument("-d", "--descending", default=None, help="Sort table rows by nth column (descending order)")
+	hot_parser.add_argument("-r", "--reverse", action="store_true", help="Reverse table rows order")
 
 	parser.add_argument("--drop", nargs='+', help="Drop certain columns")
 	parser.add_argument("--keep", nargs='+', help="Keep certain columns")
