@@ -90,9 +90,9 @@ def main():
 	hot_parser.add_argument("--micro", nargs='+', help="Multiply column values by 1000,000")
 	hot_parser.add_argument("--nano", nargs='+', help="Multiply column values by 1000,000,000")
 
-	parser.add_argument("-t", "--template", nargs='+', help="Add a template column")
-	parser.add_argument("-f", "--filter", nargs='+', help="Filter rows by condition")
-	parser.add_argument("--round", nargs='+', help="Round column values to n digits")
+	hot_parser.add_argument("-t", "--template", nargs='+', help="Add a template column")
+	hot_parser.add_argument("-f", "--filter", nargs='+', help="Filter rows by condition")
+	hot_parser.add_argument("--round", nargs='+', help="Round column values to n digits")
 
 	parser.add_argument("-a", "--ascending", default=None, help="Sort table rows by nth column (ascending order)")
 	parser.add_argument("-d", "--descending", default=None, help="Sort table rows by nth column (descending order)")

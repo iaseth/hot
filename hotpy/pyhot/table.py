@@ -115,21 +115,18 @@ class HotTable:
 
 	def post_processing(self):
 		args = self.args
-		self.add_template_columns()
 		self.perform_ordering()
 		self.perform_filtering()
 
-	def add_template_columns(self):
-		if self.args.template:
-			for arg in self.args.template:
-				parts = arg.split("=")
-				if len(parts) == 2:
-					header, template = parts
-				else:
-					header, template = ("@", arg)
-				self.headers = [*self.headers, header]
-				self.rows = [[*row, evaluate_template(template, row)] for row in self.rows]
-		self.round_columns_to_n_digits(self.args.round)
+	def process_template_args(self, args):
+		for arg in args:
+			parts = arg.split("=")
+			if len(parts) == 2:
+				header, template = parts
+			else:
+				header, template = ("@", arg)
+			self.headers = [*self.headers, header]
+			self.rows = [[*row, evaluate_template(template, row)] for row in self.rows]
 
 	def perform_ordering(self):
 		if self.args.ascending:

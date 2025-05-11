@@ -11,6 +11,7 @@ def manipulate_table(table, flag):
 	args = flag.string_args
 
 	match manipulator:
+		# index addition stuff
 		case "--id":
 			table.headers = ["Id", *table.headers]
 			table.rows = [[i+1, *row] for i, row in enumerate(table.rows)]
@@ -21,6 +22,7 @@ def manipulate_table(table, flag):
 			table.headers = ["UUID", *table.headers]
 			table.rows = [[str(uuid.uuid4()), *row] for row in table.rows]
 
+		# conversion stuff
 		case "--bool": table.convert_columns_to_x(args, to_bool)
 		case "--int": table.convert_columns_to_x(args, to_int)
 		case "--float": table.convert_columns_to_x(args, to_float)
@@ -33,6 +35,7 @@ def manipulate_table(table, flag):
 		case "--rstrip": table.convert_columns_to_x(args, str.rstrip)
 		case "--shave": table.shave_headers(args)
 
+		# scaling stuff
 		case "--kilo": table.scale_columns(args, divisor=1000)
 		case "--mega": table.scale_columns(args, divisor=1000_000)
 		case "--giga": table.scale_columns(args, divisor=1000_000_000)
@@ -40,6 +43,9 @@ def manipulate_table(table, flag):
 		case "--milli": table.scale_columns(args, multiplier=1000)
 		case "--micro": table.scale_columns(args, multiplier=1000_000)
 		case "--nano": table.scale_columns(args, multiplier=1000_000_000)
+
+		case "-t" | "--template": table.process_template_args(args)
+		case "--round": table.round_columns_to_n_digits(args)
 
 		case _:
 			print(f"Unknown manipulator: '{manipulator}'")
