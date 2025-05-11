@@ -18,7 +18,8 @@ class CustomFormatter(argparse.HelpFormatter):
 def main():
 	parser = argparse.ArgumentParser(
 		description="Convert webpage tables to JSON table data.",
-		formatter_class=CustomFormatter
+		formatter_class=CustomFormatter,
+		allow_abbrev=False
 	)
 	hot_parser = HotParse()
 
