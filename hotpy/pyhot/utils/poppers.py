@@ -1,9 +1,9 @@
 
 
 
-def pop_first_parenthesis_value(arg, default=None):
-	start = arg.find('(')
-	end = arg.find(')', start)
+def pop_first_value_between_xny(arg, start_char='(', end_char=')', default=None):
+	start = arg.find(start_char)
+	end = arg.find(end_char, start)
 
 	if start != -1 and end != -1:
 		value = arg[start+1:end]

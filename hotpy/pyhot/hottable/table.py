@@ -10,7 +10,7 @@ from .table_utils import camelize, get_snippet_args
 from ..utils import filter_list
 from ..utils import to_bool, to_int, to_float, to_str
 from ..utils import strip_leading_dots, to_rounded
-from ..utils import is_int, pop_first_parenthesis_value
+from ..utils import is_int, pop_first_value_between_xny
 
 
 
@@ -199,14 +199,23 @@ class HotTable:
 		for row in self.rows:
 			swap(row)
 
-	def extract_paren_args(self, arg):
+	def extract_column_between_parens(self, arg):
+		self.extract_column_between_xny(arg, start_char='(', end_char=')')
+
+	def extract_column_between_braces(self, arg):
+		self.extract_column_between_xny(arg, start_char='{', end_char='}')
+
+	def extract_column_between_brackets(self, arg):
+		self.extract_column_between_xny(arg, start_char='[', end_char=']')
+
+	def extract_column_between_xny(self, arg, start_char, end_char):
 		cdx = self.get_column_index(arg)
 		if cdx is None: return
 		if cdx >= self.col_count: return
 
 		self.headers.insert(cdx+1, "New")
 		for row in self.rows:
-			c1, c2 = pop_first_parenthesis_value(row[cdx])
+			c1, c2 = pop_first_value_between_xny(row[cdx], start_char=start_char, end_char=end_char)
 			row[cdx] = c1
 			row.insert(cdx+1, c2)
 

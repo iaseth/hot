@@ -74,7 +74,9 @@ def manipulate_table(table, flag):
 		case "--swap": flag.forEachArg(table.swap_two_columns)
 
 		# undocumented
-		case "--parens": flag.forEachArg(table.extract_paren_args)
+		case "--parens": flag.forEachArg(table.extract_column_between_parens)
+		case "--braces": flag.forEachArg(table.extract_column_between_braces)
+		case "--brackets": flag.forEachArg(table.extract_column_between_brackets)
 
 		case "--min": table.min_max_filtering(args, max=False)
 		case "--max": table.min_max_filtering(args, max=True)
