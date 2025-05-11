@@ -10,7 +10,9 @@ def manipulate_table(table, flag):
 	manipulator = flag.flag
 	hotargs = flag.args
 	args = flag.string_args
+
 	first_arg = args[0] if args else None
+	column_indexes = table.get_column_indexes(args, silent=True)
 
 	match manipulator:
 		# index addition stuff
@@ -66,6 +68,15 @@ def manipulate_table(table, flag):
 			table.headers = filter_list_by_args(table.headers, args)
 			table.rows = [filter_list_by_args(row, args) for row in table.rows]
 
+		case "--drop": table.drop_certain_columns(column_indexes)
+		case "--keep": table.keep_certain_columns(column_indexes)
+		case "--move":
+			for arg in args:
+				table.move_columns(arg)
+		case "--swap":
+			for arg in args.swap:
+				table.swap_two_columns(arg)
+
 		case "--min": table.min_max_filtering(args, max=False)
 		case "--max": table.min_max_filtering(args, max=True)
 		case "--random": table.select_random_rows(10, preserve_order=True)
@@ -80,7 +91,7 @@ def manipulate_table(table, flag):
 
 		case "--mirror": table.mirror_table()
 		case "--shuffle": random.shuffle(table.rows)
-		case "--snip": table.snip_table(args)
+		case "--snip": table.snip_table(first_arg)
 		case "--transpose": table.transpose_table()
 
 		case _:

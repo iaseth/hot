@@ -52,6 +52,7 @@ def main():
 	parser.add_argument("--r1", default=None, help="Filter rows before processing")
 	parser.add_argument("--c1", default=None, help="Filter columns before processing")
 	parser.add_argument("--t1", default=None, help="Filter tables before processing")
+	parser.add_argument("--t2", default=None, help="Filter tables after processing")
 
 	parser.add_argument("--pre-mirror", default=False, action="store_true", help="Mirror columns (pre processing)")
 	parser.add_argument("--pre-snip", default=None, help="Cut snippet from c1, r1 to c2, r2 (pre processing)")
@@ -104,10 +105,6 @@ def main():
 	parser.add_argument("--swap", nargs='+', help="Swap two columns")
 	parser.add_argument("--min", nargs='+', help="Filter rows by minimum value for column")
 	parser.add_argument("--max", nargs='+', help="Filter rows by maximum value for column")
-
-	parser.add_argument("--r2", default=None, help="Filter rows after processing")
-	parser.add_argument("--c2", default=None, help="Filter columns after processing")
-	parser.add_argument("--t2", default=None, help="Filter tables after processing")
 
 	hot_parser.add_argument("-r", "--rows", default=None, help="Filter rows")
 	hot_parser.add_argument("-c", "--cols", default=None, help="Filter columns")

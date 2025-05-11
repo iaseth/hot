@@ -80,7 +80,7 @@ class HotTable:
 		if args.exactc and self.col_count != args.exactc: return False
 		return True
 
-	def get_column_index(self, name):
+	def get_column_index(self, name, silent=False):
 		if name.lower() in self.headers_lower:
 			return self.headers_lower.index(name.lower())
 		elif is_int(name):
@@ -89,13 +89,16 @@ class HotTable:
 			return alphabet.index(name)
 		elif len(name) == 1 and name in alphabet_upper:
 			return self.col_count - (1 + alphabet_upper.index(name))
+		elif name == "":
+			return None
 		else:
-			print(f"Column not found: '{name}'")
+			if not silent:
+				print(f"Column not found: '{name}'")
 			return None
 
-	def get_column_indexes(self, args, separator=","):
+	def get_column_indexes(self, args, separator=",", silent=False):
 		column_names = separator.join(args).split(separator)
-		column_indexes = [self.get_column_index(name) for name in column_names]
+		column_indexes = [self.get_column_index(name, silent=silent) for name in column_names]
 		column_indexes = [idx for idx in column_indexes if idx != None]
 		column_indexes = [idx for idx in column_indexes if abs(idx) < self.col_count]
 		return column_indexes
@@ -108,14 +111,10 @@ class HotTable:
 			self.rows = [filter_list(row, self.args.c1) for row in self.rows]
 
 	def pre_processing(self):
-		args = self.args
-		if args.pre_mirror: self.mirror_table()
-		if args.pre_snip: self.snip_table(args.pre_snip)
-		if args.pre_transpose: self.transpose_table()
+		pass
 
 	def post_processing(self):
-		args = self.args
-		self.perform_filtering()
+		pass
 
 	def process_template_args(self, args):
 		for arg in args:
@@ -126,25 +125,6 @@ class HotTable:
 				header, template = ("@", arg)
 			self.headers = [*self.headers, header]
 			self.rows = [[*row, evaluate_template(template, row)] for row in self.rows]
-
-	def perform_filtering(self):
-		args = self.args
-		if args.drop:
-			col_indexes = self.get_column_indexes(args.drop)
-			self.drop_certain_columns(col_indexes)
-
-		if args.keep:
-			col_indexes = self.get_column_indexes(args.keep)
-			self.keep_certain_columns(col_indexes)
-
-		if args.move:
-			for arg in args.move:
-				self.move_columns(arg)
-
-		if args.swap:
-			for arg in args.swap:
-				self.swap_two_columns(arg)
-
 
 	def shave_headers(self):
 		self.headers = [header.split(" ")[0] for header in self.headers]
