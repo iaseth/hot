@@ -21,6 +21,13 @@ class HotDocument:
 	def table_count(self):
 		return len(self.tables)
 
+	def load_document(self, json_path="hotdoc.json"):
+		self.add_hot_tables_from_json_file(json_path)
+
+	def save_document(self, json_path="hotdoc.json"):
+		with open(json_path, "w") as f:
+			f.write(self.json_text)
+
 	def add_hot_tables_from_args(self, input_paths):
 		if self.args.paste:
 			html = pyperclip.paste()

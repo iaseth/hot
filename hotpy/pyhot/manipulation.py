@@ -104,10 +104,10 @@ def manipulate_document(hotdoc, flag):
 			hotdoc.tables = hotdoc.longest_tables()
 		case "--widest":
 			hotdoc.tables = hotdoc.widest_tables()
-		case "--join":
-			hotdoc.join_tables()
-		case "--union":
-			hotdoc.union_tables()
+		case "--join": hotdoc.join_tables()
+		case "--union": hotdoc.union_tables()
+		case "--load": hotdoc.load_document()
+		case "--save": hotdoc.save_document()
 		case _:
 			for table in hotdoc.tables:
 				manipulate_table(table, flag)
