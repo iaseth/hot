@@ -2,7 +2,7 @@ import csv
 
 from .table import HotTable
 from .filter_list import filter_list
-from .number_utils import is_int, is_float
+from .utils import is_int, is_float
 
 
 

@@ -1,4 +1,4 @@
-from .number_utils import is_int
+from .utils import is_int
 
 
 

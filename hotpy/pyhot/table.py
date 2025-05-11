@@ -5,12 +5,12 @@ import uuid
 
 from tabulate import tabulate
 
-from .convert_utils import to_bool, to_int, to_float, to_str
-from .convert_utils import strip_leading_dots, to_rounded
 from .evaluate import alphabet, alphabet_upper, evaluate_template
 from .filter_list import filter_list
-from .number_utils import is_int
 from .table_utils import camelize, get_snippet_args
+from .utils import to_bool, to_int, to_float, to_str
+from .utils import strip_leading_dots, to_rounded
+from .utils import is_int
 
 
 
