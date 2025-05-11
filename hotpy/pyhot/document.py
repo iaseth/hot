@@ -90,9 +90,6 @@ class HotDocument:
 		return [t for t in self.tables if t.col_count == n]
 
 	def post_processing(self):
-		for table in self.tables:
-			table.pre_processing()
-
 		if self.args.longest:
 			self.tables = self.longest_tables()
 
@@ -117,9 +114,6 @@ class HotDocument:
 					joined_table = joined_table.join(table)
 				joined_tables.append(joined_table)
 			self.tables = joined_tables
-
-		for table in self.tables:
-			table.post_processing()
 
 	def print_summary(self):
 		for table in self.tables:

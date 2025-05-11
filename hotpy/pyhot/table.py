@@ -110,12 +110,6 @@ class HotTable:
 			self.headers = filter_list(self.headers, self.args.c1)
 			self.rows = [filter_list(row, self.args.c1) for row in self.rows]
 
-	def pre_processing(self):
-		pass
-
-	def post_processing(self):
-		pass
-
 	def process_template_args(self, args):
 		for arg in args:
 			parts = arg.split("=")
