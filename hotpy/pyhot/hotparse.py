@@ -58,6 +58,9 @@ class HotParse(HotFlag):
 				current.add_arg(arg)
 		return self.flags
 
+	def add_argument(self, *args, **kwargs):
+		pass
+
 	def row(self):
 		return [ "", "", self.count, self.args ]
 

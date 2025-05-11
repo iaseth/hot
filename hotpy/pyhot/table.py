@@ -120,7 +120,6 @@ class HotTable:
 		self.add_template_columns()
 		self.perform_ordering()
 		self.perform_filtering()
-		self.add_indexes()
 
 	def perform_conversions(self):
 		self.convert_columns_to_x(self.args.bool, to_bool)
@@ -210,17 +209,6 @@ class HotTable:
 		if args.shuffle: random.shuffle(self.rows)
 		if args.snip: self.snip_table(args.snip)
 		if args.transpose: self.transpose_table()
-
-	def add_indexes(self):
-		if self.args.id:
-			self.headers = [self.args.id, *self.headers]
-			self.rows = [[i+1, *row] for i, row in enumerate(self.rows)]
-		if self.args.index:
-			self.headers = [self.args.index, *self.headers]
-			self.rows = [[i, *row] for i, row in enumerate(self.rows)]
-		if self.args.uuid:
-			self.headers = [self.args.uuid, *self.headers]
-			self.rows = [[str(uuid.uuid4()), *row] for row in self.rows]
 
 
 	def shave_headers(self):

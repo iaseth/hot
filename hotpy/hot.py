@@ -120,9 +120,9 @@ def main():
 	parser.add_argument("--snip", default=None, help="Cut snippet from c1, r1 to c2, r2 (post processing)")
 	parser.add_argument("--transpose", default=False, action="store_true", help="Interchange rows and columns (post processing)")
 
-	parser.add_argument("--id", nargs='?', const="Id", default=None, help="Add id to table rows")
-	parser.add_argument("--index", nargs='?', const="Index", default=None, help="Add index to table rows")
-	parser.add_argument("--uuid", nargs='?', const="UUID", default=None, help="Add uuid to table rows")
+	hot_parser.add_argument("--id", nargs='?', const="Id", default=None, help="Add id to table rows")
+	hot_parser.add_argument("--index", nargs='?', const="Index", default=None, help="Add index to table rows")
+	hot_parser.add_argument("--uuid", nargs='?', const="UUID", default=None, help="Add uuid to table rows")
 
 	args, rest = parser.parse_known_args()
 	hot_parser.parse_args(rest)
