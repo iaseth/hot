@@ -131,12 +131,9 @@ def main():
 	hotdoc = HotDocument(args)
 	hotdoc.add_hot_tables_from_args(input_paths)
 
-	if args.repl or not input_paths:
+	if args.repl or hotdoc.is_empty:
 		print(f"Lets go to the REPL!")
 		start_repl(hotdoc)
-	elif hotdoc.is_empty:
-		print("No tables found!")
-		return
 	else:
 		for flag in hot_parser:
 			manipulate_document(hotdoc, flag)
