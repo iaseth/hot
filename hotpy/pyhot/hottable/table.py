@@ -81,16 +81,16 @@ class HotTable:
 		return True
 
 	def get_column_index(self, name, silent=False):
-		if name.lower() in self.headers_lower:
+		if name == "":
+			return None
+		elif name.lower() in self.headers_lower:
 			return self.headers_lower.index(name.lower())
 		elif is_int(name):
-			return int(name)
+			return int(name) % self.col_count
 		elif len(name) == 1 and name in alphabet:
 			return alphabet.index(name)
 		elif len(name) == 1 and name in alphabet_upper:
 			return self.col_count - (1 + alphabet_upper.index(name))
-		elif name == "":
-			return None
 		else:
 			if not silent:
 				print(f"Column not found: '{name}'")
