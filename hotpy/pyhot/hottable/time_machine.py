@@ -26,9 +26,16 @@ class TimeMachine:
 			print(f"\t{i:2}/{len(self.snapshots):02}. {snapshot}")
 
 	def undo(self):
-		print(f"Undoing to last snapshot!")
+		if not self.snapshots:
+			print(f"No snapshots to undo to!")
+			return
+
+		snapshot = self.snapshots.pop()
+		self.hotdoc.empty_document()
+		self.hotdoc.add_hot_tables_from_json_text(snapshot.json_text)
+		print(f"Did undo to: {snapshot}!")
 
 	def redo(self):
-		print(f"Redoing to next snapshot!")
+		print(f"Redo command not implemented!")
 
 

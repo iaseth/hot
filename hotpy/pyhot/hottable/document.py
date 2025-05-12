@@ -92,6 +92,13 @@ class HotDocument:
 	def add_hot_tables_from_json_file(self, json_path):
 		with open(json_path) as f:
 			jo = json.load(f)
+		self.add_hot_tables_from_jo(jo)
+
+	def add_hot_tables_from_json_text(self, json_text):
+		jo = json.loads(json_text)
+		self.add_hot_tables_from_jo(jo)
+
+	def add_hot_tables_from_jo(self, jo):
 		if not "tables" in jo: return
 
 		for table_jo in jo["tables"]:
