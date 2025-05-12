@@ -193,6 +193,20 @@ class HotDocument:
 	def table_count(self):
 		return len(self.tables)
 
+
+	def snap(self):
+		print(f"Taking a snapshot!")
+
+	def undo(self):
+		print(f"Undoing to last snapshot!")
+
+	def redo(self):
+		print(f"Redoing to next snapshot!")
+
+	def history(self):
+		print(f"Listing all snapshots!")
+
+
 	@property
 	def jo(self):
 		jo = {}

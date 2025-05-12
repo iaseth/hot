@@ -111,6 +111,11 @@ def manipulate_document(hotdoc, flag):
 		case "--empty": hotdoc.empty_document()
 		case "--load": hotdoc.load_document()
 		case "--save": hotdoc.save_document()
+
+		case "--snap": hotdoc.snap()
+		case "--undo": hotdoc.undo()
+		case "--redo": hotdoc.redo()
+		case "--history": hotdoc.history()
 		case _:
 			for table in hotdoc.tables:
 				manipulate_table(table, flag)
