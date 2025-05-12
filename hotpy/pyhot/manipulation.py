@@ -112,11 +112,11 @@ def manipulate_document(hotdoc, flag):
 		case "--load": hotdoc.load_document()
 		case "--save": hotdoc.save_document()
 
-		case "--snap": hotdoc.snap()
-		case "--forget": hotdoc.forget()
-		case "--history": hotdoc.history()
-		case "--undo": hotdoc.undo()
-		case "--redo": hotdoc.redo()
+		case "--snap": hotdoc.time_machine.snap()
+		case "--forget": hotdoc.time_machine.forget()
+		case "--history": hotdoc.time_machine.history()
+		case "--undo": hotdoc.time_machine.undo()
+		case "--redo": hotdoc.time_machine.redo()
 		case _:
 			for table in hotdoc.tables:
 				manipulate_table(table, flag)
