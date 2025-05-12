@@ -3,6 +3,7 @@ import time
 import os
 import atexit
 
+from .colorprint import printc, color
 from .hotparse import HotFlag
 from .manipulation import manipulate_document
 from .utils import format_duration_ns
@@ -24,7 +25,7 @@ def start_repl(hotdoc):
 
 	while True:
 		try:
-			current_input = input("Hot >>> ").strip()
+			current_input = input(color("Hot >>> ", "bright_yellow")).strip()
 			if current_input in ["q", "quit", "exit"]:
 				break
 			elif current_input in ["qq"]:
@@ -56,7 +57,7 @@ def start_repl(hotdoc):
 
 			execution_time = end_time - start_time
 			formatted_time = format_duration_ns(execution_time * 1000_000_000)
-			print(f"Execution finished in {formatted_time} seconds")
+			printc(f"Execution finished in {formatted_time} seconds", "bright_green")
 		except (EOFError, KeyboardInterrupt):
 			print("\nGoodbye!")
 			break
