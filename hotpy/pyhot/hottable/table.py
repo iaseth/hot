@@ -135,11 +135,11 @@ class HotTable:
 	def print_tabulate(self):
 		print(self.get_tabulate())
 
-	def print_table(self, n=10):
+	def print_table(self, n=10, fmt="simple"):
 		table_text = tabulate(
 			self.rows[:n],
 			headers=self.headers,
-			tablefmt=self.args.fmt
+			tablefmt=fmt
 		)
 		print(table_text)
 		if n < self.row_count:

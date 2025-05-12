@@ -91,6 +91,7 @@ def manipulate_table(table, flag):
 		case "--transpose": table.transpose_table()
 
 		case "-p" | "--print": table.print_table()
+		case "--gh" | "--github": table.print_table(fmt="github")
 
 		case _:
 			print(f"Unknown manipulator: {flag}")

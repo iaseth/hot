@@ -53,7 +53,7 @@ def start_repl(hotdoc):
 
 			manipulate_document(hotdoc, flag)
 			end_time = time.perf_counter()
-			hotdoc.print_tables()
+			# hotdoc.print_tables()
 
 			execution_time = end_time - start_time
 			formatted_time = format_duration_ns(execution_time * 1000_000_000)

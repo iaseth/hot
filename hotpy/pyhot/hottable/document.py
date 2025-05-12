@@ -21,6 +21,16 @@ class HotDocument:
 	def table_count(self):
 		return len(self.tables)
 
+	@property
+	def row_count(self):
+		if not self.tables: return 0
+		return sum(table.row_count for table in self.tables)
+
+	@property
+	def col_count(self):
+		if not self.tables: return 0
+		return sum(table.col_count for table in self.tables)
+
 	def empty_document(self):
 		self.tables = []
 
@@ -130,6 +140,7 @@ class HotDocument:
 			n = 10 if self.table_count == 1 else 5
 		for table in self.tables:
 			table.print_table(n)
+		print(f"({self.table_count} tables, {self.row_count} rows, {self.col_count} cols)")
 
 	def print_summary(self):
 		for table in self.tables:
