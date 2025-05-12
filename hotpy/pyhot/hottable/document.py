@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import pyperclip
 
 from .factory import create_table_from_table_tag, create_table_from_jo, create_table_from_csv
+from .snapshot import Snapshot
 from .table import HotTable
 from ..fetch import get_page_html
 from ..output import document_to_html5, document_to_html, document_to_xml
@@ -17,6 +18,7 @@ class HotDocument:
 	def __init__(self, args):
 		self.args = args
 		self.tables = []
+		self.snapshots = []
 
 	@property
 	def table_count(self):
@@ -195,16 +197,28 @@ class HotDocument:
 
 
 	def snap(self):
-		print(f"Taking a snapshot!")
+		if self.snapshots and self.snapshots[-1].hash == self.hash:
+			print(f"Snapshots up-to-date: {self.snapshots[-1]}")
+			return
+
+		snapshot = Snapshot(self)
+		self.snapshots.append(snapshot)
+		print(f"Took a snapshot: {snapshot}")
+
+	def forget(self):
+		print(f"Forgot {len(self.snapshots)} snapshots!")
+		self.snapshots = []
+
+	def history(self):
+		print(f"Found {len(self.snapshots)} snapshots!")
+		for i, snapshot in enumerate(self.snapshots, start=1):
+			print(f"\t{i:2}/{len(self.snapshots):02}. {snapshot}")
 
 	def undo(self):
 		print(f"Undoing to last snapshot!")
 
 	def redo(self):
 		print(f"Redoing to next snapshot!")
-
-	def history(self):
-		print(f"Listing all snapshots!")
 
 
 	@property
