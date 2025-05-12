@@ -22,6 +22,7 @@ def save_history():
 def start_repl(hotdoc):
 	load_history()
 	atexit.register(save_history)
+	hash_1 = hotdoc.hash
 
 	while True:
 		try:
@@ -39,7 +40,6 @@ def start_repl(hotdoc):
 				hotdoc.print_tables(n)
 				continue
 
-			start_time = time.perf_counter()
 			parts = current_input.split(" ")
 			main, *rest = [part.strip() for part in parts]
 			if len(main) == 1:
@@ -51,9 +51,16 @@ def start_repl(hotdoc):
 			for arg in rest:
 				flag.add_arg(arg)
 
+			start_time = time.perf_counter()
 			manipulate_document(hotdoc, flag)
 			end_time = time.perf_counter()
-			# hotdoc.print_tables()
+			hash_2 = hotdoc.hash
+
+			if hash_2 == hash_1:
+				print(f"Nothing happened!")
+			else:
+				hotdoc.print_tables()
+				hash_1 = hash_2
 
 			execution_time = end_time - start_time
 			formatted_time = format_duration_ns(execution_time * 1000_000_000)

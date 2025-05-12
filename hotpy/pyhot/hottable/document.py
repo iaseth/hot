@@ -1,3 +1,4 @@
+import hashlib
 import json
 import os
 
@@ -30,6 +31,11 @@ class HotDocument:
 	def col_count(self):
 		if not self.tables: return 0
 		return sum(table.col_count for table in self.tables)
+
+	@property
+	def hash(self):
+		doc_json = self.json_text
+		return hashlib.md5(doc_json.encode()).hexdigest()
 
 	def empty_document(self):
 		self.tables = []
