@@ -6,6 +6,13 @@ class HotArg:
 	def __init__(self, arg):
 		self.arg = arg
 
+	def to_int(self, default=0):
+		try:
+			return int(self.arg)
+		except Exception as e:
+			print(f"Error while converting '{self.arg}' to integer!")
+			return default
+
 	def __repr__(self):
 		return f"HotArg ('{self.arg}')"
 
@@ -35,6 +42,12 @@ class HotFlag:
 		else:
 			for arg in self.args:
 				func(arg.arg)
+
+	def get_first_int(self, default=0):
+		if self.args:
+			return self.args[0].to_int(default=default)
+		else:
+			return default
 
 	def row(self, idx=None):
 		if idx is None:

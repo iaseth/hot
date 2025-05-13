@@ -84,11 +84,12 @@ def manipulate_table(table, flag):
 		case "--nth-word": table.choose_nth_word(args)
 		case "--slice": table.slice_column(args)
 
-		case "--head": table.rows = table.rows[:10]
-		case "--tail": table.rows = table.rows[-10:]
+		case "--head": table.rows = table.rows[:flag.get_first_int(default=10)]
+		case "--tail": table.rows = table.rows[-flag.get_first_int(default=10):]
 		case "--middle":
-			start = (table.row_count - 10) // 2
-			end = start + 10
+			n = flag.get_first_int(default=10)
+			start = (table.row_count - n) // 2
+			end = start + n
 			table.rows = table.rows[start:end]
 
 		case "--mirror": table.mirror_table()
