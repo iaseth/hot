@@ -36,7 +36,7 @@ def manipulate_table(table, flag):
 		case "--strip": table.convert_columns_to_x(args, str.strip)
 		case "--lstrip": table.convert_columns_to_x(args, str.lstrip)
 		case "--rstrip": table.convert_columns_to_x(args, str.rstrip)
-		case "--shave": table.shave_headers(args)
+		case "--shave": table.shave_headers()
 
 		# scaling stuff
 		case "--kilo": table.scale_columns(args, divisor=1000)
