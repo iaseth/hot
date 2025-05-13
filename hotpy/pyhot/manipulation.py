@@ -81,6 +81,7 @@ def manipulate_table(table, flag):
 		case "--first-word": table.choose_nth_word(args, n=0)
 		case "--last-word": table.choose_nth_word(args, n=-1)
 		case "--nth-word": table.choose_nth_word(args)
+		case "--slice": table.slice_column(args)
 
 		case "--head": table.rows = table.rows[:10]
 		case "--tail": table.rows = table.rows[-10:]

@@ -88,9 +88,11 @@ class HotTable:
 		elif is_int(name):
 			return int(name) % self.col_count
 		elif len(name) == 1 and name in alphabet:
-			return alphabet.index(name)
+			n = alphabet.index(name)
+			return n if n < self.col_count else None
 		elif len(name) == 1 and name in alphabet_upper:
-			return self.col_count - (1 + alphabet_upper.index(name))
+			n = self.col_count - (1 + alphabet_upper.index(name))
+			return n if n < self.col_count else None
 		else:
 			if not silent:
 				print(f"Column not found: '{name}'")
@@ -283,6 +285,23 @@ class HotTable:
 
 			if cdx is not None:
 				self.rows = [update_row(row, cdx, n) for row in self.rows]
+
+	def slice_column(self, args):
+		for arg in args:
+			parts = arg.split("=")
+			if len(parts) == 2:
+				col_arg, slice_arg = parts
+				cdx = self.get_column_index(col_arg)
+				if cdx is None:
+					print(f"Bad column name: '{arg}'")
+				elif not slice_arg:
+					print(f"Empty slice arg: '{arg}'")
+				else:
+					for row in self.rows:
+						row[cdx] = filter_list(row[cdx], slice_arg)
+			else:
+				print(f"Bad slice arg: '{arg}'")
+
 
 	def mirror_table(self):
 		self.headers = reversed(self.headers)
