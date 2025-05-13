@@ -265,6 +265,25 @@ class HotTable:
 			indices = sorted(indices)
 		self.rows = [self.rows[i] for i in indices]
 
+	def choose_nth_word(self, args, n=0):
+		def update_row(row, cdx, wn):
+			try:
+				row[cdx] = row[cdx].split(" ")[wn]
+			except Exception as e:
+				print(f"Error while selecting word #{wn} in '{row[cdx]}' !")
+			return row
+
+		for arg in args:
+			if "=" in arg:
+				parts = arg.split("=")
+				cdx = self.get_column_index(parts[0])
+				n = int(parts[1])
+			else:
+				cdx = self.get_column_index(arg)
+
+			if cdx is not None:
+				self.rows = [update_row(row, cdx, n) for row in self.rows]
+
 	def mirror_table(self):
 		self.headers = reversed(self.headers)
 		self.rows = [reversed(row) for row in self.rows]

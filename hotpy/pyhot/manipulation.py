@@ -78,6 +78,10 @@ def manipulate_table(table, flag):
 		case "--random": table.select_random_rows(10, preserve_order=True)
 		case "--randomx": table.select_random_rows(10, preserve_order=False)
 
+		case "--first-word": table.choose_nth_word(args, n=0)
+		case "--last-word": table.choose_nth_word(args, n=-1)
+		case "--nth-word": table.choose_nth_word(args)
+
 		case "--head": table.rows = table.rows[:10]
 		case "--tail": table.rows = table.rows[-10:]
 		case "--middle":
