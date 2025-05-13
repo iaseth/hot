@@ -207,6 +207,15 @@ class HotTable:
 		self.headers = keep_filter(self.headers)
 		self.rows = [keep_filter(row) for row in self.rows]
 
+	def choose_n_columns_from_left(self, n, right=False):
+		if not n:
+			print(f"Cannot choose {n} columns!")
+		else:
+			column_indexes = list(range(n))
+			if right:
+				column_indexes = [(self.col_count-cdx-1) for cdx in column_indexes]
+			self.keep_certain_columns(column_indexes)
+
 	def move_columns(self, arg):
 		pass
 

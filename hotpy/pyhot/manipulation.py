@@ -92,6 +92,9 @@ def manipulate_table(table, flag):
 			end = start + n
 			table.rows = table.rows[start:end]
 
+		case "--left": table.choose_n_columns_from_left(flag.get_first_int())
+		case "--right": table.choose_n_columns_from_left(flag.get_first_int(), right=True)
+
 		case "--mirror": table.mirror_table()
 		case "--shuffle": random.shuffle(table.rows)
 		case "--snip": table.snip_table(first_arg)
