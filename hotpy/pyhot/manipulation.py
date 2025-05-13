@@ -64,6 +64,7 @@ def manipulate_table(table, flag):
 			table.rows = [filter_list_by_args(row, args) for row in table.rows]
 
 		case "--drop": table.drop_certain_columns(column_indexes)
+		case "--drop-naked": table.drop_naked_columns()
 		case "--keep": table.keep_certain_columns(column_indexes)
 		case "--move": flag.forEachArg(table.move_columns)
 		case "--swap": flag.forEachArg(table.swap_two_columns)

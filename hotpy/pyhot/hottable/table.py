@@ -197,6 +197,10 @@ class HotTable:
 		self.headers = drop_filter(self.headers)
 		self.rows = [drop_filter(row) for row in self.rows]
 
+	def drop_naked_columns(self):
+		naked_column_indexes = [cdx for cdx, header in enumerate(self.headers) if not header]
+		self.drop_certain_columns(naked_column_indexes)
+
 	def keep_certain_columns(self, col_indexes):
 		def keep_filter(arr):
 			return [x for i, x in enumerate(arr) if i in col_indexes]
