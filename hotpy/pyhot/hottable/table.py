@@ -220,7 +220,7 @@ class HotTable:
 		pass
 
 	def swap_two_columns(self, arg):
-		column_indexes = self.get_column_indexes([arg], separator=":")
+		column_indexes = self.get_column_indexes([arg], separator="=")
 		if len(column_indexes) != 2:
 			print(f"Bad swap arg: '{arg}'")
 			return
