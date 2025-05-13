@@ -7,7 +7,7 @@ from tabulate import tabulate
 
 from .evaluate import alphabet, alphabet_upper, evaluate_template
 from .table_utils import camelize, get_snippet_args
-from ..utils import filter_list
+from ..utils import filter_list, move_element_within_array
 from ..utils import to_bool, to_int, to_float, to_str
 from ..utils import strip_leading_dots, to_rounded
 from ..utils import is_int, pop_first_value_between_xny
@@ -80,23 +80,23 @@ class HotTable:
 		if args.exact_cols and self.col_count != args.exact_cols: return False
 		return True
 
-	def get_column_index(self, name, silent=False):
+	def get_column_index(self, name, silent=False, default=None):
 		if name == "":
-			return None
+			return default
 		elif name.lower() in self.headers_lower:
 			return self.headers_lower.index(name.lower())
 		elif is_int(name):
 			return int(name) % self.col_count
 		elif len(name) == 1 and name in alphabet:
 			n = alphabet.index(name)
-			return n if n < self.col_count else None
+			return n if n < self.col_count else default
 		elif len(name) == 1 and name in alphabet_upper:
 			n = self.col_count - (1 + alphabet_upper.index(name))
-			return n if n < self.col_count else None
+			return n if n < self.col_count else default
 		else:
 			if not silent:
 				print(f"Column not found: '{name}'")
-			return None
+			return default
 
 	def get_column_indexes(self, args, separator=",", silent=False):
 		column_names = separator.join(args).split(separator)
@@ -216,8 +216,23 @@ class HotTable:
 				column_indexes = [(self.col_count-cdx-1) for cdx in column_indexes]
 			self.keep_certain_columns(column_indexes)
 
-	def move_columns(self, arg):
-		pass
+	def move_column(self, arg):
+		parts = arg.split("=")
+		if len(parts) != 2:
+			print(f"Bad move syntax: '{arg}' (expected something like a=1)")
+			return
+
+		cdx = self.get_column_index(parts[0])
+		ddx = self.get_column_index(parts[1], default=0)
+		if cdx is None or ddx is None:
+			print(f"Bad cdx/ddx: '{arg}' (expected something like a=1)")
+			return
+
+		def move(arr):
+			move_element_within_array(arr, cdx, ddx)
+		move(self.headers)
+		for row in self.rows:
+			move(row)
 
 	def swap_two_columns(self, arg):
 		column_indexes = self.get_column_indexes([arg], separator="=")
