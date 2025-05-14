@@ -110,7 +110,9 @@ class HotDocument:
 		if "tables" in jo:
 			for table_jo in jo["tables"]:
 				self.add_hot_table_from_jo(table_jo)
-		elif "data" in jo:
+		elif "table" in jo:
+			self.add_hot_table_from_jo(jo["table"])
+		elif "data" in jo and "headers" in jo:
 			self.add_hot_table_from_jo(jo)
 
 	def add_hot_tables_from_html(self, html: str):
