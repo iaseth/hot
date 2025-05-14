@@ -98,16 +98,20 @@ class HotDocument:
 		jo = json.loads(json_text)
 		self.add_hot_tables_from_jo(jo)
 
-	def add_hot_tables_from_jo(self, jo):
-		if not "tables" in jo: return
+	def add_hot_table_from_jo(self, table_jo):
+		try:
+			table = create_table_from_jo(self, table_jo)
+			if table.is_acceptable():
+				self.tables.append(table)
+		except Exception as e:
+			print(e)
 
-		for table_jo in jo["tables"]:
-			try:
-				table = create_table_from_jo(self, table_jo)
-				if table.is_acceptable():
-					self.tables.append(table)
-			except Exception as e:
-				print(e)
+	def add_hot_tables_from_jo(self, jo):
+		if "tables" in jo:
+			for table_jo in jo["tables"]:
+				self.add_hot_table_from_jo(table_jo)
+		elif "data" in jo:
+			self.add_hot_table_from_jo(jo)
 
 	def add_hot_tables_from_html(self, html: str):
 		soup = BeautifulSoup(html, "lxml")
