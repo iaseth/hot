@@ -51,8 +51,8 @@ def manipulate_table(table, flag):
 		case "--round": table.round_columns_to_n_digits(args)
 
 		# ordering stuff
-		case "-a" | "--ascending": table.sort_rows(first_arg)
-		case "-d" | "--descending": table.sort_rows(first_arg, reverse=True)
+		case "-a" | "--ascending": table.sort_rows_by_args(args)
+		case "-d" | "--descending": table.sort_rows_by_args(args, reverse=True)
 		case "-R" | "--reverse": table.rows.reverse()
 
 		# filtering stuff
